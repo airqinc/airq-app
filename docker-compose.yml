@@ -4,11 +4,11 @@ services:
     #context: ./docker-aqi
     build: ./docker-aqi
     container_name: docker-aqi
-    # volumes:
-    #  - .:/app
-  data-transformer:
-    build: ./docker-data-transformer
-    container_name: data-transformer
+    volumes:
+     - ./app:/app
+  # data-transformer:
+    # build: ./docker-data-transformer
+    # container_name: data-transformer
     # volumes:
     #  - .:/app
   mqtt:
