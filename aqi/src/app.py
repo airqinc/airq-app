@@ -3,8 +3,8 @@ from optparse import OptionParser
 import paho.mqtt.publish as publish
 import requests
 import sched, time
-#publish.single("topic1", "boo", hostname="mqtt")
-
+print("ellooo")
+# publish.single("sensor_data", "boo", hostname="mqtt")
 def parse_aqi(broker, sc):
     response = requests.post(aqi_url, data=aqi_data)
     if response.status_code == 200:

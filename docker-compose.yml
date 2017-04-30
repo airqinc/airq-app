@@ -1,22 +1,19 @@
-version: '3'
-services:
-  aqi:
-    build: ./aqi
-    container_name: aqi
-    volumes:
-      - ./aqi/src:/app
-    depends_on:
-      - mqtt
-  data-transformer:
-    build: ./data-transformer
-    container_name: data-transformer
-    volumes:
-      - ./data-transformer/src:/app
-    depends_on:
-      - mqtt
-  mqtt:
-    image: "toke/mosquitto"
-    container_name: mqtt
-    # ports:
-    #   - "1883:1883"
-    #   - "9001:9001"
+aqi:
+  # build: ./aqi
+  image: registry.eu-gb.bluemix.net/airq_containers/aqi:latest #aqi
+  container_name: aqi
+  links:
+    - "mqtt"
+data-transformer:
+  # build: ./data-transformer
+  image: registry.eu-gb.bluemix.net/airq_containers/data-transformer:latest #aqi
+  container_name: data-transformer
+  links:
+    - "mqtt"
+mqtt:
+  # image: "toke/mosquitto"
+  image: registry.eu-gb.bluemix.net/airq_containers/mqtt:dev # mqtt
+  container_name: mqtt
+  expose:
+    - "1883"
+    - "9001"
