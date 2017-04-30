@@ -21,7 +21,7 @@ $ bx ic init
 ```
 * Update set_bx.sh with your DOCKER_CERT_PATH (you get if after executing `bx ic init`)
 ```sh
-$ ./set_bx.sh
+$ source ./set_bx.sh
 ```
 ## Usage example
 * Deploy images to bluemix
@@ -37,6 +37,11 @@ You can use docker-compose locally in order to test your containers
 ```
 docker-compose up
 ```
+## Useful links
+* [Get started with Docker Compose](https://docs.docker.com/compose/gettingstarted/)
+* [Compose file version 1 reference](https://docs.docker.com/compose/compose-file/compose-file-v1/)
+* [Docker compose on bluemix](https://console.ng.bluemix.net/docs/containers/container_single_ui.html#container_compose_config)
+
 
 ## Contributing
 
