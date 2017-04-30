@@ -10,11 +10,11 @@
 ## Installation
 
 OS X & Linux:
-* install [docker](https://docs.docker.com/engine/installation/)
-* install [bluemix client](https://clis.ng.bluemix.net/ui/home.html)
-* install [bluemix container plugin](https://console.ng.bluemix.net/docs/containers/container_cli_cfic.html#container_cli_cfic)
+* Install [docker](https://docs.docker.com/engine/installation/)
+* Install [bluemix client](https://clis.ng.bluemix.net/ui/home.html)
+* Install [bluemix container plugin](https://console.ng.bluemix.net/docs/containers/container_cli_cfic.html#container_cli_cfic)
 
-* login to bluemix api
+* Login to bluemix api
 ```sh
 $ bx ic login
 $ bx ic init
@@ -35,7 +35,7 @@ $ docker-compose up
 
 You can use docker-compose locally in order to test your containers
 ```
-docker-compose up
+$ docker-compose up
 ```
 ## Useful links
 * [Get started with Docker Compose](https://docs.docker.com/compose/gettingstarted/)
