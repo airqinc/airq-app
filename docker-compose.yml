@@ -2,18 +2,21 @@ aqi:
   # build: ./aqi
   image: registry.eu-gb.bluemix.net/airq_containers/aqi:latest #aqi
   container_name: aqi
+  mem_limit: 64
   links:
     - "mqtt"
 data-transformer:
   # build: ./data-transformer
   image: registry.eu-gb.bluemix.net/airq_containers/data-transformer:latest #aqi
   container_name: data-transformer
+  mem_limit: 64
   links:
     - "mqtt"
 mqtt:
   # image: "toke/mosquitto"
   image: registry.eu-gb.bluemix.net/airq_containers/mqtt:dev # mqtt
   container_name: mqtt
+  mem_limit: 128
   expose:
     - "1883"
     - "9001"
