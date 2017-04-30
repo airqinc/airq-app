@@ -21,7 +21,7 @@ $ bx ic init
 ```
 * Update set_bx.sh with your DOCKER_CERT_PATH (you get if after executing `bx ic init`)
 ```sh
-$ ./set_bx.sh
+$ source ./set_bx.sh
 ```
 ## Usage example
 * Deploy images to bluemix
