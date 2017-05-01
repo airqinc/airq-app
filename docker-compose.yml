@@ -12,7 +12,7 @@ data-transformer:
   mem_limit: 64m
   links:
     - mqtt
-    # - aqi
+    - aqi
 mqtt:
   image: "toke/mosquitto"
   # image: registry.eu-gb.bluemix.net/airq_containers/mqtt:dev # mqtt
