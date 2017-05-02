@@ -37,6 +37,14 @@ You can use docker-compose locally in order to test your containers
 ```
 $ docker-compose up
 ```
+
+## Load testing
+```sh
+$ sudo apt-get install mosquitto-clients
+$ mosquitto_sub -h hostname -t topic_name
+```
+* use [mqtt extension for chrome](https://chrome.google.com/webstore/detail/mqttbox/kaajoficamnjijhkeomgfljpicifbkaf) to publish messages to mqtt broker
+
 ## Useful links
 * [Get started with Docker Compose](https://docs.docker.com/compose/gettingstarted/)
 * [Compose file version 1 reference](https://docs.docker.com/compose/compose-file/compose-file-v1/)
@@ -58,13 +66,6 @@ $ docker-compose up
     * CHANGE: migrate from docker-compose.yml v3 to v1 for bluemix support
 * 0.0.1
     * Work in progress
-
-## Load testing
-```sh
-$ sudo apt-get install mosquitto-clients
-$ mosquitto_sub -h hostname -t topic_name
-```
-* use [mqtt extension for chrome](https://chrome.google.com/webstore/detail/mqttbox/kaajoficamnjijhkeomgfljpicifbkaf) to publish messages to mqtt broker
 
 ## Meta
 
