@@ -59,6 +59,13 @@ $ docker-compose up
 * 0.0.1
     * Work in progress
 
+## Load testing
+```sh
+$ sudo apt-get install mosquitto-clients
+$ mosquitto_sub -h hostname -t topic_name
+```
+* use [mqtt extension for chrome](https://chrome.google.com/webstore/detail/mqttbox/kaajoficamnjijhkeomgfljpicifbkaf) to publish messages to mqtt broker
+
 ## Meta
 
 AirQ – airq@protonmail.com
