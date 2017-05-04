@@ -24,3 +24,10 @@ mqtt:
   expose:
     - "1883"
     - "9001"
+storage-server:
+  build: ./storage-server
+  # image: registry.eu-gb.bluemix.net/airq_containers/storage-server:latest
+  container_name: storage-server
+  mem_limit: 128m
+  expose:
+    - "3000"

@@ -1,1 +1,3 @@
 set_bx.sh
+/storage-server/node_modules
+/storage-server/config.js

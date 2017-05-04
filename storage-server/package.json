@@ -1,0 +1,35 @@
+{
+  "name": "airq-web-db",
+  "version": "1.0.0",
+  "description": "Database using MongoDB",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/airqinc/airq-web-db.git"
+  },
+  "keywords": [
+    "database",
+    "mongodb",
+    "air",
+    "quality"
+  ],
+  "author": "AirQ",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/airqinc/airq-web-db/issues"
+  },
+  "homepage": "https://github.com/airqinc/airq-web-db#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "mongoose": "^4.9.5"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}
