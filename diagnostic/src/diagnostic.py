@@ -1,10 +1,9 @@
 # -*- coding: utf-8 -*-
 from optparse import OptionParser
 import paho.mqtt.client as mqtt
-import paho.mqtt.publish as publish
 import time
 
-print("hi there, data-transformer here")
+print("hi there, diagnostic here")
 
 
 def on_connect(mqttc, obj, flags, rc):
@@ -28,14 +27,15 @@ def on_log(mqttc, obj, level, string):
 
 
 def on_message(mqttc, obj, msg):
-    publish.single("transformed_data", msg.payload, hostname=broker_hostname)
+    print("msg received. Topic:  " + msg.topic + " " +
+          str(msg.qos) + " . payload: " + str(msg.payload))
 
 
 if __name__ == '__main__':
     broker_hostname = "mqtt"  # TODO: get hostname with container params
     verbose = False
 
-    mqttc = mqtt.Client("data-transformer")
+    mqttc = mqtt.Client("diagnostic")
     mqttc.on_message = on_message
     mqttc.on_connect = on_connect
     mqttc.on_publish = on_publish
@@ -43,6 +43,6 @@ if __name__ == '__main__':
     # Uncomment to enable debug messages
     # mqttc.on_log = on_log
     mqttc.connect(broker_hostname, 1883, 60)
-    mqttc.subscribe("sensor_data", 0)
+    mqttc.subscribe("transformed_data", 0)
 
     mqttc.loop_forever()
