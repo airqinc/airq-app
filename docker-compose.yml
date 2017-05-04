@@ -1,10 +1,18 @@
-aqi:
-  build:          ./aqi
+#aqi:
+ # build:          ./aqi
+ # image:        registry.eu-gb.bluemix.net/airq_containers/aqi:latest #aqi
+ # container_name: aqi
+ # mem_limit:      64m
+ # links:
+ #  - mqtt
+station:
+  build:          ./station
   # image:        registry.eu-gb.bluemix.net/airq_containers/aqi:latest #aqi
-  container_name: aqi
+  container_name: station
   mem_limit:      64m
   links:
     - mqtt
+    - storage-server
 data-transformer:
   build:          ./data-transformer
   # image:        registry.eu-gb.bluemix.net/airq_containers/data-transformer:latest #aqi
