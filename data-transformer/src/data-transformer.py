@@ -4,6 +4,8 @@ import paho.mqtt.client as mqtt
 import paho.mqtt.publish as publish
 import time
 
+print("hi there, data-transformer here")
+
 
 def on_connect(mqttc, obj, flags, rc):
     if verbose == True:
@@ -26,20 +28,14 @@ def on_log(mqttc, obj, level, string):
 
 
 def on_message(mqttc, obj, msg):
-    # print("msg received. Topic:  " + msg.topic + " " +
-    # str(msg.qos) + " . payload: " + str(msg.payload) + "\ntransforming and
-    # publishing...")
     publish.single("transformed_data", msg.payload, hostname=broker_hostname)
-
-    # mqttc.disconnect()
-    # TODO publish for diag
 
 
 if __name__ == '__main__':
     broker_hostname = "mqtt"  # TODO: get hostname with container params
     verbose = False
 
-    mqttc = mqtt.Client("external_data_transformer")
+    mqttc = mqtt.Client("data-transformer")
     mqttc.on_message = on_message
     mqttc.on_connect = on_connect
     mqttc.on_publish = on_publish

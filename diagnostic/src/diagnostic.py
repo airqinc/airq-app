@@ -3,6 +3,8 @@ from optparse import OptionParser
 import paho.mqtt.client as mqtt
 import time
 
+print("hi there, diagnostic here")
+
 
 def on_connect(mqttc, obj, flags, rc):
     if verbose == True:
@@ -27,8 +29,6 @@ def on_log(mqttc, obj, level, string):
 def on_message(mqttc, obj, msg):
     print("msg received. Topic:  " + msg.topic + " " +
           str(msg.qos) + " . payload: " + str(msg.payload))
-    # mqttc.disconnect()
-    # TODO publish for diag
 
 
 if __name__ == '__main__':
