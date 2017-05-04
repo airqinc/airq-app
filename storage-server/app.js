@@ -19,6 +19,6 @@ app.use(require('./controllers'));
 //app.use('/users', require('./routes/user'));
 
 // Ejecutar servidor
-app.listen(app.get('settings').port, app.get('settings').domain, function() {
+app.listen(app.get('settings').port, function() {
   console.log('Listening port: ' + app.get('settings').port);
 });
