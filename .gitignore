@@ -1,3 +1,5 @@
 set_bx.sh
 /storage-server/node_modules
 /storage-server/config.js
+.DS_Store
+.fuse_hidden*
