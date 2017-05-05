@@ -39,7 +39,7 @@ def parse_aqi_data(aqi_data):
     station_name,station_zone = station_data.split(',')
 
     sensor_data['station'] = station_zone + "-" + station_name
-    sensor_data['dateTime'] = aqi_data['time']['s']
+    sensor_data['datetime'] = aqi_data['time']['s']
     sensor_data['dominentpol'] = aqi_data['dominentpol']
     sensor_data['iaqi'] = {}
 

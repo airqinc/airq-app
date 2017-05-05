@@ -32,12 +32,14 @@ def on_log(mqttc, obj, level, string):
 def on_message(mqttc, obj, msg):
     publish.single("transformed_data", msg.payload, hostname=broker_hostname)
     # TODO check data and test post
-    # requests.post(storage_server_name, msg.payload)
+    headers = {'Content-Type': 'application/json'}
+    print("posting ", msg.payload,  " to ", measures_path)
+    requests.post(measures_path, msg.payload, headers = headers)
 
 
 if __name__ == '__main__':
     broker_hostname = "mqtt"  # TODO: get hostname with container params
-    storage_server_name = "storage-server"
+    measures_path = "http://storage-server:3000/measures"
     verbose = False
 
     mqttc = mqtt.Client("data-transformer")

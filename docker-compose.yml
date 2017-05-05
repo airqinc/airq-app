@@ -1,52 +1,47 @@
-#aqi:
- # build:         ./aqi
- # image:         registry.eu-gb.bluemix.net/airq_containers/aqi:latest #aqi
- # container_name: aqi
- # mem_limit:     64m
- # links:
- #  - mqtt
+# IMPORTANT: comment 'local' lines and uncomment 'bluemix' lines to deploy
 station:
-  build:          ./station
-  # image:        registry.eu-gb.bluemix.net/airq_containers/aqi:latest #aqi
+  # build:        ./station # local
+  image:          registry.eu-gb.bluemix.net/airq_containers/station:latest # bluemix
   container_name: station
-  mem_limit:      64m
+  # mem_limit:      64m # local
+  mem_limit:      64 # bluemix
   links:
     - mqtt
-    - storage-server # seguro?
 data-transformer:
-  build:          ./data-transformer
-  # image:        registry.eu-gb.bluemix.net/airq_containers/data-transformer:latest #aqi
+  # build:          ./data-transformer # local
+  image:        registry.eu-gb.bluemix.net/airq_containers/data-transformer:latest # bluemix
   container_name: data-transformer
-  mem_limit:      64m
+  # mem_limit:      64m # local
+  mem_limit:      64 # bluemix
   links:
     - mqtt
     - storage-server
-    - station
 diagnostic:
-  build:          ./diagnostic
-  # image:        #TODO
+  # build:          ./diagnostic # local
+  image:        registry.eu-gb.bluemix.net/airq_containers/diagnostic:latest # bluemix
   container_name: diagnostic
-  mem_limit:      64m
+  # mem_limit:      64m # local
+  mem_limit:      64 # bluemix
   links:
     - mqtt
     - storage-server
-    - station
-    - data-transformer
 mqtt:
-  image:          "toke/mosquitto"
-  # image:        registry.eu-gb.bluemix.net/airq_containers/mqtt:dev # mqtt
+  # image:          "toke/mosquitto" # local
+  image:        registry.eu-gb.bluemix.net/airq_containers/mqtt:dev # bluemix
   container_name: mqtt
-  mem_limit:      128m
-  # ports:
-    # - "134.168.40.167:1883:1883"
-    # - "9001:9001"
-  expose:
-    - "1883"
-    - "9001"
+  # mem_limit:      128m # local
+  mem_limit:      128 # bluemix
+  ports:        # bluemix
+    - "134.168.40.167:1883:1883" # bluemix
+  # expose:         # local
+    # - "1883" # local
 storage-server:
-  build:          ./storage-server
-  # image:        registry.eu-gb.bluemix.net/airq_containers/storage-server:latest
+  # build:          ./storage-server # local
+  image:        registry.eu-gb.bluemix.net/airq_containers/storage-server:latest # bluemix
   container_name: storage-server
-  mem_limit:      128m
-  expose:
-    - "3000"
+  # mem_limit:      128m # local
+  mem_limit:      128 # bluemix
+  ports:        # bluemix
+    - "134.168.44.231:3000:3000" # bluemix
+  # expose:         # local
+    # - "3000" # local
