@@ -1,8 +1,8 @@
 #aqi:
- # build:          ./aqi
- # image:        registry.eu-gb.bluemix.net/airq_containers/aqi:latest #aqi
+ # build:         ./aqi
+ # image:         registry.eu-gb.bluemix.net/airq_containers/aqi:latest #aqi
  # container_name: aqi
- # mem_limit:      64m
+ # mem_limit:     64m
  # links:
  #  - mqtt
 station:
@@ -20,7 +20,7 @@ data-transformer:
   mem_limit:      64m
   links:
     - mqtt
-    - aqi
+    - station
 diagnostic:
   build:          ./diagnostic
   # image:        #TODO
@@ -28,7 +28,7 @@ diagnostic:
   mem_limit:      64m
   links:
     - mqtt
-    - aqi
+    - station
     - data-transformer
 mqtt:
   image:          "toke/mosquitto"
@@ -42,9 +42,9 @@ mqtt:
     - "1883"
     - "9001"
 storage-server:
-  build: ./storage-server
-  # image: registry.eu-gb.bluemix.net/airq_containers/storage-server:latest
+  build:          ./storage-server
+  # image:        registry.eu-gb.bluemix.net/airq_containers/storage-server:latest
   container_name: storage-server
-  mem_limit: 128m
+  mem_limit:      128m
   expose:
     - "3000"

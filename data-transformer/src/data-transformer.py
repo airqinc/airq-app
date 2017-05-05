@@ -3,6 +3,8 @@ from optparse import OptionParser
 import paho.mqtt.client as mqtt
 import paho.mqtt.publish as publish
 import time
+import requests
+
 
 print("hi there, data-transformer here")
 
@@ -29,10 +31,13 @@ def on_log(mqttc, obj, level, string):
 
 def on_message(mqttc, obj, msg):
     publish.single("transformed_data", msg.payload, hostname=broker_hostname)
+    # TODO check data and test post
+    # requests.post(storage_server_name, msg.payload)
 
 
 if __name__ == '__main__':
     broker_hostname = "mqtt"  # TODO: get hostname with container params
+    storage_server_name = "storage-server"
     verbose = False
 
     mqttc = mqtt.Client("data-transformer")
