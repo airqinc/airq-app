@@ -55,7 +55,7 @@ def get_value(topic,forecast,hour,moment):
     if topic == "direccion" or topic == "velocidad":
         return forecast.xpath("//viento[@periodo=\"" + str(hour).zfill(2) + "\"]/"+topic+"/text()")[moment]
     else:
-        return (forecast.xpath("//"+topic+"[@periodo=\""+str(hour).zfill(2)+"\"]/text()")[moment])
+        return float(forecast.xpath("//"+topic+"[@periodo=\""+str(hour).zfill(2)+"\"]/text()")[moment])
 
 
 def get_aemet_data(locality,hour,moment,date):
@@ -72,7 +72,7 @@ def get_aemet_data(locality,hour,moment,date):
     data["humidity"] = get_value("humedad_relativa",forecast,hour,moment)
     data["rainfall"] = get_value("precipitacion",forecast,hour,moment)
     data["windDirection"] = get_value("direccion",forecast,hour,moment)
-    data["windSpeed"] = int(get_value("velocidad",forecast,hour,moment))
+    data["windSpeed"] = float(get_value("velocidad",forecast,hour,moment))
 
     return data
 
