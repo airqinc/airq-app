@@ -11,11 +11,11 @@ from lxml import etree
 
 
 def get_aqi_data(aqi_url):
-    
+
     try:
         response = requests.get(aqi_url)
     except: return "error"
-    
+
     if response.status_code == 200:
         json_data = json.loads(response.text)
 
@@ -26,7 +26,7 @@ def get_aqi_data(aqi_url):
             print(json_data['status'] + " produced by" + json_data['data'])
             return "error"
 
-    else: 
+    else:
         print("AQI API unreachable")
         return "error"
 
@@ -37,7 +37,7 @@ def parse_aqi_data(aqi_data):
     station_data = aqi_data['city']['name']
     station_data = station_data.replace(' ','')
     station_name,station_zone = station_data.split(',')
-    
+
     sensor_data['station'] = station_zone + "-" + station_name
     sensor_data['dateTime'] = aqi_data['time']['s']
     sensor_data['dominentpol'] = aqi_data['dominentpol']
@@ -55,7 +55,7 @@ def get_value(topic,forecast,hour,moment):
     if topic == "direccion" or topic == "velocidad":
         return forecast.xpath("//viento[@periodo=\"" + str(hour).zfill(2) + "\"]/"+topic+"/text()")[moment]
     else:
-        return int(forecast.xpath("//"+topic+"[@periodo=\""+str(hour).zfill(2)+"\"]/text()")[moment])
+        return (forecast.xpath("//"+topic+"[@periodo=\""+str(hour).zfill(2)+"\"]/text()")[moment])
 
 
 def get_aemet_data(locality,hour,moment,date):
@@ -87,8 +87,8 @@ if __name__ == '__main__':
     delay = 15*60 #seconds of delay
 
     ########################## Stations config ##########################
-    
-    stations = ["castellana", "plaza-de-castilla", "cuatro-caminos", "casa-de-campo", "escuelas-aguirre", "mendez-alvaro"] 
+
+    stations = ["castellana", "plaza-de-castilla", "cuatro-caminos", "casa-de-campo", "escuelas-aguirre", "mendez-alvaro"]
     last_seen_stations = {}
 
     ########################## Aemet config #############################
@@ -102,9 +102,9 @@ if __name__ == '__main__':
 
     aqi_token = "ef6bc8b53769124c36402b20a91b104f6677a4c8"
     aqi_base_url = "https://api.waqi.info/feed/spain/madrid/"
-    
+
     ########################## MQTT Client config #######################
-    
+
     broker_hostname = "mqtt"
     server_hostame = "storage-server"
 
@@ -112,20 +112,20 @@ if __name__ == '__main__':
 
 
         for station in stations:
-            
+
             aqi_station_url = aqi_base_url + station + "/?token=" + aqi_token
             aqi_data = get_aqi_data(aqi_station_url)
 
             if(aqi_data != "error"): #if not an error use de data received
-                    
+
                 if station not in last_seen_stations or last_seen_stations[station] != aqi_data['time']['s']:
-                    
+
                     last_seen_stations[station] = aqi_data['time']['s']
-                
+
                     # Parse from aqi response to a sensor response.
 
-                    sensor_data = parse_aqi_data(aqi_data) 
-                
+                    sensor_data = parse_aqi_data(aqi_data)
+
                     data_date,data_time = aqi_data['time']['s'].split(' ')
                     hour,minutes,seconds = data_time.split(':')
                     #year, month, day = data_date.split('-')
@@ -142,23 +142,3 @@ if __name__ == '__main__':
                     #requests.post(server_hostame, data=json_msg)
 
         time.sleep(delay)
-            
-
-
-
-
-            
-
-
-
-
-
-
-
-
-
-
-
-
-
-
