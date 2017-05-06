@@ -55,7 +55,7 @@ def get_value(topic,forecast,hour,moment):
     if topic == "direccion" or topic == "velocidad":
         return forecast.xpath("//viento[@periodo=\"" + str(hour).zfill(2) + "\"]/"+topic+"/text()")[moment]
     else:
-        return float(forecast.xpath("//"+topic+"[@periodo=\""+str(hour).zfill(2)+"\"]/text()")[moment])
+        return forecast.xpath("//"+topic+"[@periodo=\""+str(hour).zfill(2)+"\"]/text()")[moment]
 
 
 def get_aemet_data(locality,hour,moment,date):
@@ -72,7 +72,7 @@ def get_aemet_data(locality,hour,moment,date):
     data["humidity"] = get_value("humedad_relativa",forecast,hour,moment)
     data["rainfall"] = get_value("precipitacion",forecast,hour,moment)
     data["windDirection"] = get_value("direccion",forecast,hour,moment)
-    data["windSpeed"] = float(get_value("velocidad",forecast,hour,moment))
+    data["windSpeed"] = get_value("velocidad",forecast,hour,moment)
 
     return data
 
@@ -116,11 +116,10 @@ if __name__ == '__main__':
             aqi_station_url = aqi_base_url + station + "/?token=" + aqi_token
             aqi_data = get_aqi_data(aqi_station_url)
 
+
             if(aqi_data != "error"): #if not an error use de data received
 
                 if station not in last_seen_stations or last_seen_stations[station] != aqi_data['time']['s']:
-
-                    last_seen_stations[station] = aqi_data['time']['s']
 
                     # Parse from aqi response to a sensor response.
 
@@ -133,12 +132,24 @@ if __name__ == '__main__':
                     date = datetime.datetime.strptime( data_date, '%Y-%m-%d')
 
                     sensor_data['dayName'] = date.strftime("%A")
-                    sensor_data['aemet'] = get_aemet_data(locality,hour,moment,date)
 
+                    try:
+                        sensor_data['aemet'] = get_aemet_data(locality,hour,moment,date)
+                    except: sensor_data['aemet'] = "error"
+                        
                     # Publish the message like a real sensor.
                     json_msg = json.dumps(sensor_data)
                     print(json_msg)
-                    publish.single("sensor_data", json_msg, hostname=broker_hostname, keepalive=180)
+
+                    published = True
+                    try:
+                        publish.single("sensor_data", json_msg, hostname=broker_hostname, keepalive=240)
+                    except: 
+                        published = False
+                        print("MQTT Broker unreachable, unable to publish data to sensor_data topic.")  
+
+                    if published:
+                        last_seen_stations[station] = aqi_data['time']['s']                  
                     #requests.post(server_hostame, data=json_msg)
 
         time.sleep(delay)
