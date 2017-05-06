@@ -66,12 +66,12 @@ def get_aemet_data(locality,hour,moment,date):
         xml = requests.get("http://www.aemet.es/xml/municipios_h/localidad_h_"+str(locality)+".xml").content
         forecast = etree.XML(xml)
 
-    data["temperature"] = get_value("temperatura",forecast,hour,moment)
-    data["windChill"] = get_value("sens_termica",forecast,hour,moment)
-    data["humidity"] = get_value("humedad_relativa",forecast,hour,moment)
-    data["rainfall"] = get_value("precipitacion",forecast,hour,moment)
-    data["windDirection"] = get_value("direccion",forecast,hour,moment)
-    data["windSpeed"] = get_value("velocidad",forecast,hour,moment)
+        data["temperature"] = get_value("temperatura",forecast,hour,moment)
+        data["windChill"] = get_value("sens_termica",forecast,hour,moment)
+        data["humidity"] = get_value("humedad_relativa",forecast,hour,moment)
+        data["rainfall"] = get_value("precipitacion",forecast,hour,moment)
+        data["windDirection"] = get_value("direccion",forecast,hour,moment)
+        data["windSpeed"] = get_value("velocidad",forecast,hour,moment)
 
     except: return "error"
 
