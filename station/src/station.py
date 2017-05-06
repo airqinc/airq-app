@@ -65,7 +65,6 @@ def get_aemet_data(locality,hour,moment,date):
     try:
         xml = requests.get("http://www.aemet.es/xml/municipios_h/localidad_h_"+str(locality)+".xml").content
         forecast = etree.XML(xml)
-    except: return "error"
 
     data["temperature"] = get_value("temperatura",forecast,hour,moment)
     data["windChill"] = get_value("sens_termica",forecast,hour,moment)
@@ -73,6 +72,8 @@ def get_aemet_data(locality,hour,moment,date):
     data["rainfall"] = get_value("precipitacion",forecast,hour,moment)
     data["windDirection"] = get_value("direccion",forecast,hour,moment)
     data["windSpeed"] = get_value("velocidad",forecast,hour,moment)
+
+    except: return "error"
 
     return data
 
@@ -133,9 +134,8 @@ if __name__ == '__main__':
 
                     sensor_data['dayName'] = date.strftime("%A")
 
-                    try:
-                        sensor_data['aemet'] = get_aemet_data(locality,hour,moment,date)
-                    except: sensor_data['aemet'] = "error"
+                    sensor_data['aemet'] = get_aemet_data(locality,hour,moment,date)
+                    
                         
                     # Publish the message like a real sensor.
                     json_msg = json.dumps(sensor_data)
