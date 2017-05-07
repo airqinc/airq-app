@@ -1,47 +1,67 @@
-# IMPORTANT: comment 'local' lines and uncomment 'bluemix' lines to deploy
+# LOCAL
 station:
-  # build:        ./station # local
-  image:          registry.eu-gb.bluemix.net/airq_containers/station:latest # bluemix
+  build:          ./station
   container_name: station
-  # mem_limit:      64m # local
-  mem_limit:      64 # bluemix
+  mem_limit:      64m
   links:
     - mqtt
 data-transformer:
-  # build:          ./data-transformer # local
-  image:        registry.eu-gb.bluemix.net/airq_containers/data-transformer:latest # bluemix
+  build:          ./data-transformer
   container_name: data-transformer
-  # mem_limit:      64m # local
-  mem_limit:      64 # bluemix
+  mem_limit:      64m
   links:
     - mqtt
     - storage-server
 diagnostic:
-  # build:          ./diagnostic # local
-  image:        registry.eu-gb.bluemix.net/airq_containers/diagnostic:latest # bluemix
+  build:          ./diagnostic
   container_name: diagnostic
-  # mem_limit:      64m # local
-  mem_limit:      64 # bluemix
+  mem_limit:      64m
   links:
     - mqtt
     - storage-server
 mqtt:
-  # image:          "toke/mosquitto" # local
-  image:        registry.eu-gb.bluemix.net/airq_containers/mqtt:dev # bluemix
+  image:          "toke/mosquitto"
   container_name: mqtt
-  # mem_limit:      128m # local
-  mem_limit:      128 # bluemix
-  ports:        # bluemix
-    - "134.168.40.167:1883:1883" # bluemix
-  # expose:         # local
-    # - "1883" # local
+  mem_limit:      128m
+  expose:
+    - "1883"
 storage-server:
-  # build:          ./storage-server # local
-  image:        registry.eu-gb.bluemix.net/airq_containers/storage-server:latest # bluemix
+  build:          ./storage-server
   container_name: storage-server
-  # mem_limit:      128m # local
-  mem_limit:      128 # bluemix
-  ports:        # bluemix
-    - "134.168.44.231:3000:3000" # bluemix
-  # expose:         # local
-    # - "3000" # local
+  mem_limit:      128m
+  expose:
+    - "3000"
+
+# BLUEMIX
+# station:
+#   image:        registry.eu-gb.bluemix.net/airq_containers/station:latest
+#   container_name: station
+#   mem_limit:    64
+#   links:
+#     - mqtt
+# data-transformer:
+#   image:        registry.eu-gb.bluemix.net/airq_containers/data-transformer:latest
+#   container_name: data-transformer
+#   mem_limit:    64
+#   links:
+#     - mqtt
+#     - storage-server
+# diagnostic:
+#   image:        registry.eu-gb.bluemix.net/airq_containers/diagnostic:latest
+#   container_name: diagnostic
+#   mem_limit:    64
+#   links:
+#     - mqtt
+#     - storage-server
+# mqtt:
+#   image:        registry.eu-gb.bluemix.net/airq_containers/mqtt:dev
+#   container_name: mqtt
+#   mem_limit:    128
+#   ports:
+#     - "134.168.40.167:1883:1883"
+# storage-server:
+#   image:        registry.eu-gb.bluemix.net/airq_containers/storage-server:latest
+#   container_name: storage-server
+#   mem_limit:    128
+#   ports:
+#     - "134.168.44.231:3000:3000"
