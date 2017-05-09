@@ -34,7 +34,10 @@ def on_message(mqttc, obj, msg):
     # TODO check data and test post
     headers = {'Content-Type': 'application/json'}
     print("posting ", msg.payload,  " to ", measures_path)
-    requests.post(measures_path, msg.payload, headers = headers)
+    try:
+        requests.post(measures_path, msg.payload, headers=headers)
+    except Exception as e:
+        print("error: " + e)
 
 
 if __name__ == '__main__':

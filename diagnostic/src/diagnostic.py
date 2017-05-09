@@ -33,7 +33,7 @@ def on_message(mqttc, obj, msg):
 
 if __name__ == '__main__':
     broker_hostname = "mqtt"  # TODO: get hostname with container params
-    verbose = False
+    verbose = True
 
     mqttc = mqtt.Client("diagnostic")
     mqttc.on_message = on_message
