@@ -139,16 +139,16 @@ if __name__ == '__main__':
 
                     # Publish the message like a real sensor.
                     json_msg = json.dumps(sensor_data)
-                    print(json_msg)
+                    print("sending json data: ", json_msg)
 
                     published = True
                     try:
-                        publish.single("sensor_data", json_msg.getBytes(),
+                        publish.single("sensor_data", json_msg,
                                        hostname=broker_hostname, keepalive=240)
-                    except:
+                    except Exception as e:
                         published = False
                         print(
-                            "MQTT Broker unreachable, unable to publish data to sensor_data topic.")
+                            "MQTT Broker unreachable, unable to publish data to sensor_data topic. Exception: ", e)
 
                     if published:
                         last_seen_stations[station] = aqi_data['time']['s']
