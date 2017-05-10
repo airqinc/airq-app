@@ -143,7 +143,7 @@ if __name__ == '__main__':
 
                     published = True
                     try:
-                        publish.single("sensor_data", json_msg,
+                        publish.single("sensor_data", json_msg.getBytes(),
                                        hostname=broker_hostname, keepalive=240)
                     except:
                         published = False
