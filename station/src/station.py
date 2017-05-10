@@ -40,7 +40,7 @@ def parse_aqi_data(aqi_data):
     station_data = station_data.replace(' ', '')
     station_name, station_zone = station_data.split(',')
 
-    sensor_data['station'] = station_zone + "-" + station_name
+    sensor_data['station'] = { 'zone': station_zone, 'name': station_name}
     sensor_data['datetime'] = aqi_data['time']['s']
     sensor_data['dominentpol'] = aqi_data['dominentpol']
     sensor_data['iaqi'] = {}
@@ -134,24 +134,27 @@ if __name__ == '__main__':
 
                     sensor_data['dayName'] = date.strftime("%A")
 
-                    sensor_data['aemet'] = get_aemet_data(
-                        locality, hour, moment, date)
+                    aemet_data = get_aemet_data(locality, hour, moment, date)
 
-                    # Publish the message like a real sensor.
-                    json_msg = json.dumps(sensor_data)
-                    print("sending json data: ", json_msg)
+                    if(aemet_data != 'error'):
 
-                    published = True
-                    try:
-                        publish.single("sensor_data", json_msg,
-                                       hostname=broker_hostname, keepalive=240)
-                    except Exception as e:
-                        published = False
-                        print(
-                            "MQTT Broker unreachable, unable to publish data to sensor_data topic. Exception: ", e)
+                        sensor_data['aemet'] = aemet_data
 
-                    if published:
-                        last_seen_stations[station] = aqi_data['time']['s']
-                    #requests.post(server_hostame, data=json_msg)
+                        # Publish the message like a real sensor.
+                        json_msg = json.dumps(sensor_data)
+                        print("sending json data: ", json_msg)
+
+                        published = True
+                        try:
+                            publish.single("sensor_data", json_msg,
+                                           hostname=broker_hostname, keepalive=240)
+                        except Exception as e:
+                            published = False
+                            print(
+                                "MQTT Broker unreachable, unable to publish data to sensor_data topic. Exception: ", e)
+
+                        if published:
+                            last_seen_stations[station] = aqi_data['time']['s']
+                        #requests.post(server_hostame, data=json_msg)
 
         time.sleep(delay)
