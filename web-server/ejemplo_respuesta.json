@@ -1,0 +1,61 @@
+{
+    "status": "ok",
+    "data": {
+        "aqi": 21,
+        "idx": 5725,
+        "attributions": [
+            {
+                "url": "http://www.mambiente.munimadrid.es",
+                "name": "Calidad del Air en Madrid, Servicio de Protección de la Atmósfera"
+            },
+            {
+                "url": "http://www.eea.europa.eu/themes/air/",
+                "name": "European Environment Agency"
+            }
+        ],
+        "city": {
+            "geo": [
+                40.4167754,
+                -3.7037902
+            ],
+            "name": "Madrid",
+            "url": "http://aqicn.org/city/madrid/"
+        },
+        "dominentpol": "pm25",
+        "iaqi": {
+            "co": {
+                "v": 0.1
+            },
+            "h": {
+                "v": 61
+            },
+            "no2": {
+                "v": 7.8
+            },
+            "o3": {
+                "v": 35
+            },
+            "p": {
+                "v": 1013
+            },
+            "pm10": {
+                "v": 9
+            },
+            "pm25": {
+                "v": 21
+            },
+            "so2": {
+                "v": 2.6
+            },
+            "t": {
+                "v": 8.72
+            }
+        },
+        "time": {
+            "s": "2017-04-21 03:00:00",
+            "tz": "+01:00",
+            "v": 1492743600
+        }
+    }
+}
+Geolocalized Feed
