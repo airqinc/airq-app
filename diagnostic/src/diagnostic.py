@@ -1,7 +1,8 @@
 # -*- coding: utf-8 -*-
-from optparse import OptionParser
 import paho.mqtt.client as mqtt
 import time
+import requests
+import json
 
 print("hi there, diagnostic here")
 
@@ -29,12 +30,45 @@ def on_log(mqttc, obj, level, string):
 def on_message(mqttc, obj, msg):
     print("msg received. Topic:  " + msg.topic + " " +
           str(msg.qos) + " . payload: " + str(msg.payload))
+    json_payload = json.loads(msg.payload.decode())
+    zone = 'madrid'  # TODO get zone from msg
+    if zones[zone]['received'] == 0:
+        zones[zone]['timestamp'] = json_payload['datetime']
+        zones[zone]['received'] = 1
+    elif zones[zone]['timestamp'] != json_payload['datetime']:
+        print('diagnosTIC time!!! (with %d stations)' %
+              zones[zone]['received'], zones)
+        zones[zone]['received'] = 0
+    else:
+        zones[zone]['received'] += 1
+        if zones[zone]['received'] == zones[zone]['stations']:
+            print('diagnosTIC time!!! (with all stations)', zones)
+            zones[zone]['received'] = 0
+
+
+def get_zones(storage_server_hostname):
+    try:
+        r = requests.get("http://" + storage_server_hostname + "/zones")
+        zones_json = json.loads(r.text)
+        zones = {}
+        for zone in zones_json:
+            zone_name = zone['name']
+            zones[zone_name] = {}
+            zones[zone_name]['received'] = 0
+            zones[zone_name]['stations'] = len(zone['stations'])
+            # zones[zone_name]['timestamp'] = 0
+        return zones
+    except Exception as e:
+        print("error:" + e)
 
 
 if __name__ == '__main__':
-    broker_hostname = "mqtt"  # TODO: get hostname with container params
+
+    broker_hostname = "mqtt"
+    storage_server_hostname = "storage-server:3000"
     verbose = False
 
+    zones = get_zones(storage_server_hostname)
     mqttc = mqtt.Client("diagnostic")
     mqttc.on_message = on_message
     mqttc.on_connect = on_connect

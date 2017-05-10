@@ -1,50 +1,71 @@
-#aqi:
- # build:          ./aqi
- # image:        registry.eu-gb.bluemix.net/airq_containers/aqi:latest #aqi
- # container_name: aqi
- # mem_limit:      64m
- # links:
- #  - mqtt
+# LOCAL
+mqtt:
+  image:          "toke/mosquitto"
+  container_name: mqtt
+  mem_limit:      128m
+  expose:
+    - "1883"
+  log_driver:         "none"
+storage-server:
+  build:          ./storage-server
+  container_name: storage-server
+  mem_limit:      128m
+  expose:
+    - "3000"
 station:
   build:          ./station
-  # image:        registry.eu-gb.bluemix.net/airq_containers/aqi:latest #aqi
   container_name: station
   mem_limit:      64m
   links:
     - mqtt
-    - storage-server
+    - data-transformer
+    - diagnostic
 data-transformer:
   build:          ./data-transformer
-  # image:        registry.eu-gb.bluemix.net/airq_containers/data-transformer:latest #aqi
   container_name: data-transformer
   mem_limit:      64m
   links:
     - mqtt
-    - aqi
+    - storage-server
 diagnostic:
   build:          ./diagnostic
-  # image:        #TODO
   container_name: diagnostic
   mem_limit:      64m
   links:
     - mqtt
-    - aqi
-    - data-transformer
-mqtt:
-  image:          "toke/mosquitto"
-  # image:        registry.eu-gb.bluemix.net/airq_containers/mqtt:dev # mqtt
-  container_name: mqtt
-  mem_limit:      128m
-  # ports:
-    # - "134.168.40.167:1883:1883"
-    # - "9001:9001"
-  expose:
-    - "1883"
-    - "9001"
-storage-server:
-  build: ./storage-server
-  # image: registry.eu-gb.bluemix.net/airq_containers/storage-server:latest
-  container_name: storage-server
-  mem_limit: 128m
-  expose:
-    - "3000"
+    - storage-server
+
+
+# BLUEMIX
+# station:
+#   image:        registry.eu-gb.bluemix.net/airq_containers/station:latest
+#   container_name: station
+#   mem_limit:    64
+#   links:
+#     - mqtt
+# data-transformer:
+#   image:        registry.eu-gb.bluemix.net/airq_containers/data-transformer:latest
+#   container_name: data-transformer
+#   mem_limit:    64
+#   links:
+#     - mqtt
+#     - storage-server
+# diagnostic:
+#   image:        registry.eu-gb.bluemix.net/airq_containers/diagnostic:latest
+#   container_name: diagnostic
+#   mem_limit:    64
+#   links:
+#     - mqtt
+#     - storage-server
+# mqtt:
+#   image:        registry.eu-gb.bluemix.net/airq_containers/mqtt:dev
+#   container_name: mqtt
+#   mem_limit:    128
+#   ports:
+#     - "request:1883:1883"
+# storage-server:
+#   image:        registry.eu-gb.bluemix.net/airq_containers/storage-server:latest
+#   container_name: storage-server
+#   mem_limit:    128
+#   ports:
+#     - "request:3000:3000"
