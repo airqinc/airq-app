@@ -3,6 +3,7 @@ import paho.mqtt.client as mqtt
 import time
 import requests
 import json
+import numpy as np
 
 print("hi there, diagnostic here")
 
@@ -33,7 +34,6 @@ def on_message(mqttc, obj, msg):
     json_payload = json.loads(msg.payload.decode())
     # zone = 'Madrid'  # TODO get zone from msg
     zone = json_payload['station']['zone']
-    print(zones)
     if zones[zone]['received'] == 0:
         zones[zone]['timestamp'] = json_payload['datetime']
         zones[zone]['received'] = 1
@@ -41,11 +41,14 @@ def on_message(mqttc, obj, msg):
         print('diagnosTIC time!!! (with %d stations)' %
               zones[zone]['received'], zones)
         zones[zone]['received'] = 0
+        make_diagnostic(zone, zones[zone]['timestamp'])
+        # TODO work in the new diagnostic
     else:
         zones[zone]['received'] += 1
         if zones[zone]['received'] == zones[zone]['stations']:
             print('diagnosTIC time!!! (with all stations)', zones)
             zones[zone]['received'] = 0
+            make_diagnostic(zone, zones[zone]['timestamp'])
 
 
 def get_zones(storage_server_hostname):
@@ -58,10 +61,45 @@ def get_zones(storage_server_hostname):
             zones[zone_name] = {}
             zones[zone_name]['received'] = 0
             zones[zone_name]['stations'] = len(zone['stations'])
-            # zones[zone_name]['timestamp'] = 0
         return zones
     except Exception as e:
         print("error:" + e)
+
+
+def get_max_aqi(pollutant, measures):
+    return max(map(lambda x: x['iaqi'][pollutant], measures))
+
+
+def mean_value_for_key(key, measures):
+    return np.mean(list(map(lambda x: x['aemet'][key], measures)))
+
+
+def make_diagnostic(zone, timestamp):
+    mock_measure = {"_id": "590cf0aa707ae10013ba5bb6", "station": "Madrid-Castellana", "datetime": "2017-05-05 23:00:00", "dayName": "Friday", "dominentpol": "o3", "__v": 0, "aemet": {"temperature": 13, "windSpeed": 24, "rainfall": 0.1, "windChill": 13, "windDirection": "SO", "humidity": 79}, "iaqi": {"o3": 20.8, "pm25": 9, "pm10": 4, "co": 0.1, "so2": 1.6, "no2": 11.9, "t": 12.46, "h": 58, "p": 1012}}, {"_id": "590cf0ab707ae10013ba5bb7", "station": "Madrid-PlazaDeCastilla", "datetime": "2017-05-05 22:00:00", "dayName": "Friday", "dominentpol": "o3", "__v": 0, "aemet": {"temperature": 13,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 "windSpeed": 19, "rainfall": 2.5, "windChill": 13, "windDirection": "SO", "humidity": 84}, "iaqi": {"o3": 26, "pm25": 9, "pm10": 4, "co": 0.1, "so2": 1.1, "no2": 16.5, "t": 14.49, "h": 53, "p": 1011}}, {"_id": "590cf0ab707ae10013ba5bb8", "station": "Madrid-CuatroCaminos", "datetime": "2017-05-05 23:00:00", "dayName": "Friday", "dominentpol": "o3", "__v": 0, "aemet": {"temperature": 13, "windSpeed": 24, "rainfall": 0.1, "windChill": 13, "windDirection": "SO", "humidity": 79}, "iaqi": {"o3": 20.8, "pm25": 5, "pm10": 3, "co": 0.1, "so2": 1.1, "no2": 11.5, "t": 12.46, "h": 58, "p": 1012}}
+
+    # r = requests.get("http://" + storage_server_hostname + "/??")
+    # measures = json.loads(r.text)
+    all_pollutants_max = {'o3': get_max_aqi('o3', mock_measure),
+                          'pm25': get_max_aqi('pm25', mock_measure),
+                          'pm10': get_max_aqi('pm10', mock_measure),
+                          'co': get_max_aqi('co', mock_measure),
+                          'so2': get_max_aqi('so2', mock_measure),
+                          'no2': get_max_aqi('no2', mock_measure)
+                          }
+
+    max_pollutant = max(all_pollutants_max, key=all_pollutants_max.get)
+    max_pollutant_value = all_pollutants_max[max_pollutant]
+
+    aemet = {
+        'temperature': mean_value_for_key('temperature', mock_measure),
+        'windSpeed': mean_value_for_key('windSpeed', mock_measure),
+        'rainfall': mean_value_for_key('rainfall', mock_measure),
+        'windChill': mean_value_for_key('windChill', mock_measure),
+        'humidity': mean_value_for_key('humidity', mock_measure)}
+    print('diagnostic: ', max_pollutant, max_pollutant_value, aemet)
+    # TODO check ranges for iaqi
+    
 
 
 if __name__ == '__main__':
