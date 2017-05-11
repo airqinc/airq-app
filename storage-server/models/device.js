@@ -1,11 +1,13 @@
 var mongoose = require('mongoose'),
 	dbs = require('../config').dbs,
-	connections = require('../db');
+	connections = require('../db'),
+	ObjectId = mongoose.Schema.Types.ObjectId;
 
 var deviceSchema = new mongoose.Schema({
-	station:  		{ type: String, required: true},
+	station:  		String,
 	last_update: 	String,
-	sw_version:   	String
+	sw_version:   	String,
+	sensors: 		[ObjectId]
 });
 
 var Device = connections[dbs.db2.name].model("Device", deviceSchema);
@@ -22,7 +24,7 @@ exports.get = function(id, cb) {
 
 exports.add = function(newDevice, cb) {
 	var device = new Device({
-		station: 		newDevice.station,
+		station: 		newDevice.zone+'-'+newDevice.station,
 		last_update:   	newDevice.last_update,
 		sw_version: 	newDevice.sw_version
 	});
@@ -32,7 +34,7 @@ exports.add = function(newDevice, cb) {
 
 exports.update = function(id, newDevice, cb) {
 	Device.findById(id, function(err, device) {
-		device.station 		= newDevice.station || device.station;
+		device.station 		= newDevice.zone+'-'+newDevice.station || device.station;
 		device.last_update 	= newDevice.last_update || device.last_update;
 		device.sw_version 	= newDevice.sw_version || device.sw_version;
 
@@ -40,6 +42,6 @@ exports.update = function(id, newDevice, cb) {
 	});
 };
 
-exports.delete = function(id, cb) {
+exports.remove = function(id, cb) {
 	Device.findByIdAndRemove(id, cb);
 };

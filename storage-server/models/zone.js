@@ -55,7 +55,7 @@ exports.update = function(name, newZone, cb) {
 	});
 };
 
-exports.delete = function(name, cb) {
+exports.remove = function(name, cb) {
 	Zone.findOneAndRemove({"name": name}, cb);
 };
 
@@ -67,13 +67,13 @@ exports.addStation = function(zone, station) {
 		if (zone.stations.indexOf(station) == -1){
 			zone.stations.push(station);
 			zone.save(function(err, data) {
-			    if(err) return res.status(500).send(err.message);
+			    if(err) console.log('Unable to add new station: '+err.message);
 			});
 		}		
 	});
 };
 
-exports.deleteStation = function(zone, station) {
+exports.removeStation = function(zone, station) {
 	Zone.findOne({"name": zone}, function(err, zone) {
 		var index = zone.stations.indexOf(station)
 
@@ -81,12 +81,8 @@ exports.deleteStation = function(zone, station) {
 			zone.stations.splice(index, 1);
 
 			zone.save(function(err, data) {
-			    if(err) return res.status(500).send(err.message);
+			    if(err) console.log('Unable to remove new station: '+err.message);
 			});
 		}
 	});
-};
-
-exports.prueba = function() {
-	return 1;
 };

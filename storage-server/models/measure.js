@@ -1,11 +1,10 @@
 var mongoose = require('mongoose'),
     dbs = require('../config').dbs,
-    connections = require('../db'),
-    ObjectId = mongoose.Schema.Types.ObjectId;
+    connections = require('../db');
 
 var measureSchema = new mongoose.Schema({
     station:        { type: String, required: true},
-    datetime:       { type: String, required: true},  // "2017-05-03T14:00:00Z"  
+    datetime:       { type: String, required: true},
     dayName:        { type: String, required: true, enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', "Sunday"]},
     dominentpol:    { type: String, required: true, enum: ['o3', 'pm25', 'pm10', 'co', 'so2', 'no2']},
     iaqi: {
@@ -26,14 +25,14 @@ var measureSchema = new mongoose.Schema({
         windChill:      { type: Number, required: true}, 
         windDirection:  { type: String, required: true}, // Falta añadir una enum con las direcciones
         humidity:       { type: Number, required: true},
-    }, 
+    }
 });
 
-measureSchema.index({ station: 1, datetime: 1}, { unique: true });
+measureSchema.index({ station: 1, datetime: -1}, { unique: true }); //Por lo general se querrán las últimas medidas
 
-/*measureSchema.query.byTime = function(id_station, datetime) {
-  return this.findOne({ id_station: id_station, datetime: datetime });
-};*/
+measureSchema.query.byTime = function(station, datetime) {
+    return this.findOne({ station: station, datetime: datetime });
+};
 
 var Measure = connections[dbs.db3.name].model('Measure', measureSchema);
 
@@ -79,7 +78,7 @@ exports.add = function(newMeasure, cb) {
     measure.save(cb);
 };
 
-exports.update = function(name, newMeasure, cb) {
+exports.update = function(id, newMeasure, cb) {
     Measure.findById(id, function(err, measure) {
         measure.station     = newMeasure.station || measure.station;
         measure.datetime    = newMeasure.datetime || measure.datetime;
@@ -107,17 +106,17 @@ exports.update = function(name, newMeasure, cb) {
     });
 };
 
-exports.delete = function(id, cb) {
+exports.remove = function(id, cb) {
     Measure.findByIdAndRemove(id, cb);
 };
 
 
 // OPERACIONES ADICIONALES
 
-exports.allFromZone = function(zone, cb) {
-    Measure.find({ "zone": zone }, cb);
+exports.allFromStation = function(station, cb) {
+    Measure.find({ "station": station }, cb);
 };
 
-exports.allFromStation = function(zone, station, cb) {
-    Measure.find({ "zone": zone, "station": station }, cb);
-};
+exports.getByDatetime = function(station, datetime, cb) {
+    Measure.find().byTime(station, datetime).exec(cb);
+}
