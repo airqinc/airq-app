@@ -23,7 +23,7 @@ var measureSchema = new mongoose.Schema({
         windSpeed:      { type: Number, required: true}, 
         rainfall:       { type: Number, required: true}, 
         windChill:      { type: Number, required: true}, 
-        windDirection:  { type: String, required: true}, // Falta añadir una enum con las direcciones
+        windDirection:  { type: String, required: true},
         humidity:       { type: Number, required: true},
     }
 });
