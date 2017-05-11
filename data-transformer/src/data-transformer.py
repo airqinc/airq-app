@@ -5,7 +5,6 @@ import paho.mqtt.publish as publish
 import time
 import requests
 
-
 print("hi there, data-transformer here")
 
 
@@ -30,11 +29,7 @@ def on_log(mqttc, obj, level, string):
 
 
 def on_message(mqttc, obj, msg):
-    # MqttMessage message = new MqttMessage();
-    # message.setPayload("{foo: bar, lat: 0.23443, long: 12.3453245}".getBytes());
-    # client.publish("foo", message);
     publish.single("transformed_data", msg.payload, hostname=broker_hostname)
-    # TODO check data and test post
     headers = {'Content-Type': 'application/json'}
     print("posting ", msg.payload,  " to ", measures_path)
     try:

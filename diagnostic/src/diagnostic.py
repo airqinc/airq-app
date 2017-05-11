@@ -31,7 +31,9 @@ def on_message(mqttc, obj, msg):
     print("msg received. Topic:  " + msg.topic + " " +
           str(msg.qos) + " . payload: " + str(msg.payload))
     json_payload = json.loads(msg.payload.decode())
-    zone = 'madrid'  # TODO get zone from msg
+    # zone = 'Madrid'  # TODO get zone from msg
+    zone = json_payload['station']['zone']
+    print(zones)
     if zones[zone]['received'] == 0:
         zones[zone]['timestamp'] = json_payload['datetime']
         zones[zone]['received'] = 1
