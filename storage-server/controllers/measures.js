@@ -21,6 +21,7 @@ router.get('/:id', function(req, res) {
 //POST - Crear una nueva medida
 router.post('/', function(req, res) {
 	var measure = {
+        zone:           req.body.zone,
         station:        req.body.station,
         datetime:       req.body.datetime,
         dayName:        req.body.dayName,
@@ -55,6 +56,7 @@ router.post('/', function(req, res) {
 //UPDATE - Actualiza una medida
 router.put('/:id', function(req, res) {
 	var measure = {
+        zone:           req.body.zone,
         station:        req.body.station,
         datetime:       req.body.datetime,
         dayName:        req.body.dayName,

@@ -86,3 +86,7 @@ exports.deleteStation = function(zone, station) {
 		}
 	});
 };
+
+exports.prueba = function() {
+	return 1;
+};

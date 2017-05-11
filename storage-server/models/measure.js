@@ -29,7 +29,7 @@ var measureSchema = new mongoose.Schema({
     }, 
 });
 
-measureSchema.index({ zone: 1, station: 1, datetime: 1}, { unique: true });
+measureSchema.index({ station: 1, datetime: 1}, { unique: true });
 
 /*measureSchema.query.byTime = function(id_station, datetime) {
   return this.findOne({ id_station: id_station, datetime: datetime });
@@ -49,7 +49,7 @@ exports.get = function(id, cb) {
 
 exports.add = function(newMeasure, cb) {
     var measure = new Measure({
-        station:        newMeasure.station,
+        station:        newMeasure.zone+'-'+newMeasure.station,
         datetime:       newMeasure.datetime,
         dayName:        newMeasure.dayName,
         dominentpol:    newMeasure.dominentpol,
@@ -73,6 +73,8 @@ exports.add = function(newMeasure, cb) {
             humidity:       newMeasure.aemet.humidity
         }
     });
+
+    console.log('POST new meaure to station ' + measure.station + " at " + measure.datetime)
 
     measure.save(cb);
 };
