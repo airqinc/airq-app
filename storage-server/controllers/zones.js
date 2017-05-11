@@ -66,7 +66,7 @@ router.delete('/:name', function(req, res) {
 	})
 })
 
-//GET - Obtiene todas las medidas de una zona a la hora indicada
+//GET - Obtiene todas las medidas de una zona a la hora indicad
 router.post('/:name/measures', function(req, res) {
 	Zone.get(req.params.name, function(err, zone) {
 	    if(err) return res.status(500).send(err.message);
