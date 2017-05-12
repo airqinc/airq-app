@@ -59,6 +59,18 @@ $ npm run start
 ```sh
 $ npm run dev
 ```
+## Run docker-compose locally
+```sh
+$ sudo usermod -aG docker $USER (optional)
+$ docker-compose up [--build]
+```
+## Run docker-compose in Bluemix
+```sh
+$ bx login
+$ bx ic init (exec exports)
+$ docker build -t <image_name> <source>/ (build all images)
+$ docker-compose up
+```
 
 ## Useful links
 * [Get started with Docker Compose](https://docs.docker.com/compose/gettingstarted/)
