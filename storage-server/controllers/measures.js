@@ -49,6 +49,7 @@ router.post('/', function(req, res) {
 
 	Measure.add(measure, function(err, newMeasure) {
 	    if(err) return res.status(500).send(err.message);
+        console.log('POST new meaure to station ' + measure.station + " at " + measure.datetime)
 		res.status(200).jsonp(newMeasure);
 	})
 })

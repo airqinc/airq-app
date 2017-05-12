@@ -53,6 +53,10 @@ exports.get = function(id, cb) {
     Diagnostic.findById(id, cb);
 };
 
+exports.getByTime = function(zone, datetime, cb) {
+    Diagnostic.find().byTime(zone, datetime).exec(cb);
+};
+
 exports.add = function(newDiagnostic, cb) {
     var diagnostic = new Diagnostic({
         zone:           newDiagnostic.zone,
@@ -78,10 +82,9 @@ exports.add = function(newDiagnostic, cb) {
             windDirection:  newDiagnostic.aemet.windDirection,
             humidity:       newDiagnostic.aemet.humidity
         },
-        isForecast:     newDiagnostic.isForecast
+        isForecast:     newDiagnostic.isForecast,
+        alerts:         newDiagnostic.alerts
     });
-
-    console.log('POST new diagnostic to zone ' + diagnostic.zone + " at " + diagnostic.datetime)
 
     diagnostic.save(cb);
 };
@@ -111,13 +114,18 @@ exports.update = function(id, newDiagnostic, cb) {
         diagnostic.aemet.humidity      = newDiagnostic.aemet.humidity || diagnostic.aemet.humidity;
 
         diagnostic.isForecast  = newDiagnostic.isForecast || diagnostic.isForecast;
+        diagnostic.alerts  = newDiagnostic.alerts || diagnostic.alerts;
         
         diagnostic.save(cb);
     });
 };
 
-exports.delete = function(id, cb) {
+exports.remove = function(id, cb) {
     Diagnostic.findByIdAndRemove(id, cb);
+};
+
+exports.removeByTime = function(zone, datetime, cb) {
+    Diagnostic.findOneAndRemove({ zone: zone, datetime: datetime }, cb);
 };
 
 

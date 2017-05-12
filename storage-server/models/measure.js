@@ -73,8 +73,6 @@ exports.add = function(newMeasure, cb) {
         }
     });
 
-    console.log('POST new meaure to station ' + measure.station + " at " + measure.datetime)
-
     measure.save(cb);
 };
 

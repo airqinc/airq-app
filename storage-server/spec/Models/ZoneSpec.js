@@ -1,8 +1,8 @@
 var mongoose = require('mongoose'),
-    settings = require('../config');
+    settings = require('../../config');
 
 describe("Zone", function() {
-  var Zone = require('../models/zone');
+  var Zone = require('../../models/zone');
   var zone = {
     "name": "Test",
     "description": "Test zone",
@@ -10,13 +10,13 @@ describe("Zone", function() {
     "city_zip": "02002",
     "area": 50,
     "time_zone": 1
-  }
+  };
   var station = {
     "zone": "Test",
     "name": "Campus",
     "latitude": 40.43972222,
     "longitude": -3.690277778
-  }
+  };
 
   Zone.remove(zone.name, function(err, data) {});
 

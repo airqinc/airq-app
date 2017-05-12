@@ -44,24 +44,19 @@ router.post('/', function(req, res) {
             windDirection:  req.body.aemet.windDirection,
             humidity:       req.body.aemet.humidity
         },
-        isForecast:     req.body.isForecast
+        isForecast:     req.body.isForecast,
+        alerts:         req.body.alerts
     };
 
 	Diagnostic.add(diagnostic, function(err, newDiagnostic) {
 	    if(err) return res.status(500).send(err.message);
 
-        var cb = function(newDiagnostic){
-            if (newDiagnostic.alerts.length == req.body.alerts.length)
-                res.status(200).jsonp(newDiagnostic);
-        }
-
-        req.body.alerts.forEach(function(value,i,array) {
-            Diagnostic.addAlert(newDiagnostic.zone, newDiagnostic.datetime, value, cb)
-        });
+        console.log('POST new diagnostic to zone ' + diagnostic.zone + " at " + diagnostic.datetime)
+        res.status(200).jsonp(newDiagnostic);
 	})
 })
 
-//UPDATE - Actualiza una medida
+//UPDATE - Actualiza una diagnóstico
 router.put('/:id', function(req, res) {
 	var diagnostic = {
         zone:           req.body.zone,
@@ -95,12 +90,21 @@ router.put('/:id', function(req, res) {
 	})
 })
 
-//DELETE - Borra una medida
+//DELETE - Borra una diagnóstico por ID
 router.delete('/:id', function(req, res) {
 	Diagnostic.remove(req.params.id, function(err, diagnostic) {
 		if(err) return res.status(500).send(err.message);
   		res.status(200).send(diagnostic._id);
 	})
+})
+
+//DELETE - Borra una diagnóstico por fecha y hora
+router.delete('/:zone/datetime/', function(req, res) {
+    Diagnostic.removeByTime(req.params.zone, req.body.datetime, function(err, diagnostic) {
+        if(err) return res.status(500).send(err.message);
+        console.log('DELETE diagnostic of zone ' + diagnostic.zone + " at " + diagnostic.datetime)
+        res.status(200).send("DELETE diagnostic "+diagnostic.zone+" "+diagnostic.datetime);
+    })
 })
 
 module.exports = router;
