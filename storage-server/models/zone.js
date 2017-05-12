@@ -62,18 +62,19 @@ exports.remove = function(name, cb) {
 
 //OPERACIONES ADICIONALES
 
-exports.addStation = function(zone, station) {
+exports.addStation = function(zone, station, cb) {
 	Zone.findOne({"name": zone}, function(err, zone) {
 		if (zone.stations.indexOf(station) == -1){
 			zone.stations.push(station);
 			zone.save(function(err, data) {
 			    if(err) console.log('Unable to add new station: '+err.message);
+			    else if(cb) cb(data)
 			});
 		}		
 	});
 };
 
-exports.removeStation = function(zone, station) {
+exports.removeStation = function(zone, station, cb) {
 	Zone.findOne({"name": zone}, function(err, zone) {
 		var index = zone.stations.indexOf(station)
 
@@ -82,6 +83,7 @@ exports.removeStation = function(zone, station) {
 
 			zone.save(function(err, data) {
 			    if(err) console.log('Unable to remove new station: '+err.message);
+			    else if(cb) cb(data)
 			});
 		}
 	});

@@ -66,17 +66,21 @@ router.delete('/:name', function(req, res) {
 	})
 })
 
-//GET - Obtiene todas las medidas de una zona a la hora indicad
+//GET - Obtiene todas las medidas de una zona a la hora indicada
 router.post('/:name/measures', function(req, res) {
 	Zone.get(req.params.name, function(err, zone) {
 	    if(err) return res.status(500).send(err.message);
 
 	    var a = {"zone":zone.name, "datetime":req.body.datetime, "measures":[]}
+	    var count = 0;
 
 	    var cb = function(err, measure){
-        	a.measures.push(measure)
+	    	count++;
+	    	
+	    	if (measure != null)
+        		a.measures.push(measure)
 
-        	if (zone.stations.length == a.measures.length)
+        	if (zone.stations.length == count)
         		res.status(200).jsonp(a);
         }
 
