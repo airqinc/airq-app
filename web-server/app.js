@@ -22,9 +22,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 module.exports = app;
 
 //Rutas de mi aplicación
-var index = require('./routes/index');
-var user = require('./routes/user');
-require('./routes')(app);
+var index = require('./controllers/index');
+var user = require('./controllers/user');
+require('./controllers')(app);
 
 app.use('/', index);
 app.use('/users', user);
