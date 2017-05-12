@@ -28,7 +28,7 @@ def on_log(mqttc, obj, level, string):
         print("log data: " + string)
 
 
-def on_message(mqttc, obj, msg):
+def on_message(mqtt, obj, msg):
     print("msg received. Topic:  " + msg.topic + " " +
           str(msg.qos) + " . payload: " + str(msg.payload))
     json_payload = json.loads(msg.payload.decode())
@@ -75,15 +75,16 @@ def mean_value_for_key(key, measures):
 
 
 def make_diagnostic(zone, timestamp):
-    # measures = {"_id": "590cf0aa707ae10013ba5bb6", "station": "Madrid-Castellana", "datetime": "2017-05-05 23:00:00", "dayName": "Friday", "dominentpol": "o3", "__v": 0, "aemet": {"temperature": 13, "windSpeed": 24, "rainfall": 0.1, "windChill": 13, "windDirection": "SO", "humidity": 79}, "iaqi": {"o3": 20.8, "pm25": 9, "pm10": 4, "co": 0.1, "so2": 1.6, "no2": 11.9, "t": 12.46, "h": 58, "p": 1012}}, {"_id": "590cf0ab707ae10013ba5bb7", "station": "Madrid-PlazaDeCastilla", "datetime": "2017-05-05 22:00:00", "dayName": "Friday", "dominentpol": "o3", "__v": 0, "aemet": {"temperature": 13,
-    #                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              "windSpeed": 19, "rainfall": 2.5, "windChill": 13, "windDirection": "SO", "humidity": 84}, "iaqi": {"o3": 26, "pm25": 9, "pm10": 4, "co": 0.1, "so2": 1.1, "no2": 16.5, "t": 14.49, "h": 53, "p": 1011}}, {"_id": "590cf0ab707ae10013ba5bb8", "station": "Madrid-CuatroCaminos", "datetime": "2017-05-05 23:00:00", "dayName": "Friday", "dominentpol": "o3", "__v": 0, "aemet": {"temperature": 13, "windSpeed": 24, "rainfall": 0.1, "windChill": 13, "windDirection": "SO", "humidity": 79}, "iaqi": {"o3": 20.8, "pm25": 5, "pm10": 3, "co": 0.1, "so2": 1.1, "no2": 11.5, "t": 12.46, "h": 58, "p": 1012}}
-    payload = {"datetime": "2017-05-12 10:00:00"}
+    # mock_measures = [{'_id': '5915816770849a0013a49fc1', 'station': 'Madrid-Castellana', 'datetime': '2017-05-12 11:00:00', 'dayName': 'Friday', 'dominentpol': 'pm25', '__v': 0, 'aemet': {'temperature': 13, 'windSpeed': 21, 'rainfall': 0.1, 'windChill': 13, 'windDirection': 'SO', 'humidity': 71}, 'iaqi': {'o3': 14.7, 'pm25': 21, 'pm10': 10, 'co': 0.1, 'so2': 0.6, 'no2': 12.8, 't': 14.15, 'h': 59, 'p': 1007}}, {'_id': '5915816870849a0013a49fc2', 'station': 'Madrid-PlazaDeCastilla', 'datetime': '2017-05-12 11:00:00', 'dayName': 'Friday', 'dominentpol': 'pm25', '__v': 0, 'aemet': {'temperature': 13, 'windSpeed': 21, 'rainfall': 0.1, 'windChill': 13, 'windDirection': 'SO', 'humidity': 71}, 'iaqi': {'o3': 0.5, 'pm25': 30, 'pm10': 11, 'co': 0.1, 'so2': 1.1, 'no2': 17.4, 't': 14.15, 'h': 59, 'p': 1007}},
+    #                  {'_id': '5915816a70849a0013a49fc4', 'station': 'Madrid-CasaDeCampo', 'datetime': '2017-05-12 11:00:00', 'dayName': 'Friday', 'dominentpol': 'o3', '__v': 0, 'aemet': {'temperature': 13, 'windSpeed': 21, 'rainfall': 0.1, 'windChill': 13, 'windDirection': 'SO', 'humidity': 71}, 'iaqi': {'o3': 30.5, 'pm25': 21, 'pm10': 10, 'co': 0.1, 'so2': 1.6, 'no2': 2.3, 't': 14.15, 'h': 59, 'p': 1007}}, None, {'_id': '5915816970849a0013a49fc3', 'station': 'Madrid-CuatroCaminos', 'datetime': '2017-05-12 11:00:00', 'dayName': 'Friday', 'dominentpol': 'pm25', '__v': 0, 'aemet': {'temperature': 13, 'windSpeed': 21, 'rainfall': 0.1, 'windChill': 13, 'windDirection': 'SO', 'humidity': 71}, 'iaqi': {'o3': 14.7, 'pm25': 30, 'pm10': 11, 'co': 0.1, 'so2': 1.1, 'no2': 9.2, 't': 14.15, 'h': 59, 'p': 1007}}, None]
+
+    payload = {"datetime": timestamp}
     headers = {'Content-Type': 'application/json'}
     try:
         r = requests.post("http://" + storage_server_hostname +
-                          "/zones/Madrid/measures", json.dumps(payload), headers=headers)
+                          "/zones/" + zone + "/measures", json.dumps(payload), headers=headers)
         measures = json.loads(r.text)['measures']
-        # print('posting bro. json payload', measures)
+        measures = list(filter(lambda x: x is not None, measures))
     except Exception as e:
         print("error: ", e)
 
