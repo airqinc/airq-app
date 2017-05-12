@@ -21,7 +21,8 @@ router.get('/:id', function(req, res) {
 //POST - Crear una nueva medida
 router.post('/', function(req, res) {
 	var measure = {
-        station:        req.body.station,
+        zone:           req.body.station.zone,
+        station:        req.body.station.name,
         datetime:       req.body.datetime,
         dayName:        req.body.dayName,
         dominentpol:    req.body.dominentpol,
@@ -48,6 +49,7 @@ router.post('/', function(req, res) {
 
 	Measure.add(measure, function(err, newMeasure) {
 	    if(err) return res.status(500).send(err.message);
+        console.log('POST new meaure to station ' + measure.station + " at " + measure.datetime)
 		res.status(200).jsonp(newMeasure);
 	})
 })
@@ -55,7 +57,8 @@ router.post('/', function(req, res) {
 //UPDATE - Actualiza una medida
 router.put('/:id', function(req, res) {
 	var measure = {
-        station:        req.body.station,
+        zone:           req.body.station.zone,
+        station:        req.body.station.name,
         datetime:       req.body.datetime,
         dayName:        req.body.dayName,
         dominentpol:    req.body.dominentpol,
@@ -88,7 +91,7 @@ router.put('/:id', function(req, res) {
 
 //DELETE - Borra una medida
 router.delete('/:id', function(req, res) {
-	Measure.delete(req.params.id, function(err, measure) {
+	Measure.remove(req.params.id, function(err, measure) {
 		if(err) return res.status(500).send(err.message);
   		res.status(200).send(measure._id);
 	})

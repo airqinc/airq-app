@@ -21,7 +21,8 @@ router.get('/:id', function(req, res) {
 //POST - Crear un dispositivo medida
 router.post('/', function(req, res) {
 	var device = {
-        station:        req.body.station,
+        zone:           req.body.station.zone,
+        station:        req.body.station.name,
         last_update:    req.body.last_update,
         sw_version:     req.body.sw_version
     };
@@ -35,7 +36,8 @@ router.post('/', function(req, res) {
 //UPDATE - Actualiza un dispositivo
 router.put('/:id', function(req, res) {
 	var device = {
-        station:        req.body.station,
+        zone:           req.body.station.zone,
+        station:        req.body.station.name,
         last_update:    req.body.last_update,
         sw_version:     req.body.sw_version
     };
@@ -48,7 +50,7 @@ router.put('/:id', function(req, res) {
 
 //DELETE - Borra un dispositivo
 router.delete('/:id', function(req, res) {
-	Device.delete(req.params.id, function(err, device) {
+	Device.remove(req.params.id, function(err, device) {
 		if(err) return res.status(500).send(err.message);
   		res.status(200).send(device._id);
 	})

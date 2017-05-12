@@ -1,6 +1,7 @@
 var express = require('express'),
 	router = express.Router(),
-	Zone = require('../models/zone');
+	Zone = require('../models/zone'),
+	Measure = require('../models/measure');
 	//auth = require('../middlewares/auth');
 
 //GET - Devuelve todas las zonas disponibles
@@ -59,12 +60,34 @@ router.put('/:name', function(req, res) {
 
 //DELETE - Borra una zona
 router.delete('/:name', function(req, res) {
-	Zone.delete(req.params.name, function(err, zone) {
+	Zone.remove(req.params.name, function(err, zone) {
 		if(err) return res.status(500).send(err.message);
   		res.status(200).send(zone.name);
 	})
 })
 
+//GET - Obtiene todas las medidas de una zona a la hora indicada
+router.post('/:name/measures', function(req, res) {
+	Zone.get(req.params.name, function(err, zone) {
+	    if(err) return res.status(500).send(err.message);
 
+	    var a = {"zone":zone.name, "datetime":req.body.datetime, "measures":[]}
+	    var count = 0;
+
+	    var cb = function(err, measure){
+	    	count++;
+	    	
+	    	if (measure != null)
+        		a.measures.push(measure)
+
+        	if (zone.stations.length == count)
+        		res.status(200).jsonp(a);
+        }
+
+	    zone.stations.forEach(function(value,i,array) {
+            Measure.getByDatetime(value, req.body.datetime, cb);
+        });
+	})
+})
 
 module.exports = router;

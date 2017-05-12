@@ -1,0 +1,36 @@
+{
+  "name": "airq-web",
+  "version": "1.0.0",
+  "description": "AirQ Website",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node app.js",
+    "dev": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/airqinc/official-web.git"
+  },
+  "keywords": [
+    "air",
+    "quality",
+    "environment"
+  ],
+  "author": "AirQ",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/airqinc/official-web/issues"
+  },
+  "homepage": "https://github.com/airqinc/official-web#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "method-override": "^2.3.8",
+    "mongoose": "^4.9.5",
+    "pug": "^0.1.0"
+  },
+  "devDependencies": {
+    "nodemon": "^1.11.0"
+  }
+}

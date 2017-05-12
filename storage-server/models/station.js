@@ -43,6 +43,6 @@ exports.update = function(name, newStation, cb) {
 	});
 };
 
-exports.delete = function(id, cb) {
+exports.remove = function(id, cb) {
 	Station.findByIdAndRemove(id, cb);
 };

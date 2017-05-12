@@ -52,10 +52,10 @@ router.put('/:id', function(req, res) {
 
 //DELETE - Borra una estacion
 router.delete('/:id', function(req, res) {
-	Station.delete(req.params.id, function(err, station) {
+	Station.remove(req.params.id, function(err, station) {
 		if(err) return res.status(500).send(err.message);
 
-		Zone.deleteStation(station.zone, station.name)
+		Zone.removeStation(station.zone, station.name)
 
   		res.status(200).send(station.id);
 	})

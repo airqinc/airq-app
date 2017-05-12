@@ -1,5 +1,8 @@
 set_bx.sh
 /storage-server/node_modules
 /storage-server/config.js
+/web-server/node_modules
+/web-server/config.js
 .DS_Store
 .fuse_hidden*
+npm-debug.log
