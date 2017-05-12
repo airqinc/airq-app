@@ -133,13 +133,12 @@ if __name__ == '__main__':
                 current_datetime = datetime.datetime.now().replace(minute = 0 , second = 0, microsecond=0)
                 current_datetime = current_datetime - datetime.timedelta(hours=1)
 
-
                 if aqi_datetime < current_datetime:
                     sensor_datetime = current_datetime
                     print("time syntetic")
                 else: sensor_datetime = aqi_datetime
 
-                if station not in last_seen_stations or last_seen_stations[station] != sensor_datetime:
+                if station not in last_seen_stations or last_seen_stations[station] < sensor_datetime:
 
                     date = sensor_datetime
                     sensor_data['datetime'] = sensor_datetime.strftime("%Y-%m-%d %H:%M:%S")
@@ -153,7 +152,7 @@ if __name__ == '__main__':
                         # Publish the message like a real sensor.
                         json_msg = json.dumps(sensor_data)
                         #DEBUG: print("sending json data: ", json_msg)
-                        print(sensor_data['station']['zone'] + " " + sensor_data['station']['name'] + " generated data on time = " + sensor_data['datetime'])
+                        print(sensor_data['station']['zone'] + "-" + sensor_data['station']['name'] + " generated data on time = " + sensor_data['datetime'])
 
                         published = True
                         try:
