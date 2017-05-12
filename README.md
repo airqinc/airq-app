@@ -45,7 +45,7 @@ $ mosquitto_sub -h hostname -t topic_name
 ```
 * use [mqtt extension for chrome](https://chrome.google.com/webstore/detail/mqttbox/kaajoficamnjijhkeomgfljpicifbkaf) to publish messages to mqtt broker
 
-## Run Node.js container in local
+## Run Node.js container locally
 1. Copy `config.js` into the folder with settings and credentials.
 2. Run test:
 ```sh
