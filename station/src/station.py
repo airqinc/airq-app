@@ -110,7 +110,7 @@ if __name__ == '__main__':
 
     ########################## MQTT Client config #######################
 
-    broker_hostname = "localhost"
+    broker_hostname = "mqtt"
     server_hostame = "storage-server"
 
     while True:
@@ -159,7 +159,6 @@ if __name__ == '__main__':
                             publish.single("sensor_data", json_msg,
                                            hostname=broker_hostname, keepalive=240)
                         except Exception as e:
-                            print(json_msg)
                             published = False
                             print("MQTT Broker unreachable, unable to publish data to sensor_data topic. Exception: ", e)
 
