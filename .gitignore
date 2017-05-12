@@ -5,3 +5,4 @@ set_bx.sh
 /web-server/config.js
 .DS_Store
 .fuse_hidden*
+npm-debug.log
