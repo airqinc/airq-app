@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 from optparse import OptionParser
+from lxml import etree
 import paho.mqtt.publish as publish
 import requests
 import sched
@@ -7,7 +8,8 @@ import time
 import json
 import requests
 import datetime
-from lxml import etree
+
+
 
 
 def get_aqi_data(aqi_url):
@@ -60,10 +62,10 @@ def get_value(topic, forecast, hour, moment):
         return forecast.xpath("//" + topic + "[@periodo=\"" + str(hour).zfill(2) + "\"]/text()")[moment]
 
 
-def get_aemet_data(locality, hour, moment, date):
+def get_aemet_data(locality, date_time, moment):
 
     data = {}
-
+    hour = date_time.strftime("%H")
     try:
         xml = requests.get(
             "http://www.aemet.es/xml/municipios_h/localidad_h_" + str(locality) + ".xml").content
@@ -87,7 +89,7 @@ if __name__ == '__main__':
 
     print('Starting "sensor"...')
 
-    delay = 15 * 60  # seconds of delay
+    delay = 5 * 60  # seconds of delay
 
     ########################## Stations config ##########################
 
@@ -108,7 +110,7 @@ if __name__ == '__main__':
 
     ########################## MQTT Client config #######################
 
-    broker_hostname = "mqtt"
+    broker_hostname = "localhost"
     server_hostame = "storage-server"
 
     while True:
@@ -120,21 +122,29 @@ if __name__ == '__main__':
 
             if(aqi_data != "error"):  # if not an error use de data received
 
-                if station not in last_seen_stations or last_seen_stations[station] != aqi_data['time']['s']:
+                # Parse from aqi response to a sensor response.
+                sensor_data = parse_aqi_data(aqi_data)
 
-                    # Parse from aqi response to a sensor response.
+                # DateTime received from aqi station
+                aqi_datetime = datetime.datetime.strptime(aqi_data['time']['s'], '%Y-%m-%d %H:%M:%S')
+                #TEST: aqi_datetime = datetime.datetime.strptime("2017-05-12 16:00:00", '%Y-%m-%d %H:%M:%S')
 
-                    sensor_data = parse_aqi_data(aqi_data)
+                # Current datetime (1h less, minutes and seconds to 0)
+                current_datetime = datetime.datetime.now().replace(minute = 0 , second = 0, microsecond=0)
+                current_datetime = current_datetime - datetime.timedelta(hours=1)
 
-                    data_date, data_time = aqi_data['time']['s'].split(' ')
-                    hour, minutes, seconds = data_time.split(':')
-                    #year, month, day = data_date.split('-')
 
-                    date = datetime.datetime.strptime(data_date, '%Y-%m-%d')
+                if aqi_datetime < current_datetime:
+                    sensor_datetime = current_datetime
+                    print("time syntetic")
+                else: sensor_datetime = aqi_datetime
 
-                    sensor_data['dayName'] = date.strftime("%A")
+                if station not in last_seen_stations or last_seen_stations[station] != sensor_datetime:
 
-                    aemet_data = get_aemet_data(locality, hour, moment, date)
+                    date = sensor_datetime
+                    sensor_data['datetime'] = sensor_datetime.strftime("%Y-%m-%d %H:%M:%S")
+                    sensor_data['dayName'] = sensor_datetime.strftime("%A")
+                    aemet_data = get_aemet_data(locality,sensor_datetime, moment)
 
                     if(aemet_data != 'error'):
 
@@ -142,19 +152,19 @@ if __name__ == '__main__':
 
                         # Publish the message like a real sensor.
                         json_msg = json.dumps(sensor_data)
-                        print("sending json data: ", json_msg)
+                        #DEBUG: print("sending json data: ", json_msg)
+                        print(sensor_data['station']['zone'] + " " + sensor_data['station']['name'] + " generated data on time = " + sensor_data['datetime'])
 
                         published = True
                         try:
                             publish.single("sensor_data", json_msg,
                                            hostname=broker_hostname, keepalive=240)
                         except Exception as e:
+                            print(json_msg)
                             published = False
-                            print(
-                                "MQTT Broker unreachable, unable to publish data to sensor_data topic. Exception: ", e)
+                            print("MQTT Broker unreachable, unable to publish data to sensor_data topic. Exception: ", e)
 
                         if published:
-                            last_seen_stations[station] = aqi_data['time']['s']
-                        #requests.post(server_hostame, data=json_msg)
+                            last_seen_stations[station] = sensor_datetime
 
         time.sleep(delay)
