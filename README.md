@@ -74,12 +74,15 @@ $ docker build -t <image_name> <source>/ (build all images)
 $ docker-compose up
 ```
 ## Run web-server
+
 * install [livereload extension](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en)
-* enable it and connect
 ```sh
+$ npm install -g gulp
 $ cd web-server/
+$ npm install
 $ gulp
 ```
+* enable livereload extension and connect
 * page will be reloaded with each change
 ## Useful links
 * [Get started with Docker Compose](https://docs.docker.com/compose/gettingstarted/)
