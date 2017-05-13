@@ -3,8 +3,8 @@ var mongoose = require('mongoose'),
 	connections = require('../db');
 
 var stationSchema = new mongoose.Schema({
-	_id: 		String,
-	zone:  		{ type: String, required: true},
+	_id: 				String,
+	zone:  			{ type: String, required: true, ref: 'Zone'},
 	name:     	{ type: String, required: true},
 	latitude:   Number,
 	longitude: 	Number
