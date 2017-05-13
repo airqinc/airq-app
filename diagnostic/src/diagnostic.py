@@ -80,9 +80,6 @@ def mean_value_for_iaqi(key, measures):
 
 
 def make_diagnostic(zone, timestamp):
-    # mock_measures = [{'_id': '5915816770849a0013a49fc1', 'station': 'Madrid-Castellana', 'datetime': '2017-05-12 11:00:00', 'dayName': 'Friday', 'dominentpol': 'pm25', '__v': 0, 'aemet': {'temperature': 13, 'windSpeed': 21, 'rainfall': 0.1, 'windChill': 13, 'windDirection': 'SO', 'humidity': 71}, 'iaqi': {'o3': 14.7, 'pm25': 21, 'pm10': 10, 'co': 0.1, 'so2': 0.6, 'no2': 12.8, 't': 14.15, 'h': 59, 'p': 1007}}, {'_id': '5915816870849a0013a49fc2', 'station': 'Madrid-PlazaDeCastilla', 'datetime': '2017-05-12 11:00:00', 'dayName': 'Friday', 'dominentpol': 'pm25', '__v': 0, 'aemet': {'temperature': 13, 'windSpeed': 21, 'rainfall': 0.1, 'windChill': 13, 'windDirection': 'SO', 'humidity': 71}, 'iaqi': {'o3': 0.5, 'pm25': 30, 'pm10': 11, 'co': 0.1, 'so2': 1.1, 'no2': 17.4, 't': 14.15, 'h': 59, 'p': 1007}},
-    #                  {'_id': '5915816a70849a0013a49fc4', 'station': 'Madrid-CasaDeCampo', 'datetime': '2017-05-12 11:00:00', 'dayName': 'Friday', 'dominentpol': 'o3', '__v': 0, 'aemet': {'temperature': 13, 'windSpeed': 21, 'rainfall': 0.1, 'windChill': 13, 'windDirection': 'SO', 'humidity': 71}, 'iaqi': {'o3': 30.5, 'pm25': 21, 'pm10': 10, 'co': 0.1, 'so2': 1.6, 'no2': 2.3, 't': 14.15, 'h': 59, 'p': 1007}}, None, {'_id': '5915816970849a0013a49fc3', 'station': 'Madrid-CuatroCaminos', 'datetime': '2017-05-12 11:00:00', 'dayName': 'Friday', 'dominentpol': 'pm25', '__v': 0, 'aemet': {'temperature': 13, 'windSpeed': 21, 'rainfall': 0.1, 'windChill': 13, 'windDirection': 'SO', 'humidity': 71}, 'iaqi': {'o3': 14.7, 'pm25': 30, 'pm10': 11, 'co': 0.1, 'so2': 1.1, 'no2': 9.2, 't': 14.15, 'h': 59, 'p': 1007}}, None]
-
     payload = {"datetime": timestamp}
     headers = {'Content-Type': 'application/json'}
     try:
@@ -115,6 +112,7 @@ def make_diagnostic(zone, timestamp):
     category = find_category(max_pollutant, max_pollutant_value)
     dt = time.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
     dayName = time.strftime('%A', dt)
+    
     diagnostic = {
         "zone": zone,
         "datetime": timestamp,
