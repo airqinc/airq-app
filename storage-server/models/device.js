@@ -4,10 +4,10 @@ var mongoose = require('mongoose'),
 	ObjectId = mongoose.Schema.Types.ObjectId;
 
 var deviceSchema = new mongoose.Schema({
-	station:  		String,
+	station:  		{ type: String, required: true, ref: 'Station'},
 	last_update: 	String,
-	sw_version:   	String,
-	sensors: 		[ObjectId]
+	sw_version:   String,
+	sensors: 			[ObjectId]
 });
 
 var Device = connections[dbs.db2.name].model("Device", deviceSchema);

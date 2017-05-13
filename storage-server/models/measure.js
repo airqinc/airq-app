@@ -3,7 +3,7 @@ var mongoose = require('mongoose'),
     connections = require('../db');
 
 var measureSchema = new mongoose.Schema({
-    station:        { type: String, required: true},
+    station:        { type: String, required: true, ref: 'Station'},
     datetime:       { type: String, required: true},
     dayName:        { type: String, required: true, enum: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', "Sunday"]},
     dominentpol:    { type: String, required: true, enum: ['o3', 'pm25', 'pm10', 'co', 'so2', 'no2']},
@@ -19,10 +19,10 @@ var measureSchema = new mongoose.Schema({
         p:          { type: Number, required: true}
     },
     aemet: {
-        temperature:    { type: Number, required: true}, 
-        windSpeed:      { type: Number, required: true}, 
-        rainfall:       { type: Number, required: true}, 
-        windChill:      { type: Number, required: true}, 
+        temperature:    { type: Number, required: true},
+        windSpeed:      { type: Number, required: true},
+        rainfall:       { type: Number, required: true},
+        windChill:      { type: Number, required: true},
         windDirection:  { type: String, required: true},
         humidity:       { type: Number, required: true},
     }
@@ -64,10 +64,10 @@ exports.add = function(newMeasure, cb) {
             p:          newMeasure.iaqi.p
         },
         aemet: {
-            temperature:    newMeasure.aemet.temperature, 
-            windSpeed:      newMeasure.aemet.windSpeed, 
-            rainfall:       newMeasure.aemet.rainfall, 
-            windChill:      newMeasure.aemet.windChill, 
+            temperature:    newMeasure.aemet.temperature,
+            windSpeed:      newMeasure.aemet.windSpeed,
+            rainfall:       newMeasure.aemet.rainfall,
+            windChill:      newMeasure.aemet.windChill,
             windDirection:  newMeasure.aemet.windDirection,
             humidity:       newMeasure.aemet.humidity
         }
@@ -99,7 +99,7 @@ exports.update = function(id, newMeasure, cb) {
         measure.aemet.windChill     = newMeasure.aemet.windChill || measure.aemet.windChill;
         measure.aemet.windDirection = newMeasure.aemet.windDirection || measure.aemet.windDirection;
         measure.aemet.humidity      = newMeasure.aemet.humidity || measure.aemet.humidity;
-        
+
         measure.save(cb);
     });
 };

@@ -6,6 +6,7 @@ router.use('/stations', require('./stations'))
 router.use('/devices', require('./devices'))
 router.use('/measures', require('./measures'))
 router.use('/diagnostics', require('./diagnostics'))
+router.use('/categories', require('./categories'))
 
 router.get("/", function(req, res)
 {
