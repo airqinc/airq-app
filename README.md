@@ -51,10 +51,12 @@ $ mosquitto_sub -h hostname -t topic_name
 ```sh
 $ npm run test
 ```
-2. Start the server:
+3. Start the server:
 ```sh
 $ npm run start
 ```
+
+
 * in case you want to work on this container, you should use the following command:
 ```sh
 $ npm run dev
@@ -71,7 +73,14 @@ $ bx ic init (exec exports)
 $ docker build -t <image_name> <source>/ (build all images)
 $ docker-compose up
 ```
-
+## Run web-server
+* install [livereload extension](https://chrome.google.com/webstore/detail/livereload/jnihajbhpnppcggbcgedagnkighmdlei?hl=en)
+* enable it and connect
+```sh
+$ cd web-server/
+$ gulp
+```
+* page will be reloaded with each change
 ## Useful links
 * [Get started with Docker Compose](https://docs.docker.com/compose/gettingstarted/)
 * [Compose file version 1 reference](https://docs.docker.com/compose/compose-file/compose-file-v1/)

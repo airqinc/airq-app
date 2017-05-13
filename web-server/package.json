@@ -31,6 +31,10 @@
     "pug": "^0.1.0"
   },
   "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-livereload": "^3.8.1",
+    "gulp-nodemon": "^2.2.1",
+    "gulp-notify": "^3.0.0",
     "nodemon": "^1.11.0"
   }
 }
