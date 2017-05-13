@@ -18,6 +18,14 @@ app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// pug
+app.set('view engine', 'pug');
+app.set('views','./views');
+app.get('/', function(req, res){
+    res.render('content');
+});
+
+
 //Exporto mi instancia de app para utilizarlo en otros archivos
 module.exports = app;
 

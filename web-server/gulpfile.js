@@ -7,7 +7,7 @@ gulp.task('default', function() {
   livereload.listen();
   nodemon({
     script: 'app.js',
-    ext: 'js, html, css'
+    ext: 'js, html, css, pug'
   }).on('restart', function() {
     setTimeout(function() {
       gulp.src('app.js')
