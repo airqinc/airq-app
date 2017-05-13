@@ -4,6 +4,7 @@ import time
 import requests
 import json
 import numpy as np
+import time
 
 print("hi there, diagnostic here")
 
@@ -32,17 +33,17 @@ def on_message(mqtt, obj, msg):
     print("msg received. Topic:  " + msg.topic + " " +
           str(msg.qos) + " . payload: " + str(msg.payload))
     json_payload = json.loads(msg.payload.decode())
-    # zone = 'Madrid'  # TODO get zone from msg
     zone = json_payload['station']['zone']
     if zones[zone]['received'] == 0:
         zones[zone]['timestamp'] = json_payload['datetime']
         zones[zone]['received'] = 1
-    elif zones[zone]['timestamp'] != json_payload['datetime']:
+    elif zones[zone]['timestamp'] < json_payload['datetime']:
         print('diagnosTIC time!!! (with %d stations)' %
               zones[zone]['received'], zones)
-        zones[zone]['received'] = 0
         make_diagnostic(zone, zones[zone]['timestamp'])
-        # TODO work in the new diagnostic
+        # work in the new diagnostic
+        zones[zone]['received'] = 1
+        zones[zone]['timestamp'] = json_payload['datetime']
     else:
         zones[zone]['received'] += 1
         if zones[zone]['received'] == zones[zone]['stations']:
@@ -70,8 +71,12 @@ def get_max_aqi(pollutant, measures):
     return max(map(lambda x: x['iaqi'][pollutant], measures))
 
 
-def mean_value_for_key(key, measures):
+def mean_value_for_aemet(key, measures):
     return np.mean(list(map(lambda x: x['aemet'][key], measures)))
+
+
+def mean_value_for_iaqi(key, measures):
+    return np.mean(list(map(lambda x: x['iaqi'][key], measures)))
 
 
 def make_diagnostic(zone, timestamp):
@@ -101,19 +106,69 @@ def make_diagnostic(zone, timestamp):
     max_pollutant_value = all_pollutants_max[max_pollutant]
 
     aemet = {
-        'temperature': mean_value_for_key('temperature', measures),
-        'windSpeed': mean_value_for_key('windSpeed', measures),
-        'rainfall': mean_value_for_key('rainfall', measures),
-        'windChill': mean_value_for_key('windChill', measures),
-        'humidity': mean_value_for_key('humidity', measures)}
-    print('>>>>diagnostic result: ', max_pollutant, max_pollutant_value, aemet)
-    # TODO check ranges for iaqi
+        'temperature': mean_value_for_aemet('temperature', measures),
+        'windSpeed': mean_value_for_aemet('windSpeed', measures),
+        'rainfall': mean_value_for_aemet('rainfall', measures),
+        'windChill': mean_value_for_aemet('windChill', measures),
+        'humidity': mean_value_for_aemet('humidity', measures)}
+
+    category = find_category(max_pollutant, max_pollutant_value)
+    dt = time.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
+    dayName = time.strftime('%A', dt)
+    diagnostic = {
+        "zone": zone,
+        "datetime": timestamp,
+        "dayName": dayName,
+        "dominentpol": max_pollutant,
+        "iaqi": {
+            "o3": all_pollutants_max['o3'],
+            "pm25": all_pollutants_max['pm25'],
+            "pm10": all_pollutants_max['pm10'],
+            "co": all_pollutants_max['co'],
+            "so2": all_pollutants_max['so2'],
+            "no2": all_pollutants_max['no2'],
+            "t": mean_value_for_iaqi('t', measures),
+            "h": mean_value_for_iaqi('h', measures),
+            "p": mean_value_for_iaqi('p', measures),
+        },
+        "aemet": {
+            "humidity": aemet['humidity'],
+            "windSpeed": aemet['windSpeed'],
+            "rainfall": aemet['rainfall'],
+            "windChill": aemet['windChill'],
+            "temperature": aemet['temperature'],
+            "windDirection": "N"  # TODO
+        },
+        "isForecast": 0,  # TODO
+        "alerts": [{"pollutant": max_pollutant, "category": category}]
+    }
+    diagnostic_json = json.dumps(diagnostic)
+    headers = {'Content-Type': 'application/json'}
+    try:
+        print("posting diagnostic", diagnostic_json,  " to ", diagnostics_path)
+        requests.post(diagnostics_path, diagnostic_json, headers=headers)
+    except Exception as e:
+        print("error: " + e)
+
+
+def find_category(dominentpol, dominentpol_val):
+    r = requests.get("http://" + storage_server_hostname + "/categories")
+    categories = json.loads(r.text)
+    ranges = list()
+    for i, category in enumerate(categories):
+        ranges.append((categories[i]['min_value'], categories[i]['max_value']))
+    for i, aqi_range in enumerate(ranges):
+        # closed range
+        if dominentpol_val in range(aqi_range[0], aqi_range[1] + 1):
+            category = i
+    return category
 
 
 if __name__ == '__main__':
-
+    time.sleep(2)  # seconds, give to to docker
     broker_hostname = "mqtt"
     storage_server_hostname = "storage-server:3000"
+    diagnostics_path = "http://storage-server:3000/diagnostics"
     verbose = False
 
     zones = get_zones(storage_server_hostname)

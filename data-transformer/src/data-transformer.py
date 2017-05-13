@@ -32,13 +32,14 @@ def on_message(mqttc, obj, msg):
     publish.single("transformed_data", msg.payload, hostname=broker_hostname)
     headers = {'Content-Type': 'application/json'}
     try:
-        print("posting ", msg.payload,  " to ", measures_path)
+        print("posting measures to ", measures_path)
         # requests.post(measures_path, msg.payload, headers=headers)
     except Exception as e:
         print("error: " + e)
 
 
 if __name__ == '__main__':
+    time.sleep(2)  # seconds, give to to docker
     broker_hostname = "mqtt"  # TODO: get hostname with container params
     measures_path = "http://storage-server:3000/measures"
     verbose = False
