@@ -39,7 +39,7 @@ def on_message(mqttc, obj, msg):
 
 
 if __name__ == '__main__':
-    time.sleep(2)  # seconds, give to to docker
+    # time.sleep(2)  # seconds, give to to docker
     broker_hostname = "mqtt"  # TODO: get hostname with container params
     measures_path = "http://storage-server:3000/measures"
     verbose = False

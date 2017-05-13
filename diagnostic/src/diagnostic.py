@@ -112,7 +112,7 @@ def make_diagnostic(zone, timestamp):
     category = find_category(max_pollutant, max_pollutant_value)
     dt = time.strptime(timestamp, "%Y-%m-%d %H:%M:%S")
     dayName = time.strftime('%A', dt)
-    
+
     diagnostic = {
         "zone": zone,
         "datetime": timestamp,
@@ -163,7 +163,7 @@ def find_category(dominentpol, dominentpol_val):
 
 
 if __name__ == '__main__':
-    time.sleep(2)  # seconds, give to to docker
+    # time.sleep(2)  # seconds, give to to docker
     broker_hostname = "mqtt"
     storage_server_hostname = "storage-server:3000"
     diagnostics_path = "http://storage-server:3000/diagnostics"
