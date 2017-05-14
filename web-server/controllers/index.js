@@ -10,8 +10,10 @@ module.exports = function(app) {
       }
     });
     // res.render('home'); // no user test
-    console.log(dataModel.msg);
-    res.end();
+  });
+
+  app.get("/login", function(req, res) {
+    res.render('login');
   });
 
   app.get("/parametros/:nombre", function(req, res) {
