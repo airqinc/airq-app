@@ -1,0 +1,7 @@
+requests
+numpy
+scipy
+pandas
+scikit-learn
+paho-mqtt
+lxml
