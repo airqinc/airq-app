@@ -5,7 +5,7 @@
 [![Build Status][travis-image]][travis-url]
 [![Downloads Stats][npm-downloads]][npm-url] -->
 
-![AirQ logo](logo.png)
+![AirQ logo](assets/logo.png)
 
 ## Installation
 
