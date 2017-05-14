@@ -145,18 +145,32 @@ nav.navbar.navbar-default.top-navbar(role='navigation')
         i.fa.fa-user.fa-fw
         i.fa.fa-caret-down
       ul.dropdown-menu.dropdown-user
-        li
-          a(href='#')
-            i.fa.fa-user.fa-fw
-            |  User Profile
-        li
-          a(href='#')
-            i.fa.fa-gear.fa-fw
-            |  Settings
-        li.divider
-        li
-          a(href='#')
-            i.fa.fa-sign-out.fa-fw
-            |  Logout
+        if(user)
+          li
+            a(href='#')
+              i.fa.fa-user.fa-fw
+              |  Hi, #{user.name}
+            a(href='#')
+              i.fa.fa-user.fa-fw
+              |  User Profile
+          li
+            a(href='#')
+              i.fa.fa-gear.fa-fw
+              |  Settings
+          li.divider
+          li
+            a(href='#')
+              i.fa.fa-sign-out.fa-fw
+              |  Logout
+        else
+          li
+            a(href='/login')
+              i.fa.fa-user.fa-fw
+              |  Login
+            a(href='/signup')
+              i.fa.fa-user.fa-fw
+              |  Sign up
+          
+        
       // /.dropdown-user
     // /.dropdown

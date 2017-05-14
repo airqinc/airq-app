@@ -3,7 +3,7 @@
 const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
-const methodOverride  = require("method-override");
+const methodOverride = require("method-override");
 
 // Inicializar servidor
 const app = express();
@@ -13,18 +13,16 @@ app.set('settings', require('./config'));
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({
+  extended: false
+}));
 app.use(bodyParser.json());
 app.use(methodOverride());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // pug
 app.set('view engine', 'pug');
-app.set('views','./views');
-app.get('/', function(req, res){
-    res.render('home');
-});
-
+app.set('views', './views');
 
 //Exporto mi instancia de app para utilizarlo en otros archivos
 module.exports = app;
