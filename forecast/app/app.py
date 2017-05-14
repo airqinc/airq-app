@@ -248,6 +248,7 @@ if __name__ == '__main__':
     datadir = "http://storage-server:3000/measures"
     globalDataset, lastDate, zone = None, None, None
     windowSize = 3
+    windowSizeAux = windowSize
     zonecode = {"Madrid": 28079}
     restOfInfo = None
     pollutants = [("o3", 0.0), ("pm25", 0.0), ("pm10", 0.0), ("co", 0.0), ("so2", 0.0), ("no2", 0.0)]
@@ -256,18 +257,23 @@ if __name__ == '__main__':
         globalDataset, lastDate, zone, restOfInfo = initializeDataset(lastDate, zone)
         predictionDate = lastDate + timedelta(days=1)
 
+        if globalDataset.shape[0] >= 2:
+            if globalDataset.shape[0] <= windowSize:
+                windowSize = globalDataset.shape[0] - 1
+            windowedDataset = buildWindowedDataset(windowSize)
+            say("Building prediction models for each pollutant...")
+            pollutantModels = [buildModel(x[0]) for x in pollutants]
+            success("All models done! (%d)" % (len(pollutantModels)))
+            success("Datasets and models created! Now I'm ready to predict!\n\n")
 
-        windowedDataset = buildWindowedDataset(windowSize)
-        say("Building prediction models for each pollutant...")
-        pollutantModels = [buildModel(x[0]) for x in pollutants]
-        success("All models done! (%d)" % (len(pollutantModels)))
-        success("Datasets and models created! Now I'm ready to predict!\n\n")
+            results, weather = makePrediction()
+            pollutants = [(pollutants[i][0], x) for i, x in enumerate(results)]
+            # pollutants = {x:y for (x,y) in pollutants}
+            message = packPrediction()
 
-        results, weather = makePrediction()
-        pollutants = [(pollutants[i][0], x) for i, x in enumerate(results)]
-        # pollutants = {x:y for (x,y) in pollutants}
-        message = packPrediction()
+            publishPrediction()
 
-        publishPrediction()
-
+            windowSize = windowSizeAux
+        else:
+            failure("Not enough data to build models. Better luck next hour.")
         time.sleep(15*60)
