@@ -3,13 +3,13 @@ var dataModel = require('../models/data');
 
 module.exports = function(app) {
   app.get("/", function(req, res) {
-    res.render('home', {
-      user: {
-        name: "airq user",
-        age: "20"
-      }
-    });
-    // res.render('home'); // no user test
+    // res.render('home', {
+    //   user: {
+    //     name: "airq user",
+    //     age: "20"
+    //   }
+    // });
+    res.render('home'); // no user test
   });
 
   app.get("/login", function(req, res) {

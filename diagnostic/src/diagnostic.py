@@ -36,23 +36,32 @@ def on_message(mqtt, obj, msg):
     print("msg received. Topic:  " + msg.topic + " " +
           str(msg.qos) + " . payload: " + str(msg.payload))
     json_payload = json.loads(msg.payload.decode())
-    zone = json_payload['station']['zone']
-    if zones[zone]['received'] == 0:
-        zones[zone]['timestamp'] = json_payload['datetime']
-        zones[zone]['received'] = 1
-    elif zones[zone]['timestamp'] < json_payload['datetime']:
-        print('diagnosTIC time!!! (with %d stations)' %
-              zones[zone]['received'], zones)
-        make_diagnostic(zone, zones[zone]['timestamp'])
-        # work in the new diagnostic
-        zones[zone]['received'] = 1
-        zones[zone]['timestamp'] = json_payload['datetime']
-    else:
-        zones[zone]['received'] += 1
-        if zones[zone]['received'] == zones[zone]['stations']:
-            print('diagnosTIC time!!! (with all stations)', zones)
-            zones[zone]['received'] = 0
+    if str(msg.topic) == 'transformed_data':
+        zone = json_payload['station']['zone']
+        if zones[zone]['received'] == 0:
+            zones[zone]['timestamp'] = json_payload['datetime']
+            zones[zone]['received'] = 1
+        elif zones[zone]['timestamp'] < json_payload['datetime']:
+            print('diagnosTIC time!!! (with %d stations)' %
+                  zones[zone]['received'], zones)
             make_diagnostic(zone, zones[zone]['timestamp'])
+            # work in the new diagnostic
+            zones[zone]['received'] = 1
+            zones[zone]['timestamp'] = json_payload['datetime']
+        else:
+            zones[zone]['received'] += 1
+            if zones[zone]['received'] == zones[zone]['stations']:
+                print('diagnosTIC time!!! (with all stations)', zones)
+                zones[zone]['received'] = 0
+                make_diagnostic(zone, zones[zone]['timestamp'])
+    elif str(msg.topic) == 'forecast_data':
+        forecast_dominentpol = json_payload['dominentpol']
+        forecast_alert_category = find_category(
+            forecast_dominentpol, json_payload['iaqi'][forecast_dominentpol])
+        json_payload['alerts'] = [
+            {"pollutant": forecast_dominentpol, "category": forecast_alert_category}]
+        print("forecast parsed: ", json_payload)
+        post_diagnostic(json_payload)
 
 
 def get_zones(storage_server_hostname):
@@ -143,17 +152,21 @@ def make_diagnostic(zone, timestamp):
         "isForecast": 0,  # TODO
         "alerts": [{"pollutant": max_pollutant, "category": category}]
     }
-    diagnostic_json = json.dumps(diagnostic)
+    post_diagnostic(json.dumps(diagnostic))
+
+def post_diagnostic(diagnostic_json):
+    # diagnostic_json = json.dumps(diagnostic)
     headers = {'Content-Type': 'application/json'}
     try:
         if options.post_to_storage == "True":
-            print("posting diagnostic", diagnostic_json,  " to ", diagnostics_path)
+            print("posting diagnostic", diagnostic_json,
+                  " to ", diagnostics_path)
             requests.post(diagnostics_path, diagnostic_json, headers=headers)
         else:
-            print("NOT posting diagnostic", diagnostic_json,  " to ", diagnostics_path)
+            print("NOT posting diagnostic", diagnostic_json,
+                  " to ", diagnostics_path)
     except Exception as e:
         print("error: " + e)
-
 
 def find_category(dominentpol, dominentpol_val):
     r = requests.get("http://" + storage_server_hostname + "/categories")
@@ -172,11 +185,12 @@ def find_category(dominentpol, dominentpol_val):
 if __name__ == '__main__':
     # time.sleep(2)  # seconds, give to to docker
     #
-    parser= OptionParser(usage="%prog -d <debug-mode> -p <post-to-storage-server>")
-    parser.add_option("-d", "--debug", action="store", dest="debug", metavar="<debug-mode>",default="False",
-                      help= "debug mode prints more data")
-    parser.add_option("-p", "--post", action="store", dest="post_to_storage", metavar="<post-mode>",default="False",
-                      help= "post data to storage-server")
+    parser = OptionParser(
+        usage="%prog -d <debug-mode> -p <post-to-storage-server>")
+    parser.add_option("-d", "--debug", action="store", dest="debug", metavar="<debug-mode>", default="False",
+                      help="debug mode prints more data")
+    parser.add_option("-p", "--post", action="store", dest="post_to_storage", metavar="<post-mode>", default="False",
+                      help="post data to storage-server")
 
     (options, args) = parser.parse_args()
 
@@ -195,5 +209,6 @@ if __name__ == '__main__':
     # mqttc.on_log = on_log
     mqttc.connect(broker_hostname, 1883, 60)
     mqttc.subscribe("transformed_data", 0)
+    mqttc.subscribe("forecast_data", 0)
 
     mqttc.loop_forever()
