@@ -1,143 +1,96 @@
-//var mongoose = require('mongoose');
-var Users  = require("../models/user");
+var express = require('express'),
+	router = express.Router(),
+	User = require('../models/user'),
+	Subscription = require('../models/subscription');
 
-/*mongoose.connect("mongodb://localhost:27017/users");
-var db = mongoose.connection;
-db.on("error", console.error.bind(console, "Connection error:"));
-db.once("open", function(callback){
-	console.log("Connection to database succeeded.");
-});*/
+//GET - Devuelve todas los usuarios
+router.get('/', function(req, res) {
+	User.all(function(err, data) {
+	  if(err) return res.status(500).send(err.message);
+		res.status(200).jsonp(data);
+	})
+})
 
+//GET - Devuelve un usuario por nickname
+router.get('/:nickname', function(req, res) {
+	User.get(req.params.nickname, function(err, data) {
+	  if(err) return res.status(500).send(err.message);
+		res.status(200).jsonp(data);
+	})
+})
 
-var User = Users.User; //This creates the TvShow model.
+//POST - Crear un usuario medida
+router.post('/', function(req, res) {
+	var user = {
+    nickname: req.body.nickname,
+  	password: req.body.password,
+  	name: {
+      first: req.body.name.first,
+      last: req.body.name.last
+    },
+    contact: {
+      email: 	req.body.contact.email,
+      phone:  req.body.contact.phone,
+      address: {
+        address: req.body.contact.address.address,
+        city: {
+          name: req.body.contact.address.city.name,
+          zip: req.body.contact.address.city.zip
+        },
+        country: req.body.contact.address.country
+      }
+    }
+  };
 
-exports.findAllUsers = function(req, res) {
-	User.find(function(err, users) {
-	    if(err) res.send(500, err.message);
-		res.status(200).jsonp(users);
-	});
-};
+	User.add(user, function(err, newUser) {
+	  if(err) return res.status(500).send(err.message);
+		console.log('POST new user ' + newUser.nickname)
+		res.status(200).jsonp(newUser);
+	})
+})
 
-exports.findByUsername = function(req, res) {
-	User.find({ username: req.params.username }, function(err, users) {
-    	if(err) return res.send(500, err.message);
-    	if (users.length == 1)
-			res.status(200).jsonp(users[0]);
-		else
-			res.status(404).jsonp("User not found");
-	});
-};
+//UPDATE - Actualiza un usuario
+router.put('/:nickname', function(req, res) {
+	var user = {
+    nickname: req.body.nickname,
+  	password: req.body.password,
+  	name: {
+      first: req.body.name.first,
+      last: req.body.name.last
+    },
+    contact: {
+      email: 	req.body.contact.email,
+      phone:  req.body.contact.phone,
+      address: {
+        address: req.body.contact.address.address,
+        city: {
+          name: req.body.contact.address.city.name,
+          zip: req.body.contact.address.city.zip
+        },
+        country: req.body.contact.address.country
+      }
+    }
+  };
 
-exports.checkUser = function(username, password, callback) {
-	User.find({ username: username }, function(err, users) {
-		if (users.length == 1){
-			var user = users[0]
-			if (user.password == password)
-				callback(true)
-			else
-				callback(false)
-		}
-	});
-};
+	User.update(req.params.nickname, user, function(err, data) {
+	  if(err) return res.status(500).send(err.message);
+		res.status(200).jsonp(data);
+	})
+})
 
-exports.addUser = function(req, res) {
-	var user = new User({
-		username:   req.body.username,
-		password:   req.body.password,
-		meta: {
-			name:     req.body.name,
-			surname:  req.body.surname,
-			age:      req.body.age,
-			country:  req.body.country
-	  	}
-	});
+//DELETE - Borra un usuario
+router.delete('/:nickname', function(req, res) {
+	User.remove(req.params.nickname, function(err, user) {
+		if(err) return res.status(500).send(err.message);
+  	res.status(200).send(user._id);
+	})
+})
 
-	user.save(function(err, user) {
-		if(err) return res.send(500, err.message);
-		res.redirect("/home/"+req.body.username)
-	});
-};
+router.get('/:nickname/prueba', function(req, res) {
+	User.getSubcriptionsZones(req.params.nickname, function(err, data) {
+	  if(err) return res.status(500).send(err.message);
+		res.status(200).jsonp(data);
+	})
+})
 
-exports.markFilmWatched = function(req, res) {
-	User.find({ username: req.params.username }, function(err, users) {
-		if (users.length != 0){
-			var user = users[0]
-
-			checkItemArray(req.body.filmid, user.showsWatched)
-			deleteItemArray(req.body.filmid, user.showsPending)
-
-			user.save(function(err) {
-				if(err) return res.send(500, err.message);
-	      		res.status(200).jsonp(user);
-			});
-		}
-		else
-			res.status(404).send("User not found")
-	});
-};
-
-exports.markFilmPending = function(req, res) {
-	User.find({ username: req.params.username }, function(err, users) {
-		if (users.length != 0){
-			var user = users[0]
-
-			checkItemArray(req.body.filmid, user.showsPending)
-			deleteItemArray(req.body.filmid, user.showsWatched)
-
-			user.save(function(err) {
-				if(err) return res.send(500, err.message);
-	      		res.status(200).jsonp(user);
-			});
-		}
-		else
-			res.status(404).send("User not found")
-	});
-};
-
-function checkItemArray (item, array){
-	var isInArray = false
-	for (i = 0; i < array.length; i++){
-		if (array[i] == item){
-			array.splice(i, 1)
-			isInArray = true
-		}
-	}
-
-	if (!isInArray)
-		array.push(item)
-}
-
-function deleteItemArray (item, array){
-	for (i = 0; i < array.length; i++){
-		if (array[i] == item)
-			array.splice(i, 1)
-	}
-}
-
-//PUT - Update a register already exists
-/*exports.updateFilm = function(req, res) {
-	Film.findById(req.params.id, function(err, film) {
-		film.title   = req.body.title;
-		film.year    = req.body.year;
-		film.country = req.body.country;
-		film.poster  = req.body.poster;
-		film.seasons = req.body.seasons;
-		film.genre   = req.body.genre;
-		film.summary = req.body.summary;
-
-		film.save(function(err) {
-			if(err) return res.send(500, err.message);
-      		res.status(200).jsonp(film);
-		});
-	});
-};*/
-
-
-exports.deleteFilm = function(req, res) {
-	User.findById(req.params.id, function(err, user) {
-		user.remove(function(err) {
-			if(err) return res.send(500, err.message);
-      		res.status(200);
-		})
-	});
-};
+module.exports = router;

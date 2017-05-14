@@ -38,18 +38,21 @@ router.post('/', function(req, res) {
             p:          req.body.iaqi.p
         },
         aemet: {
-            temperature:    req.body.aemet.temperature, 
-            windSpeed:      req.body.aemet.windSpeed, 
-            rainfall:       req.body.aemet.rainfall, 
-            windChill:      req.body.aemet.windChill, 
+            temperature:    req.body.aemet.temperature,
+            windSpeed:      req.body.aemet.windSpeed,
+            rainfall:       req.body.aemet.rainfall,
+            windChill:      req.body.aemet.windChill,
             windDirection:  req.body.aemet.windDirection,
             humidity:       req.body.aemet.humidity
         }
     };
 
 	Measure.add(measure, function(err, newMeasure) {
-	    if(err) return res.status(500).send(err.message);
-        console.log('POST new meaure to station ' + measure.station + " at " + measure.datetime)
+		if(err){
+			console.log('POST new meaure to station ' + measure.station + " at " + measure.datetime + ' ERROR: ' + err.message);
+			return res.status(500).send(err.message);
+		}
+		console.log('POST new meaure to station ' + newMeasure.station + " at " + newMeasure.datetime);
 		res.status(200).jsonp(newMeasure);
 	})
 })
@@ -74,10 +77,10 @@ router.put('/:id', function(req, res) {
             p:          req.body.iaqi.p
         },
         aemet: {
-            temperature:    req.body.temperature, 
-            windSpeed:      req.body.windSpeed, 
-            rainfall:       req.body.rainfall, 
-            windChill:      req.body.windChill, 
+            temperature:    req.body.temperature,
+            windSpeed:      req.body.windSpeed,
+            rainfall:       req.body.rainfall,
+            windChill:      req.body.windChill,
             windDirection:  req.body.windDirection,
             humidity:       req.body.humidity
         }

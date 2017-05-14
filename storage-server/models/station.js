@@ -34,7 +34,7 @@ exports.add = function(newStation, cb) {
 	station.save(cb);
 };
 
-exports.update = function(name, newStation, cb) {
+exports.update = function(id, newStation, cb) {
 	Station.findById(id, function(err, station) {
 		station.latitude 	= newStation.latitude || station.latitude;
 		station.longitude 	= newStation.longitude || station.longitude;

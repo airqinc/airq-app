@@ -15,6 +15,11 @@ var db = require('./db');
 app.set('settings', require('./config'));
 
 //Rutas de mi aplicación
+app.use(function(req, res, next)
+{
+    console.log(req.method+' '+req.url);
+    next();
+});
 app.use(require('./controllers'));
 //app.use('/users', require('./routes/user'));
 

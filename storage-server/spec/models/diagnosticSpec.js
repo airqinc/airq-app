@@ -6,7 +6,7 @@ describe("Diagnostic", function() {
   var diagnostic = {
       "zone": "Test",
       "datetime": "2017-05-4 12:00:00",
-      "dayName": "Thursday", 
+      "dayName": "Thursday",
       "dominentpol": "pm25",
       "iaqi": {
           "o3": 35,
@@ -20,11 +20,11 @@ describe("Diagnostic", function() {
           "p": 1009
       },
       "aemet": {
-          "humidity": 38, 
-          "windSpeed": 12, 
-          "rainfall": 0, 
-          "windChill": 25, 
-          "temperature": 25, 
+          "humidity": 38,
+          "windSpeed": 12,
+          "rainfall": 0,
+          "windChill": 25,
+          "temperature": 25,
           "windDirection": "E"
       },
       "isForecast": 0,
@@ -34,7 +34,7 @@ describe("Diagnostic", function() {
   Diagnostic.removeByTime(diagnostic.zone, diagnostic.datetime, function(err, data) {});
 
   it("should be able to add a new diagnostic with alerts", function() {
-    diagnostic.alerts.push({"pollutant":"o3", "category":"moderate"})
+    diagnostic.alerts.push({"pollutant":"o3", "category":1})
 
     Diagnostic.add(diagnostic, function(err, data) {
         expect(err).toBeNull();
@@ -63,7 +63,7 @@ describe("Diagnostic", function() {
         expect(data.zone).toEqual(diagnostic.zone)
         expect(data.datetime).toEqual(diagnostic.datetime);
 
-        Diagnostic.get(diagnostic.zone, function(err, data) {
+        Diagnostic.getByTime(diagnostic.zone, diagnostic.datetime, function(err, data) {
             expect(err).toBeDefined()
             asyncSpecDone();
         });

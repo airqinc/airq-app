@@ -1,7 +1,7 @@
 {
-  "name": "airq-web-db",
+  "name": "storage-server",
   "version": "1.0.0",
-  "description": "Database using MongoDB",
+  "description": "Database server using MongoDB",
   "main": "app.js",
   "scripts": {
     "test": "node_modules/jasmine-node/bin/jasmine-node --forceexit spec",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/airqinc/airq-web-db.git"
+    "url": "git+https://github.com/airqinc/airq-app.git"
   },
   "keywords": [
     "database",
@@ -21,9 +21,9 @@
   "author": "AirQ",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/airqinc/airq-web-db/issues"
+    "url": "https://github.com/airqinc/airq-app/issues"
   },
-  "homepage": "https://github.com/airqinc/airq-web-db#readme",
+  "homepage": "https://github.com/airqinc/airq-app#readme",
   "dependencies": {
     "body-parser": "^1.17.1",
     "express": "^4.15.2",

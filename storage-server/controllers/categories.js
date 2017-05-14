@@ -20,7 +20,7 @@ router.get('/:id', function(req, res) {
 
 //POST - Crear una nueva categoria
 router.post('/', function(req, res) {
-  var newCategory = {
+  var category = {
 		_id:          req.body._id,
 		description:  req.body.description,
 		min_value:   	req.body.min_value,
@@ -28,7 +28,7 @@ router.post('/', function(req, res) {
 		color:        req.body.color
 	};
 
-	Category.add(newCategory, function(err, newCategory) {
+	Category.add(category, function(err, newCategory) {
     if(err) return res.status(500).send(err.message);
 		res.status(200).jsonp(newCategory);
 	})

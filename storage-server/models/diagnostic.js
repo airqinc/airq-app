@@ -5,7 +5,7 @@ var mongoose = require('mongoose'),
 var alertSchema = new mongoose.Schema({
     pollutant:  { type: String, required: true, enum: ['o3', 'pm25', 'pm10', 'co', 'so2', 'no2']},
     category:   { type: Number, required: true, ref: 'Category'},
-});
+},{ _id : false });
 
 var diagnosticSchema = new mongoose.Schema({
     zone:           { type: String, required: true, ref: 'Zone'},

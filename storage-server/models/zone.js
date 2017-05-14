@@ -12,8 +12,8 @@ var zoneSchema = new mongoose.Schema({
 	},
 	area: 			Number,
 	time_zone: 		Number,
-	stations: 		[String],
-	suscriptions: 	[ObjectId]	
+	stations: 		[{ type: String, ref: 'Station' }],
+	suscriptions: 	[ObjectId]
 });
 
 var Zone = connections[dbs.db2.name].model('Zone', zoneSchema);
@@ -70,7 +70,7 @@ exports.addStation = function(zone, station, cb) {
 			    if(err) console.log('Unable to add new station: '+err.message);
 			    else if(cb) cb(data)
 			});
-		}		
+		}
 	});
 };
 
