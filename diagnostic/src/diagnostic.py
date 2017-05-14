@@ -1,12 +1,15 @@
 # -*- coding: utf-8 -*-
 import paho.mqtt.client as mqtt
-import time
+from optparse import OptionParser
 import requests
 import json
 import numpy as np
 import time
+import sys
+
 
 print("hi there, diagnostic here")
+print("arguments: ", sys.argv[1:])
 
 
 def on_connect(mqttc, obj, flags, rc):
@@ -143,8 +146,11 @@ def make_diagnostic(zone, timestamp):
     diagnostic_json = json.dumps(diagnostic)
     headers = {'Content-Type': 'application/json'}
     try:
-        print("posting diagnostic", diagnostic_json,  " to ", diagnostics_path)
-        requests.post(diagnostics_path, diagnostic_json, headers=headers)
+        if options.post_to_storage == "True":
+            print("posting diagnostic", diagnostic_json,  " to ", diagnostics_path)
+            requests.post(diagnostics_path, diagnostic_json, headers=headers)
+        else:
+            print("NOT posting diagnostic", diagnostic_json,  " to ", diagnostics_path)
     except Exception as e:
         print("error: " + e)
 
@@ -164,6 +170,15 @@ def find_category(dominentpol, dominentpol_val):
 
 if __name__ == '__main__':
     # time.sleep(2)  # seconds, give to to docker
+    #
+    parser= OptionParser(usage="%prog -d <debug-mode> -p <post-to-storage-server>")
+    parser.add_option("-d", "--debug", action="store", dest="debug", metavar="<debug-mode>",default="False",
+                      help= "debug mode prints more data")
+    parser.add_option("-p", "--post", action="store", dest="post_to_storage", metavar="<post-mode>",default="False",
+                      help= "post data to storage-server")
+
+    (options, args) = parser.parse_args()
+
     broker_hostname = "mqtt"
     storage_server_hostname = "storage-server:3000"
     diagnostics_path = "http://storage-server:3000/diagnostics"
