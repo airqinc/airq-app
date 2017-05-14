@@ -38,3 +38,10 @@ diagnostic:
     - storage-server
   env_file:
     - prod-variables.env
+forecast:
+  image:          registry.eu-gb.bluemix.net/airq_containers/forecast:latest
+  container_name: forecast
+  mem_limit:      64
+  links:
+    - mqtt
+    - storage-server

@@ -159,11 +159,12 @@ def find_category(dominentpol, dominentpol_val):
     r = requests.get("http://" + storage_server_hostname + "/categories")
     categories = json.loads(r.text)
     ranges = list()
+    category = - 1
     for i, category in enumerate(categories):
         ranges.append((categories[i]['min_value'], categories[i]['max_value']))
     for i, aqi_range in enumerate(ranges):
         # closed range
-        if dominentpol_val in range(aqi_range[0], aqi_range[1] + 1):
+        if aqi_range[0] < dominentpol_val and dominentpol_val < (aqi_range[1] + 1):
             category = i
     return category
 
