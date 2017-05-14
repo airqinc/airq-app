@@ -61,7 +61,7 @@ def on_message(mqtt, obj, msg):
         json_payload['alerts'] = [
             {"pollutant": forecast_dominentpol, "category": forecast_alert_category}]
         print("forecast parsed: ", json_payload)
-        post_diagnostic(json_payload)
+        post_diagnostic(json.dumps(json_payload))
 
 
 def get_zones(storage_server_hostname):
@@ -154,11 +154,11 @@ def make_diagnostic(zone, timestamp):
     }
     post_diagnostic(json.dumps(diagnostic))
 
-def post_diagnostic(diagnostic_json):
+def post_diagnostic(diagnostic_json, force=False):
     # diagnostic_json = json.dumps(diagnostic)
     headers = {'Content-Type': 'application/json'}
     try:
-        if options.post_to_storage == "True":
+        if options.post_to_storage == "True" or force == True:
             print("posting diagnostic", diagnostic_json,
                   " to ", diagnostics_path)
             requests.post(diagnostics_path, diagnostic_json, headers=headers)
