@@ -84,6 +84,9 @@ $ gulp
 ```
 * enable livereload extension and connect
 * page will be reloaded with each change
+* links
+   * [ExpressJS Tutorial](https://www.tutorialspoint.com/expressjs/expressjs_templating.htm)
+   * [Best practices for Express app structure](https://www.terlici.com/2014/08/25/best-practices-express-structure.html)
 ## Useful links
 * [Get started with Docker Compose](https://docs.docker.com/compose/gettingstarted/)
 * [Compose file version 1 reference](https://docs.docker.com/compose/compose-file/compose-file-v1/)
