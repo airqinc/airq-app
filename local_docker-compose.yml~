@@ -44,10 +44,3 @@ diagnostic:
     - storage-server
   env_file:
     - dev-variables.env
-forecast:
-  build:          ./forecast
-  container_name: forecast
-  mem_limit:      64m
-  links:
-    - mqtt
-    - storage-server
