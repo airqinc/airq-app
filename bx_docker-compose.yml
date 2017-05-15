@@ -49,7 +49,6 @@ forecast:
     # - mqtt
     - haproxy
     - storage-server
-    # - diagnostic
 haproxy:
   image :    registry.eu-gb.bluemix.net/airq_containers/haproxy:latest
   container_name: haproxy
