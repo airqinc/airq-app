@@ -53,7 +53,7 @@ if __name__ == '__main__':
 
     (options, args) = parser.parse_args()
 
-    broker_hostname = "mqtt"  # TODO: get hostname with container params
+    broker_hostname = "haproxy"  # TODO: get hostname with container params
     measures_path = "http://storage-server:3000/measures"
     verbose = False
 

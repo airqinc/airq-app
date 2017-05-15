@@ -149,10 +149,11 @@ def make_diagnostic(zone, timestamp):
             "temperature": aemet['temperature'],
             "windDirection": "N"  # TODO
         },
-        "isForecast": 0,  # TODO
+        "isForecast": 0,
         "alerts": [{"pollutant": max_pollutant, "category": category}]
     }
     post_diagnostic(json.dumps(diagnostic))
+
 
 def post_diagnostic(diagnostic_json, force=False):
     # diagnostic_json = json.dumps(diagnostic)
@@ -167,6 +168,7 @@ def post_diagnostic(diagnostic_json, force=False):
                   " to ", diagnostics_path)
     except Exception as e:
         print("error: " + e)
+
 
 def find_category(dominentpol, dominentpol_val):
     r = requests.get("http://" + storage_server_hostname + "/categories")
@@ -194,7 +196,7 @@ if __name__ == '__main__':
 
     (options, args) = parser.parse_args()
 
-    broker_hostname = "mqtt"
+    broker_hostname = "haproxy"
     storage_server_hostname = "storage-server:3000"
     diagnostics_path = "http://storage-server:3000/diagnostics"
     verbose = False

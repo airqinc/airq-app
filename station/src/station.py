@@ -148,7 +148,7 @@ if __name__ == '__main__':
 
     ########################## MQTT Client config #######################
 
-    broker_hostname = "mqtt"
+    broker_hostname = "haproxy"
     server_hostame = "storage-server"
 
     while True:

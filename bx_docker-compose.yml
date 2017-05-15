@@ -1,23 +1,24 @@
 #BLUEMIX
 mqtt:
   image:          registry.eu-gb.bluemix.net/airq_containers/mqtt:dev
-  container_name: mqtt
+  # container_name: mqtt
   mem_limit:      128
-  ports:
-    - "request:1883:1883"
+  expose:
+    - "1883"
   log_driver:     "none"
 storage-server:
   image:          registry.eu-gb.bluemix.net/airq_containers/storage-server:latest
   container_name: storage-server
   mem_limit:      128
   ports:
-    - "request:3000:3000"
+    - "3000:3000"
 station:
   image:          registry.eu-gb.bluemix.net/airq_containers/station:latest
   container_name: station
   mem_limit:      64
   links:
-    - mqtt
+    # - mqtt
+    - haproxy
     - data-transformer
     - diagnostic
 data-transformer:
@@ -25,7 +26,8 @@ data-transformer:
   container_name: data-transformer
   mem_limit:      64
   links:
-    - mqtt
+    # - mqtt
+    - haproxy
     - storage-server
   env_file:
     - prod-variables.env
@@ -34,7 +36,8 @@ diagnostic:
   container_name: diagnostic
   mem_limit:      64
   links:
-    - mqtt
+    # - mqtt
+    - haproxy
     - storage-server
   env_file:
     - prod-variables.env
@@ -43,5 +46,15 @@ forecast:
   container_name: forecast
   mem_limit:      64
   links:
-    - mqtt
+    # - mqtt
+    - haproxy
     - storage-server
+    # - diagnostic
+haproxy:
+  image :    registry.eu-gb.bluemix.net/airq_containers/haproxy:latest
+  container_name: haproxy
+  mem_limit: 128
+  links:
+    - mqtt
+  ports:
+    - "request:1883:1883"

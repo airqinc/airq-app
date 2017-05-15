@@ -234,7 +234,7 @@ def packPrediction():
 
 def publishPrediction():
     try:
-        say("Publishing forecast")
+        print("Publishing forecast: ", message, " to ", broker_hostname)
         publish.single("forecast_data", message, hostname=broker_hostname)
         success("Prediction published successfully! I'm waiting for more data to come!")
     except Exception as e:
@@ -242,7 +242,7 @@ def publishPrediction():
 
 if __name__ == '__main__':
     success("Forecast service on! Let's get down to business!\n")
-    broker_hostname = "mqtt"  # TODO: get hostname with container params
+    broker_hostname = "haproxy"  # TODO: get hostname with container params
     verbose = True
 
     datadir = "http://storage-server:3000/measures"
