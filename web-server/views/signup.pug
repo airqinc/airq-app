@@ -9,8 +9,10 @@ html
   body
     .container
       .form-container.flip
-        form.login-form(method='POST' action='/login')
-          h3.title Hello.#{message}
+        form.login-form(method='POST' action='/signup')
+          //- h2.alert.alert-danger#{message}
+          div.alert.alert-danger #{message}
+          h3.title Sign up
           #username.form-group
             input#email.form-input(name='email', tooltip-class='username-tooltip', placeholder='Username', required='true')
             span#username-tool.tooltip.username-tooltip What's your username?
