@@ -4,6 +4,7 @@ import paho.mqtt.client as mqtt
 import paho.mqtt.publish as publish
 import time
 import requests
+import json
 
 print("hi there, data-transformer here")
 
@@ -29,14 +30,20 @@ def on_log(mqttc, obj, level, string):
 
 
 def on_message(mqttc, obj, msg):
-    publish.single("transformed_data", msg.payload, hostname=broker_hostname)
     headers = {'Content-Type': 'application/json'}
+    payload = json.loads(msg.payload.decode())
+    iaqi_elements = ['o3', 'pm25', 'pm10', 'co', 'so2', 'no2', 't', 'h', 'p']
+    for iaqi_element in iaqi_elements:
+        if iaqi_element not in payload['iaqi']:
+            payload['iaqi'][iaqi_element] = 0
+    json_payload = json.dumps(payload)
+    publish.single("transformed_data", json_payload, hostname=broker_hostname)
     try:
         if options.post_to_storage == "True":
             print("posting measures to ", measures_path)
-            requests.post(measures_path, msg.payload, headers=headers)
+            requests.post(measures_path, json_payload, headers=headers)
         else:
-            print("NOT posting measures to ", measures_path)
+            print("NOT posting ", json_payload, " to ", measures_path)
     except Exception as e:
         print("error: " + e)
 

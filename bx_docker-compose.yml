@@ -1,6 +1,6 @@
 #BLUEMIX
 mqtt:
-  image:          registry.eu-gb.bluemix.net/airq_containers/mqtt:dev
+  image:          registry.eu-gb.bluemix.net/airq_containers/eclipse-mqtt
   # container_name: mqtt
   mem_limit:      128
   expose:

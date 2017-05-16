@@ -1,6 +1,6 @@
 # LOCAL
 mqtt:
-  image:          "toke/mosquitto"
+  image:          "eclipse-mosquitto"
   # container_name: mqtt
   mem_limit:      128m
   expose:
@@ -57,9 +57,9 @@ haproxy:
     - mqtt
   expose:
     - "1883"
-web-server:
-  build:          ./web-server
-  container_name: web-server
-  mem_limit:      128m
-  expose:
-    - "8080"
+# web-server:
+#   build:          ./web-server
+#   container_name: web-server
+#   mem_limit:      128m
+#   expose:
+#     - "8080"
