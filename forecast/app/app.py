@@ -174,10 +174,13 @@ def makePrediction():
     return values, weather
 
 def getValue(topic,forecast,hour,moment):
-    if topic == "direccion" or topic == "velocidad":
-        return forecast.xpath("//viento[@periodo=\"" + str(hour).zfill(2) + "\"]/"+topic+"/text()")[moment]
-    else:
-        return int(forecast.xpath("//"+topic+"[@periodo=\""+str(hour).zfill(2)+"\"]/text()")[moment])
+    try:
+        if topic == "direccion" or topic == "velocidad":
+            return forecast.xpath("//viento[@periodo=\"" + str(hour).zfill(2) + "\"]/"+topic+"/text()")[moment]
+        else:
+            return int(forecast.xpath("//"+topic+"[@periodo=\""+str(hour).zfill(2)+"\"]/text()")[moment])
+    except:
+        return 0
 
 def fetchWeather(h):
     say("\tFetching weather information for %s..." % (zone))
