@@ -12,7 +12,7 @@ gulp.task('default', function() {
     setTimeout(function() {
       gulp.src('app.js')
         .pipe(livereload())
-        // .pipe(notify('Reloading page, please wait...'));
-    }, 300); // wait for the server
+      // .pipe(notify('Reloading page, please wait...'));
+    }, 500); // wait for the server
   })
 })
