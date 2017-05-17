@@ -412,11 +412,18 @@ p {
 }
 
 #easypiechart-orange .percent {
-  color: #ffb53e;
+  color: #ff8000;
 }
 
 #easypiechart-red .percent {
   color: #ef4040;
+}
+#easypiechart-purple .percent {
+  color: #CC2EFA;
+}
+
+#easypiechart-green .percent {
+  color: #2EFE2E;
 }
 
 .chat-panel .panel-body {

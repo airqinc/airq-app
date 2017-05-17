@@ -40,6 +40,22 @@
 
       });
 
+      Morris.Line({
+        element: 'morris-line-chart2',
+        data: client_measures2, // data printed via PUG. tests: mock_data
+        xkey: 'date',
+        ykeys: ['aqi'],
+        labels: ['aqi'],
+        fillOpacity: 0.6,
+        hideHover: 'auto',
+        behaveLikeLine: true,
+        resize: true,
+        pointFillColors: ['#ffffff'],
+        pointStrokeColors: ['black'],
+        lineColors: ['gray', '#30a5ff']
+
+      });
+
 
       $('.bar-chart').cssCharts({
         type: "bar"

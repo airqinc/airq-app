@@ -1,43 +1,29 @@
 #page-wrapper
   .header
     h1.page-header
-      | Dashboard 
-      small Summary of your App
+      | Madrid centro 
+      small resumen de la zona
     ol.breadcrumb
       li
         a(href='#') Home
       li
-        a(href='#') Library
-      li.active Data
+        a(href='#') Mis zonas
+      li
+        a(href='#') Madrid centro
   #page-inner
     .row
-      include charts/line.pug
+      .col-md-7
+        .panel.panel-default
+          .panel-heading
+            | Estado actual
+          .panel-body
       include charts/map.pug
     .row
-      .col-xs-6.col-md-3
-        .panel.panel-default
-          .panel-body.easypiechart-panel
-            h4 Customers
-            #easypiechart-blue.easypiechart(data-percent='82')
-              span.percent 82%
-      .col-xs-6.col-md-3
-        .panel.panel-default
-          .panel-body.easypiechart-panel
-            h4 Sales
-            #easypiechart-orange.easypiechart(data-percent='55')
-              span.percent 55%
-      .col-xs-6.col-md-3
-        .panel.panel-default
-          .panel-body.easypiechart-panel
-            h4 Profits
-            #easypiechart-teal.easypiechart(data-percent='84')
-              span.percent 84%
-      .col-xs-6.col-md-3
-        .panel.panel-default
-          .panel-body.easypiechart-panel
-            h4 No. of Visits
-            #easypiechart-red.easypiechart(data-percent='46')
-              span.percent 46%
+      include charts/pollutants.pug
+    .row
+      include charts/lineChartDiagnostic.pug
+    .row
+      include charts/lineChartForecast.pug                 
     // /. ROW
     
     footer
