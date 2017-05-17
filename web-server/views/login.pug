@@ -5,10 +5,16 @@ html
     title AirQ login
     //- script(src='http://s.codepen.io/assets/libs/modernizr.js', type='text/javascript')
     //- link(rel='stylesheet prefetch', href='http://fonts.googleapis.com/css?family=Nunito:400,300,700')
+    //- link(rel='stylesheet', href='assets/css/bootstrap.css')
     link(rel='stylesheet', href='assets/css/login.css')
+
+
   body
     .container
       .form-container.flip
+        //- if(message!='')
+        //-   .alert.alert-danger
+        //-     #{message}
         form.login-form(method='POST' action='/login')
           h3.title Hello.#{message}
           #username.form-group
