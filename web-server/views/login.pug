@@ -18,7 +18,7 @@ html
         form.login-form(method='POST' action='/login')
           h3.title Hello.#{message}
           #username.form-group
-            input#email.form-input(name='nickname', tooltip-class='username-tooltip', placeholder='Username', required='true')
+            input#email.form-input(name='nickname', tooltip-class='username-tooltip', placeholder='Username', required='true', autofocus='true')
             span#username-tool.tooltip.username-tooltip What's your username?
           #password.form-group
             input.form-input(name='password', type='password', tooltip-class='password-tooltip', placeholder='Password')

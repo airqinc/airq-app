@@ -6,7 +6,7 @@ var express = require('express'),
 // =====================================
 //
 //
-router.get('', function(req, res) {
+router.get('/', function(req, res) {
   var measures_path = 'http://localhost:3000/diagnostics'
   var request = require('request');
 
@@ -14,7 +14,7 @@ router.get('', function(req, res) {
     return array.sort(function(a, b) {
       var x = a[key];
       var y = b[key];
-      return ((x < y) ? 1 : ((x > y) ? -1 : 0));
+      return ((x < y) ? -1 : ((x > y) ? 1 : 0));
     });
   }
 
@@ -24,8 +24,11 @@ router.get('', function(req, res) {
       console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
       // console.log('body:', body); // Print the HTML for the Google homepage.
       // TODO: parse body
-      diagnostics = sortByKey(JSON.parse(body), 'datetime')
-      last_diagnostics = diagnostics.slice(0, 24)
+      diagnostics = sortByKey(JSON.parse(body), 'datetime').reverse() //sort by date, most recent first
+
+      diagnostics = sortByKey((diagnostics), 'isForecast') // sory by diagnostic type, get only diagnostics
+      last_diagnostics = diagnostics.slice(0, 24) // get last 24 diagnostics
+      console.log(last_diagnostics)
 
       chart_data = []
       last_diagnostics.forEach(function(item, index) {
