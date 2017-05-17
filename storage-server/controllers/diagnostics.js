@@ -18,9 +18,9 @@ router.post('/:zone/datetime', function(req, res) {
 	})
 })
 
-//POST - Devuelve el ultimo diagnostico/pronostico de una zona
+//POST - Devuelve los ultimos n diagnosticos/pronosticos de una zona en un periodo de tiempo
 router.post('/:zone/latest', function(req, res) {
-	Diagnostic.getLatest(req.params.zone, req.body.isForecast, function(err, data) {
+	Diagnostic.getLatest(req.params.zone, req.body.isForecast, req.body.number, function(err, data) {
 	  if(err) return res.status(500).send(err.message);
 		res.status(200).jsonp(data);
 	})
