@@ -45,7 +45,7 @@ $ mosquitto_sub -h hostname -t topic_name
 ```
 * use [mqtt extension for chrome](https://chrome.google.com/webstore/detail/mqttbox/kaajoficamnjijhkeomgfljpicifbkaf) to publish messages to mqtt broker
 
-## Run Node.js container locally
+## Run Node.js server locally
 1. Copy `config.js` into the folder with settings and credentials.
 2. Run test:
 ```sh
@@ -64,14 +64,16 @@ $ npm run dev
 ## Run docker-compose locally
 ```sh
 $ sudo usermod -aG docker $USER (optional)
-$ docker-compose up [--build]
+$ docker-compose -f bx_docker-compose.yml scale mqtt=2
+$ docker-compose -f local_docker-compose.yml up [--build]
 ```
 ## Run docker-compose in Bluemix
 ```sh
 $ bx login
 $ bx ic init (exec exports)
-$ docker build -t <image_name> <source>/ (build all images)
-$ docker-compose up
+$ docker build -t <image_name> <source> (build nececsary images)
+$ docker-compose -f bx_docker-compose.yml scale mqtt=2
+$ docker-compose -f bx_docker-compose.yml up
 ```
 ## Run web-server
 
