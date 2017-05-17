@@ -5,7 +5,7 @@ describe("Diagnostic", function() {
   var Diagnostic = require('../../models/diagnostic');
   var diagnostic = {
       "zone": "Test",
-      "datetime": "2017-05-4 12:00:00",
+      "datetime": "2100-05-4 12:00:00",
       "dayName": "Thursday",
       "dominentpol": "pm25",
       "iaqi": {
@@ -77,6 +77,18 @@ describe("Diagnostic", function() {
 
   it("should be able to get a diagnostic", function() {
     Diagnostic.getByTime(diagnostic.zone, diagnostic.datetime, diagnostic.isForecast, function(err, data) {
+        expect(err).toBeNull();
+        expect(data).toBeDefined();
+        expect(data.zone).toEqual(diagnostic.zone);
+        expect(data.datetime).toEqual(diagnostic.datetime);
+        expect(data.isForecast).toEqual(false);
+        asyncSpecDone();
+    });
+    asyncSpecWait();
+  });
+
+  it("should be able to get the latest diagnostic", function() {
+    Diagnostic.getLatest(diagnostic.zone, diagnostic.isForecast, function(err, data) {
         expect(err).toBeNull();
         expect(data).toBeDefined();
         expect(data.zone).toEqual(diagnostic.zone);

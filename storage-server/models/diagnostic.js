@@ -157,3 +157,10 @@ exports.removeAlert = function(zone, datetime, isForecast, alert, cb) {
         }
     });
 };
+
+exports.getLatest = function(zone, isForecast, cb) {
+  Diagnostic.find({zone: zone, isForecast: isForecast}, function(err, diagnostics) {
+    // debido al orden el primero es el más reciente
+    cb(err, diagnostics[0])
+  })
+};

@@ -10,17 +10,17 @@ router.get('/', function(req, res) {
 	})
 })
 
-//GET - Devuelve un diagnostico por ID
-router.get('/:id', function(req, res) {
-	Diagnostic.get(req.params.id, function(err, data) {
+//GET - Devuelve un diagnostico/pronostico por tiempo
+router.post('/:zone/datetime', function(req, res) {
+	Diagnostic.getByTime(req.params.zone, req.body.datetime, req.body.isForecast, function(err, data) {
 	  if(err) return res.status(500).send(err.message);
 		res.status(200).jsonp(data);
 	})
 })
 
-//GET - Devuelve un diagnostico por tiempo
-router.get('/:zone', function(req, res) {
-	Diagnostic.getByTime(req.params.zone, req.body.datetime, req.body.isForecast, function(err, data) {
+//POST - Devuelve el ultimo diagnostico/pronostico de una zona
+router.post('/:zone/latest', function(req, res) {
+	Diagnostic.getLatest(req.params.zone, req.body.isForecast, function(err, data) {
 	  if(err) return res.status(500).send(err.message);
 		res.status(200).jsonp(data);
 	})
