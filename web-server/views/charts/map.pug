@@ -1,6 +1,98 @@
 .col-md-5
   .panel.panel-default
     .panel-heading
-      | Line Chart
+      | Mapa de la zona
     .panel-body
-      #morris-line-chart
+    style.
+      #map {
+      height: 50%;
+      width: 100%;
+      }
+    #map
+    script.
+      function initMap() {
+
+      var madrid = {lat: 40.4376067, lng: -3.7133638};
+      var castellana = {lat: 40.4093813, lng: -3.6999103};
+      var plazaCastilla = {lat: 40.46555556, lng: -3.688611111};
+      var cuatroCaminos = {lat: 40.44527778, lng: -3.706944444};
+      var casaCampo = {lat: 40.41916667, lng: -3.747222222};
+      var escuelasAguirre = {lat: 40.42138889, lng: -3.682222222};
+      var mendezAlvaro = {lat: 40.39805556, lng: -3.686666667};
+
+      var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 12,
+      center: madrid
+      });
+
+      var marker = new google.maps.Marker({
+      position: castellana,
+      map: map
+      });
+      var marker2 = new google.maps.Marker({
+      position: plazaCastilla,
+      map: map
+      });
+      var marker3 = new google.maps.Marker({
+      position: cuatroCaminos,
+      map: map
+      });
+      var marker4 = new google.maps.Marker({
+      position: casaCampo,
+      map: map
+      });
+      var marker5 = new google.maps.Marker({
+      position: escuelasAguirre,
+      map: map
+      });
+      var marker6 = new google.maps.Marker({
+      position: mendezAlvaro,
+      map: map
+      });
+
+      var iw = new google.maps.InfoWindow({
+      content: "Castellana"
+      });
+      google.maps.event.addListener(marker, "click", function(e) {
+        iw.open(map, this);
+      });
+
+      var iw2 = new google.maps.InfoWindow({
+      content: "Plaza Castilla"
+      });
+      google.maps.event.addListener(marker2, "click", function(e) {
+        iw2.open(map, this);
+      });
+
+      var iw3 = new google.maps.InfoWindow({
+      content: "Cuatro Caminos"
+      });
+      google.maps.event.addListener(marker3, "click", function(e) {
+        iw3.open(map, this);
+      });
+
+      var iw4 = new google.maps.InfoWindow({
+      content: "Casa de Campo"
+      });
+      google.maps.event.addListener(marker4, "click", function(e) {
+        iw4.open(map, this);
+      });
+
+      var iw5 = new google.maps.InfoWindow({
+      content: "Escuelas Aguirre"
+      });
+      google.maps.event.addListener(marker5, "click", function(e) {
+        iw5.open(map, this);
+      });
+
+      var iw6 = new google.maps.InfoWindow({
+      content: "Méndez Álvaro"
+      });
+      google.maps.event.addListener(marker6, "click", function(e) {
+        iw6.open(map, this);
+      });
+      google.maps.event.addDomListener(window, 'resize', function() {
+      map.setCenter(madrid);
+      });
+      }
+    script(async='', defer='', src='https://maps.googleapis.com/maps/api/js?key=AIzaSyDdalCr4pkiGbIpowdAnSkhcl9cDVz4YH8&callback=initMap')
