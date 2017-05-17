@@ -50,9 +50,9 @@ forecast:
     - haproxy
     - storage-server
 haproxy:
-  image :    registry.eu-gb.bluemix.net/airq_containers/haproxy:latest
+  image :         registry.eu-gb.bluemix.net/airq_containers/haproxy:latest
   container_name: haproxy
-  mem_limit: 128
+  mem_limit:      128
   links:
     - mqtt
   ports:

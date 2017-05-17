@@ -76,7 +76,7 @@ def get_zones(storage_server_hostname):
             zones[zone_name]['stations'] = len(zone['stations'])
         return zones
     except Exception as e:
-        print("error:" + e)
+        print("error:", e)
 
 
 def get_max_aqi(pollutant, measures):
@@ -167,7 +167,7 @@ def post_diagnostic(diagnostic_json, force=False):
             print("NOT posting diagnostic", diagnostic_json,
                   " to ", diagnostics_path)
     except Exception as e:
-        print("error: " + e)
+        print("error: ", e)
 
 
 def find_category(dominentpol, dominentpol_val):
