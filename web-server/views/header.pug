@@ -149,7 +149,7 @@ nav.navbar.navbar-default.top-navbar(role='navigation')
           li
             a(href='#')
               i.fa.fa-user.fa-fw
-              |  Hi, #{user.local.email}
+              |  Hi, #{user.nickname}
           li
             a(href='#')
               i.fa.fa-gear.fa-fw
@@ -159,14 +159,6 @@ nav.navbar.navbar-default.top-navbar(role='navigation')
             a(href='/logout')
               i.fa.fa-sign-out.fa-fw
               |  Logout
-        //- else
-        //-   li
-        //-     a(href='/login')
-        //-       i.fa.fa-user.fa-fw
-        //-       |  Login
-        //-     a(href='/signup')
-        //-       i.fa.fa-user.fa-fw
-        //-       |  Sign up
           
         
       // /.dropdown-user

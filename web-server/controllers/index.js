@@ -1,19 +1,10 @@
 // app/routes.js
-module.exports = function(app, passport) {
+crypto = require('crypto');
 
-  // =====================================
-  // dashboard PAGE (with login links) ========
-  // =====================================
-  //
-  //
-  app.get('/', function(req, res) {
-    // res.render('dashboard'); //
-    if(req.isAuthenticated()){
-      res.redirect('/dashboard')
-    }
-    res.redirect('/login');
-  });
-
+var hash = function(password) {
+  return crypto.createHash('sha1').update(password).digest('base64')
+}
+module.exports = function(app) {
   // =====================================
   // LOGIN ===============================
   // =====================================
@@ -25,68 +16,113 @@ module.exports = function(app, passport) {
     });
   });
 
-  // process the login form
-  app.post('/login', passport.authenticate('local-login', {
-    successRedirect: '/dashboard', // redirect to the secure profile section
-    failureRedirect: '/login', // redirect back to the signup page if there is an error
-    failureFlash: true // allow flash messages
-  }));
+  app.post('/login', function(req, res) {
+    var request = require('request');
+    user = {
+      "nickname": req.body.nickname,
+      "password": hash(req.body.password)
+    }
+    request.post(
+      'http://localhost:3000/users/authenticate', {
+        json: user
+      },
+      function(error, response, body) {
+        if (!error && response.statusCode == 200) {
+          console.log(body, body.isOk)
+          req.session.user = user;
+          res.redirect('/dashboard');
+        }
+      }
+    );
+  });
+
+  // =====================================
+  // dashboard PAGE (with login links) ========
+  // =====================================
+  //
+  //
+  app.get('/dashboard', function(req, res) {
+    if (req.session.user) {
+      res.render('dashboard', {
+        user: req.session.user
+      })
+    } else {
+      res.redirect('/login');
+    }
+  });
+
+  app.get('/', function(req, res) {
+    if (req.session.user) {
+      res.render('dashboard', {
+        user: req.session.user
+      })
+    } else {
+      res.redirect('/login');
+    }
+  });
+
+
 
   // =====================================
   // SIGNUP ==============================
   // =====================================
   // show the signup form
   app.get('/signup', function(req, res) {
-
     // render the page and pass in any flash data if it exists
     res.render('signup', {
       message: req.flash('signupMessage')
     });
   });
+  var Users = [];
 
-  // process the signup form
-  app.post('/signup', passport.authenticate('local-signup', {
-    successRedirect: '/login', // redirect to the secure profile section
-    failureRedirect: '/signup', // redirect back to the signup page if there is an error
-    failureFlash: true // allow flash messages
-  }));
-
-
-  // =====================================
-  // PROFILE SECTION =========================
-  // =====================================
-  // we will want this protected so you have to be logged in to visit
-  // we will use route middleware to verify this (the isLoggedIn function)
-  app.get('/dashboard', isLoggedIn, function(req, res) {
-    res.render('dashboard', {
-      user: req.user // get the user out of session and pass to template
-    });
+  app.post('/signup', function(req, res) {
+    if (!req.body.nickname || !req.body.password) {
+      res.status("400");
+      res.send("Invalid details!");
+    } else {
+      //TODO: check if user exists
+      var newUser = {
+        "nickname": req.body.nickname,
+        "password": hash(req.body.password),
+        "name": {
+          "first": "Pepe",
+          "last": "Test"
+        },
+        "contact": {
+          "nickname": "nickname",
+          "phone": "+34123456789",
+          "address": {
+            "address": "Test st. 1",
+            "city": {
+              "name": "Albacete",
+              "zip": "02002"
+            },
+            "country": "Spain"
+          }
+        }
+      }
+      var request = require('request');
+      request.post(
+        'http://localhost:3000/users', {
+          json: newUser
+        },
+        function(error, response, body) {
+          if (!error && response.statusCode == 200) {
+            console.log(body)
+          }
+        }
+      );
+      req.session.user = newUser;
+      res.redirect('/dashboard');
+    }
   });
+
 
   // =====================================
   // LOGOUT ==============================
   // =====================================
   app.get('/logout', function(req, res) {
-    req.logout();
+    req.session.destroy();
     res.redirect('/');
   });
-
-  // =====================================
-  // LOGOUT ==============================
-  // =====================================
-  app.get('/logout', function(req, res) {
-    req.logout();
-    res.redirect('/');
-  });
-};
-
-// route middleware to make sure a user is logged in
-function isLoggedIn(req, res, next) {
-
-  // if user is authenticated in the session, carry on
-  if (req.isAuthenticated())
-    return next();
-
-  // if they aren't redirect them to the dashboard page
-  res.redirect('/');
 }
