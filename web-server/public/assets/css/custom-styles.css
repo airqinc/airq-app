@@ -549,7 +549,7 @@ footer p {
 }
 
 .active-menu {
-  background-color: #0866C6 !important;
+  background-color: #0866C6; //airq remove !important
   color: #fff !important;
 }
 

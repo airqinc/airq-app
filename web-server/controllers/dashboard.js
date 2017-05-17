@@ -67,7 +67,7 @@ router.get('/', function(req, res) {
       })
     });
   } else {
-    res.redirect('/login');
+    res.redirect('/user/login');
   }
 
 });

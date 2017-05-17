@@ -1,29 +1,26 @@
 // Launch: npm run dev
 
-var express = require('express'),
-	bodyParser = require('body-parser'),
-	app = express();
+var express = require('express');
+var bodyParser = require('body-parser');
+var app = express();
 
-//Middlewares
+var morgan = require('morgan');
+
+// Middlewares
+app.use(morgan('dev')); // log every request to the console
 app.use(bodyParser.json()); // support json encoded bodies
 app.use(bodyParser.urlencoded({ extended: true })); // support encoded bodies
 
-//Levanta bases de datos
+// Launch dbs
 var db = require('./db');
 
-//Configuración de la aplicación express
+// Load settings
 app.set('settings', require('./config'));
 
-//Rutas de mi aplicación
-app.use(function(req, res, next)
-{
-    console.log(req.method+' '+req.url);
-    next();
-});
+// Routes
 app.use(require('./controllers'));
-//app.use('/users', require('./routes/user'));
 
-// Ejecutar servidor
+// Launch server
 app.listen(app.get('settings').port, function() {
   console.log('Listening port: ' + app.get('settings').port);
 });
