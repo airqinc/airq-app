@@ -2,12 +2,12 @@
 module.exports = function(app, passport) {
 
   // =====================================
-  // HOME PAGE (with login links) ========
+  // dashboard PAGE (with login links) ========
   // =====================================
   //
   //
   app.get('/', function(req, res) {
-    // res.render('home'); //
+    // res.render('dashboard'); //
     if(req.isAuthenticated()){
       res.redirect('/dashboard')
     }
@@ -58,7 +58,7 @@ module.exports = function(app, passport) {
   // we will want this protected so you have to be logged in to visit
   // we will use route middleware to verify this (the isLoggedIn function)
   app.get('/dashboard', isLoggedIn, function(req, res) {
-    res.render('home', {
+    res.render('dashboard', {
       user: req.user // get the user out of session and pass to template
     });
   });
@@ -87,6 +87,6 @@ function isLoggedIn(req, res, next) {
   if (req.isAuthenticated())
     return next();
 
-  // if they aren't redirect them to the home page
+  // if they aren't redirect them to the dashboard page
   res.redirect('/');
 }
