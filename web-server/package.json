@@ -43,6 +43,7 @@
     "gulp-livereload": "^3.8.1",
     "gulp-nodemon": "^2.2.1",
     "gulp-notify": "^3.0.0",
+    "node-stringify": "0.0.19",
     "nodemon": "^1.11.0"
   }
 }
