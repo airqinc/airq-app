@@ -35,10 +35,10 @@ var diagnosticSchema = new mongoose.Schema({
     alerts:         [alertSchema]
 });
 
-diagnosticSchema.index({ zone: 1, datetime: -1}, { unique: true }); //Por lo general se querrán los últimos diagnóstivos
+diagnosticSchema.index({ zone: 1, datetime: -1, isForecast: 1}, { unique: true }); //Por lo general se querrán los últimos diagnóstivos
 
-diagnosticSchema.query.byTime = function(zone, datetime) {
-    return this.findOne({ zone: zone, datetime: datetime });
+diagnosticSchema.query.byTime = function(zone, datetime, isForecast) {
+    return this.findOne({ zone: zone, datetime: datetime, isForecast: isForecast });
 };
 
 var Diagnostic = connections[dbs.db3.name].model('Diagnostic', diagnosticSchema);
@@ -53,8 +53,8 @@ exports.get = function(id, cb) {
     Diagnostic.findById(id, cb);
 };
 
-exports.getByTime = function(zone, datetime, cb) {
-    Diagnostic.find().byTime(zone, datetime).exec(cb);
+exports.getByTime = function(zone, datetime, isForecast, cb) {
+    Diagnostic.findOne().byTime(zone, datetime, isForecast).exec(cb);
 };
 
 exports.add = function(newDiagnostic, cb) {
@@ -124,15 +124,15 @@ exports.remove = function(id, cb) {
     Diagnostic.findByIdAndRemove(id, cb);
 };
 
-exports.removeByTime = function(zone, datetime, cb) {
-    Diagnostic.findOneAndRemove({ zone: zone, datetime: datetime }, cb);
+exports.removeByTime = function(zone, datetime, isForecast, cb) {
+    Diagnostic.findOneAndRemove({ zone: zone, datetime: datetime, isForecast: isForecast }, cb);
 };
 
 
 // OPERACIONES ADICIONALES
 
-exports.addAlert = function(zone, datetime, alert, cb) {
-    Diagnostic.find().byTime(zone, datetime).exec(function(err, diagnostic) {
+exports.addAlert = function(zone, datetime, isForecast, alert, cb) {
+    Diagnostic.findOne().byTime(zone, datetime, isForecast).exec(function(err, diagnostic) {
         if (diagnostic.alerts.indexOf(alert) == -1){
             diagnostic.alerts.push(alert);
             diagnostic.save(function(err, data) {
@@ -143,8 +143,8 @@ exports.addAlert = function(zone, datetime, alert, cb) {
     });
 };
 
-exports.removeAlert = function(zone, datetime, alert, cb) {
-    Diagnostic.find().byTime(zone, datetime).exec(function(err, diagnostic) {
+exports.removeAlert = function(zone, datetime, isForecast, alert, cb) {
+    Diagnostic.findOne().byTime(zone, datetime, isForecast).exec(function(err, diagnostic) {
         var index = diagnostic.alerts.indexOf(alert)
 
         if (index != -1){

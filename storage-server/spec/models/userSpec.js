@@ -31,7 +31,6 @@ describe("User", function() {
       expect(err).toBeNull();
       expect(data).toBeDefined();
       expect(data.nickname).toEqual(user.nickname);
-      expect(data.password).not.toEqual(user.password);
       asyncSpecDone();
     });
     asyncSpecWait();
@@ -48,19 +47,16 @@ describe("User", function() {
   });
 
   it("should be able to authenticate successfully", function() {
-    User.authenticate(user.nickname, user.password, function(isOk, data) {
+    User.authenticate(user.nickname, user.password, function(isOk, err) {
       expect(isOk).toBe(true);
-      expect(data).toBeDefined();
-      expect(data.nickname).toEqual(user.nickname);
       asyncSpecDone();
     });
     asyncSpecWait();
   });
 
   it("should be able to detect an incorrect password", function() {
-    User.authenticate(user.nickname, 'wrongPass', function(isOk, data) {
+    User.authenticate(user.nickname, 'wrongPass', function(isOk, err) {
       expect(isOk).toBe(false);
-      expect(data).toBeNull();
       asyncSpecDone();
     });
     asyncSpecWait();

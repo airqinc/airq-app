@@ -1,11 +1,6 @@
 var mongoose = require('mongoose'),
 	dbs = require('../config').dbs,
-	connections = require('../db'),
-  crypto = require('crypto');
-
-var hash = function(password) {
-  return crypto.createHash('sha1').update(password).digest('base64')
-}
+	connections = require('../db');
 
 var userSchema = new mongoose.Schema({
 	_id:       String,
@@ -55,7 +50,7 @@ exports.get = function(nickname, cb) {
 exports.add = function(newUser, cb) {
 	var user = new User({
     nickname: newUser.nickname,
-  	password: hash(newUser.password),
+  	password: newUser.password,
   	name: {
       first: newUser.name.first,
       last: newUser.name.last
@@ -104,11 +99,11 @@ exports.remove = function(nickname, cb) {
 
 exports.authenticate = function(nickname, password, cb) {
   User.findById(nickname, function(err, user) {
-    if (err) return cb(err);
-    if (user.password === hash(password)) {
-      cb(true, user);
+    if (err) return cb(false, err);
+    if (user.password === password) {
+      cb(true);
     } else {
-      cb(false, null);
+      cb(false);
     }
   })
 }

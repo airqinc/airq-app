@@ -86,6 +86,15 @@ router.delete('/:nickname', function(req, res) {
 	})
 })
 
+// POST - Autenticar un usuario
+router.post('/authenticate', function(req, res) {
+	User.authenticate(req.body.nickname, req.body.password, function(isOk, data, err) {
+	  if(err) return res.status(500).send(err.message);
+		res.status(200).jsonp({"isOk": isOk});
+	})
+})
+
+// Prueba
 router.get('/:nickname/prueba', function(req, res) {
 	User.getSubcriptionsZones(req.params.nickname, function(err, data) {
 	  if(err) return res.status(500).send(err.message);

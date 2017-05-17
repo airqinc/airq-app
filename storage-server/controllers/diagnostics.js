@@ -5,7 +5,7 @@ var express = require('express'),
 //GET - Devuelve todas los diagnosticos
 router.get('/', function(req, res) {
 	Diagnostic.all(function(err, data) {
-	    if(err) return res.status(500).send(err.message);
+	  if(err) return res.status(500).send(err.message);
 		res.status(200).jsonp(data);
 	})
 })
@@ -13,7 +13,15 @@ router.get('/', function(req, res) {
 //GET - Devuelve un diagnostico por ID
 router.get('/:id', function(req, res) {
 	Diagnostic.get(req.params.id, function(err, data) {
-	    if(err) return res.status(500).send(err.message);
+	  if(err) return res.status(500).send(err.message);
+		res.status(200).jsonp(data);
+	})
+})
+
+//GET - Devuelve un diagnostico por tiempo
+router.get('/:zone', function(req, res) {
+	Diagnostic.getByTime(req.params.zone, req.body.datetime, req.body.isForecast, function(err, data) {
+	  if(err) return res.status(500).send(err.message);
 		res.status(200).jsonp(data);
 	})
 })
@@ -37,10 +45,10 @@ router.post('/', function(req, res) {
             p:          req.body.iaqi.p
         },
         aemet: {
-            temperature:    req.body.aemet.temperature, 
-            windSpeed:      req.body.aemet.windSpeed, 
-            rainfall:       req.body.aemet.rainfall, 
-            windChill:      req.body.aemet.windChill, 
+            temperature:    req.body.aemet.temperature,
+            windSpeed:      req.body.aemet.windSpeed,
+            rainfall:       req.body.aemet.rainfall,
+            windChill:      req.body.aemet.windChill,
             windDirection:  req.body.aemet.windDirection,
             humidity:       req.body.aemet.humidity
         },
@@ -51,8 +59,14 @@ router.post('/', function(req, res) {
 	Diagnostic.add(diagnostic, function(err, newDiagnostic) {
 	    if(err) return res.status(500).send(err.message);
 
-        console.log('POST new diagnostic to zone ' + diagnostic.zone + " at " + diagnostic.datetime)
-        res.status(200).jsonp(newDiagnostic);
+			if (isForecast){
+				console.log('POST new forecast to zone ' + diagnostic.zone + " at " + diagnostic.datetime);
+				res.status(200).jsonp(newDiagnostic);
+			}
+			else{
+				console.log('POST new diagnostic to zone ' + diagnostic.zone + " at " + diagnostic.datetime);
+				res.status(200).jsonp(newDiagnostic);
+			}
 	})
 })
 
@@ -75,10 +89,10 @@ router.put('/:id', function(req, res) {
             p:          req.body.iaqi.p
         },
         aemet: {
-            temperature:    req.body.temperature, 
-            windSpeed:      req.body.windSpeed, 
-            rainfall:       req.body.rainfall, 
-            windChill:      req.body.windChill, 
+            temperature:    req.body.temperature,
+            windSpeed:      req.body.windSpeed,
+            rainfall:       req.body.rainfall,
+            windChill:      req.body.windChill,
             windDirection:  req.body.windDirection,
             humidity:       req.body.humidity
         }
@@ -99,11 +113,17 @@ router.delete('/:id', function(req, res) {
 })
 
 //DELETE - Borra una diagnóstico por fecha y hora
-router.delete('/:zone/datetime/', function(req, res) {
-    Diagnostic.removeByTime(req.params.zone, req.body.datetime, function(err, diagnostic) {
+router.delete('/:zone', function(req, res) {
+    Diagnostic.removeByTime(req.params.zone, req.body.datetime, req.body.isForecast, function(err, diagnostic) {
         if(err) return res.status(500).send(err.message);
-        console.log('DELETE diagnostic of zone ' + diagnostic.zone + " at " + diagnostic.datetime)
-        res.status(200).send("DELETE diagnostic "+diagnostic.zone+" "+diagnostic.datetime);
+				if (isForecast){
+					console.log('DELETE forecast of zone ' + diagnostic.zone + " at " + diagnostic.datetime);
+					res.status(200).send("DELETE forecast "+diagnostic.zone+" "+diagnostic.datetime);
+				}
+				else{
+        	console.log('DELETE diagnostic of zone ' + diagnostic.zone + " at " + diagnostic.datetime);
+					res.status(200).send("DELETE diagnostic "+diagnostic.zone+" "+diagnostic.datetime);
+				}
     })
 })
 
