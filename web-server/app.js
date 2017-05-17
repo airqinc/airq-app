@@ -36,7 +36,9 @@ app.use(session({
 app.use(flash()); // use connect-flash for flash messages stored in session
 
 // routes ======================================================================
-require('./controllers')(app);
+// require('./controllers')(app);
+app.use(require('./controllers'));
+
 
 // launch ======================================================================
 app.listen(port);
