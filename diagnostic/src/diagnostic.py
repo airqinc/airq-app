@@ -33,8 +33,8 @@ def on_log(mqttc, obj, level, string):
 
 
 def on_message(mqtt, obj, msg):
-    # print("msg received. Topic:  " + msg.topic + " " +
-    #       str(msg.qos) + " . payload: " + str(msg.payload))
+    print("msg received. Topic:  " + msg.topic + " " +
+          str(msg.qos) + " . payload: " + str(msg.payload))
     json_payload = json.loads(msg.payload.decode())
     if str(msg.topic) == 'transformed_data':
         zone = json_payload['station']['zone']
