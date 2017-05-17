@@ -22,14 +22,9 @@ router.get('/', function(req, res) {
     request(measures_path, function(error, response, body) {
       console.log('error:', error); // Print the error if one occurred
       console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-      // console.log('body:', body); // Print the HTML for the Google homepage.
-      // TODO: parse body
       diagnostics = sortByKey(JSON.parse(body), 'datetime').reverse() //sort by date, most recent first
-
-      diagnostics = sortByKey((diagnostics), 'isForecast') // sory by diagnostic type, get only diagnostics
+      diagnostics = sortByKey(diagnostics, 'isForecast') // sory by diagnostic type, get only diagnostics
       last_diagnostics = diagnostics.slice(0, 24) // get last 24 diagnostics
-      console.log(last_diagnostics)
-
       chart_data = []
       last_diagnostics.forEach(function(item, index) {
         dominentpol = item['dominentpol']

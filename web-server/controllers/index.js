@@ -1,10 +1,8 @@
 var express = require('express'),
   router = express.Router();
 
-router.use('/login', require('./login'))
 router.use('/dashboard', require('./dashboard'))
-router.use('/signup', require('./signup'))
-router.use('/logout', require('./logout'))
+router.use('/user', require('./user'))
 
 
 router.get('/', function(req, res) {
@@ -13,7 +11,7 @@ router.get('/', function(req, res) {
       user: req.session.user
     })
   } else {
-    res.redirect('/login');
+    res.redirect('/user/login');
   }
 });
 
