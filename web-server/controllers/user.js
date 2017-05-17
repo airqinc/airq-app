@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var User = require('../models/user')
 
 crypto = require('crypto');
 var hash = function(password) {
@@ -28,15 +29,16 @@ router.post('/signup', function(req, res) {
     res.send("Invalid details!");
   } else {
     //TODO: check if user exists
+
     var newUser = {
       "nickname": req.body.nickname,
-      "password": hash(req.body.password),
+      "password": req.body.password,
       "name": {
         "first": "Pepe",
         "last": "Test"
       },
       "contact": {
-        "nickname": "nickname",
+        "email": "pepe@test.com",
         "phone": "+34123456789",
         "address": {
           "address": "Test st. 1",
@@ -48,19 +50,17 @@ router.post('/signup', function(req, res) {
         }
       }
     }
-    var request = require('request');
-    request.post(
-      'http://localhost:3000/users', {
-        json: newUser
-      },
-      function(error, response, body) {
-        if (!error && response.statusCode == 200) {
-          console.log(body)
-        }
+    User.add(newUser, function(user){
+      if(user != 'error'){
+        req.session.user = user;
+        res.redirect('/dashboard');
       }
-    );
-    req.session.user = newUser;
-    res.redirect('/dashboard');
+      else{
+        res.render('signup', {
+          message: 'sign up error'
+        });
+      }
+    })
   }
 });
 
@@ -76,23 +76,21 @@ router.get('/login', function(req, res) {
 });
 
 router.post('/login', function(req, res) {
-  var request = require('request');
   user = {
     "nickname": req.body.nickname,
     "password": hash(req.body.password)
   }
-  request.post(
-    'http://localhost:3000/users/authenticate', {
-      json: user
-    },
-    function(error, response, body) {
-      if (!error && response.statusCode == 200) {
-        console.log(body, body.isOk)
-        req.session.user = user;
-        res.redirect('/dashboard');
-      }
+  User.authenticate(user, function(isOk){
+    if(isOk){
+      req.session.user = user;
+      res.redirect('/dashboard');
     }
-  );
+    else{
+      res.render('login', {
+        message: 'login error'
+      });
+    }
+  })
 });
 
 //=====================================
