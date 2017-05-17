@@ -10,49 +10,9 @@
         a(href='#') Library
       li.active Data
   #page-inner
-    // /. ROW
     .row
-      .col-md-3.col-sm-12.col-xs-12
-        .panel.panel-primary.text-center.no-boder.blue
-          .panel-left.pull-left.blue
-            i.fa.fa-eye.fa-5x
-          .panel-right
-            h3 10,253
-            strong  Daily Visits
-      .col-md-3.col-sm-12.col-xs-12
-        .panel.panel-primary.text-center.no-boder.blue
-          .panel-left.pull-left.blue
-            i.fa.fa-shopping-cart.fa-5x
-          .panel-right
-            h3 33,180 
-            strong  Sales
-      .col-md-3.col-sm-12.col-xs-12
-        .panel.panel-primary.text-center.no-boder.blue
-          .panel-left.pull-left.blue
-            i.fa.fa.fa-comments.fa-5x
-          .panel-right
-            h3 16,022 
-            strong  Comments 
-      .col-md-3.col-sm-12.col-xs-12
-        .panel.panel-primary.text-center.no-boder.blue
-          .panel-left.pull-left.blue
-            i.fa.fa-users.fa-5x
-          .panel-right
-            h3 36,752 
-            strong No. of Visits
-    .row
-      .col-md-5
-        .panel.panel-default
-          .panel-heading
-            | Line Chart
-          .panel-body
-            #morris-line-chart
-      .col-md-7
-        .panel.panel-default
-          .panel-heading
-            | Bar Chart Example
-          .panel-body
-            #morris-bar-chart
+      include charts/line.pug
+      include charts/map.pug
     .row
       .col-xs-6.col-md-3
         .panel.panel-default
@@ -78,110 +38,8 @@
             h4 No. of Visits
             #easypiechart-red.easypiechart(data-percent='46')
               span.percent 46%
-    // /.row
-    .row
-      .col-md-9.col-sm-12.col-xs-12
-        .panel.panel-default
-          .panel-heading
-            | Area Chart
-          .panel-body
-            #morris-area-chart
-      .col-md-3.col-sm-12.col-xs-12
-        .panel.panel-default
-          .panel-heading
-            | Donut Chart Example
-          .panel-body
-            #morris-donut-chart
-    .row
-      .col-md-12
     // /. ROW
-    .row
-      .col-md-4.col-sm-12.col-xs-12
-        .panel.panel-default
-          .panel-heading
-            | Tasks Panel
-          .panel-body
-            .list-group
-              a.list-group-item(href='#')
-                span.badge 7 minutes ago
-                i.fa.fa-fw.fa-comment
-                |  Commented on a post
-              a.list-group-item(href='#')
-                span.badge 16 minutes ago
-                i.fa.fa-fw.fa-truck
-                |  Order 392 shipped
-              a.list-group-item(href='#')
-                span.badge 36 minutes ago
-                i.fa.fa-fw.fa-globe
-                |  Invoice 653 has paid
-              a.list-group-item(href='#')
-                span.badge 1 hour ago
-                i.fa.fa-fw.fa-user
-                |  A new user has been added
-              a.list-group-item(href='#')
-                span.badge 1.23 hour ago
-                i.fa.fa-fw.fa-user
-                |  A new user has added
-              a.list-group-item(href='#')
-                span.badge yesterday
-                i.fa.fa-fw.fa-globe
-                |  Saved the world
-            .text-right
-              a(href='#')
-                | More Tasks 
-                i.fa.fa-arrow-circle-right
-      .col-md-8.col-sm-12.col-xs-12
-        .panel.panel-default
-          .panel-heading
-            | Responsive Table Example
-          .panel-body
-            .table-responsive
-              table.table.table-striped.table-bordered.table-hover
-                thead
-                  tr
-                    th S No.
-                    th First Name
-                    th Last Name
-                    th User Name
-                    th Email ID.
-                tbody
-                  tr
-                    td 1
-                    td John
-                    td Doe
-                    td John15482
-                    td name@site.com
-                  tr
-                    td 2
-                    td Kimsila
-                    td Marriye
-                    td Kim1425
-                    td name@site.com
-                  tr
-                    td 3
-                    td Rossye
-                    td Nermal
-                    td Rossy1245
-                    td name@site.com
-                  tr
-                    td 4
-                    td Richard
-                    td Orieal
-                    td Rich5685
-                    td name@site.com
-                  tr
-                    td 5
-                    td Jacob
-                    td Hielsar
-                    td Jac4587
-                    td name@site.com
-                  tr
-                    td 6
-                    td Wrapel
-                    td Dere
-                    td Wrap4585
-                    td name@site.com
-    // /. ROW
+    
     footer
       p
         | All right reserved. Template by: 
