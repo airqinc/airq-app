@@ -29,7 +29,7 @@ User.add = function(newUser, cb) {
   var request = require('request');
 
   request.post(
-    'http://localhost:3000/users', {
+    'http://storage-server:3000/users', {
       json: newUser
     },
     function(error, response, body) {
@@ -51,7 +51,7 @@ User.authenticate = function(user, cb) {
     "password": user.password
   }
   request.post(
-    'http://localhost:3000/users/authenticate', {
+    'http://storage-server:3000/users/authenticate', {
       json: json_payload
     },
     function(error, response, body) {

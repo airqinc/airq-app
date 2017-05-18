@@ -57,3 +57,11 @@ haproxy:
     - mqtt
   ports:
     - "request:1883:1883"
+web-server:
+  image:          registry.eu-gb.bluemix.net/airq_containers/web-server:latest
+  container_name: web-server
+  mem_limit:      128m
+  links:
+    - storage-server
+  ports:
+    - "request:8080:8080"

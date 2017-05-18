@@ -7,7 +7,7 @@ var express = require('express'),
 //
 //
 router.get('/', function(req, res) {
-  var measures_path = 'http://localhost:3000/diagnostics/Madrid/latest'
+  var measures_path = 'http://storage-server:3000/diagnostics/Madrid/latest'
   var request = require('request');
 
   function sortByKey(array, key) {

@@ -50,16 +50,18 @@ forecast:
     - haproxy
     - storage-server
 haproxy:
-  build :    ./haproxy
+  build :         ./haproxy
   container_name: haproxy
-  mem_limit: 128m
+  mem_limit:      128m
   links:
     - mqtt
   expose:
     - "1883"
-# web-server:
-#   build:          ./web-server
-#   container_name: web-server
-#   mem_limit:      128m
-#   expose:
-#     - "8080"
+web-server:
+  build:          ./web-server
+  container_name: web-server
+  mem_limit:      128m
+  links:
+    - storage-server
+  expose:
+    - "8080"
