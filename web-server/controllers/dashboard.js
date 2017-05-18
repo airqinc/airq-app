@@ -36,6 +36,7 @@ router.get('/', function(req, res) {
           description = item.alerts[0].category.description;
           msg = item.alerts[0].category.msg;
           aqi_color = item.alerts[0].category.color;
+          pollutants = item.iaqi;
         }
         diagnostics_chart_data[index] = temp
       });
@@ -49,6 +50,14 @@ router.get('/', function(req, res) {
         }
         forecasts_chart_data[index] = temp
       });
+      for(k in pollutants){
+        // pollutants[k] = pollutants[k] * 500 / 100
+        if(k == 'h' | k == 't' | k == 'p'){
+          delete pollutants[k]
+        }
+        console.log(k, pollutants[k])
+      }
+      // console.log(pollutants);
       date_obj = new Date(diagnostics_chart_data[0]['date']);
       res.render('dashboard', {
         user: req.session.user,
@@ -59,6 +68,7 @@ router.get('/', function(req, res) {
         hour_updated_at: date_obj.getHours() + ":" + date_obj.getMinutes() + "0",
         current_aqi_message: description,
         extended_aqi_message: msg,
+        pollutants: pollutants,
         forecasts_chart_data: JSON.stringify(forecasts_chart_data),
       })
     });
