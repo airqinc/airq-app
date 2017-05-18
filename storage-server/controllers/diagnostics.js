@@ -59,7 +59,7 @@ router.post('/', function(req, res) {
 	Diagnostic.add(diagnostic, function(err, newDiagnostic) {
 	    if(err) return res.status(500).send(err.message);
 
-			if (isForecast){
+			if (diagnostic.isForecast){
 				console.log('POST new forecast to zone ' + diagnostic.zone + " at " + diagnostic.datetime);
 				res.status(200).jsonp(newDiagnostic);
 			}
@@ -116,7 +116,7 @@ router.delete('/:id', function(req, res) {
 router.delete('/:zone', function(req, res) {
     Diagnostic.removeByTime(req.params.zone, req.body.datetime, req.body.isForecast, function(err, diagnostic) {
         if(err) return res.status(500).send(err.message);
-				if (isForecast){
+				if (diagnostic.isForecast){
 					console.log('DELETE forecast of zone ' + diagnostic.zone + " at " + diagnostic.datetime);
 					res.status(200).send("DELETE forecast "+diagnostic.zone+" "+diagnostic.datetime);
 				}
