@@ -16,15 +16,6 @@ router.get('/', function(req, res) {
   }
 });
 
-router.get('/myZones', function(req, res) {
-  if (req.session.user) {
-    res.render('myZones', {
-      user: req.session.user
-    })
-  } else {
-    res.redirect('/user/login');
-  }
-});
 
 router.get('/otherZones', function(req, res) {
   if (req.session.user) {
