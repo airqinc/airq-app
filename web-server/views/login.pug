@@ -19,14 +19,14 @@ html
           h3.title Hello.#{message}
           #username.form-group
             input#email.form-input(name='nickname', tooltip-class='username-tooltip', placeholder='Username', required='true', autofocus='true')
-            span#username-tool.tooltip.username-tooltip What's your username?
+            span#username-tool.tooltip.username-tooltip ¿Cuál es tu usuario?
           #password.form-group
-            input.form-input(name='password', type='password', tooltip-class='password-tooltip', placeholder='Password')
-            span.tooltip.password-tooltip What's your password?
+            input.form-input(name='password', type='password', tooltip-class='password-tooltip', placeholder='Password', required='true')
+            span.tooltip.password-tooltip ¿Cuál es tu contraseña?
           .form-group
-            button.login-button(onclick='clickListener();') Login
+            input.login-button(type='submit', value='login')
             input.remember-checkbox(type='checkbox')
-            p.remember-p Remember me
+            p.remember-p Recuérdame
         .loading
           .loading-spinner-large(style='display: none;')
           .loading-spinner-small(style='display: none;')

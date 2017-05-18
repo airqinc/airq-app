@@ -32,7 +32,7 @@ router.post('/signup', function(req, res) {
 
     var newUser = {
       "nickname": req.body.nickname,
-      "password": req.body.password,
+      "password": hash(req.body.password),
       "name": {
         "first": "Pepe",
         "last": "Test"

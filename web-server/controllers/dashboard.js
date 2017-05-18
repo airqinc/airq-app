@@ -7,46 +7,49 @@ var express = require('express'),
 //
 //
 router.get('/', function(req, res) {
-  var measures_path = 'http://storage-server:3000/diagnostics/Madrid/latest'
+  var diagnostics_path = 'http://storage-server:3000/diagnostics/Madrid/latest'
   var request = require('request');
 
-  function sortByKey(array, key) {
-    return array.sort(function(a, b) {
-      var x = a[key];
-      var y = b[key];
-      return ((x < y) ? -1 : ((x > y) ? 1 : 0));
-    });
-  }
+  // function sortByKey(array, key) {
+  //   return array.sort(function(a, b) {
+  //     var x = a[key];
+  //     var y = b[key];
+  //     return ((x < y) ? -1 : ((x > y) ? 1 : 0));
+  //   });
+  // }
 
 
   if (req.session.user) {
     // line chart
     request.post({
-      url: measures_path,
+      url: diagnostics_path,
       form: {
         "isForecast": false,
-        "number": 24
+        "number": 48, //48
+        "both": true
       }
     }, function(error, response, body) {
       console.log('error:', error); // Print the error if one occurred
       console.log('statusCode:', response && response.statusCode); // Print the response status code if a response was received
-      diagnostics = sortByKey(JSON.parse(body), 'datetime').reverse() //sort by date, most recent first
-      chart_data = []
+      // diagnostics = sortByKey(JSON.parse(body), 'datetime').reverse() //sort by date, most recent first, //creo q sobra
+      diagnostics = JSON.parse(body);
+      diagnostics_chart_data = [];
       diagnostics.forEach(function(item, index) {
         dominentpol = item['dominentpol']
         temp = {
           date: item['datetime'],
           aqi: item['iaqi'][dominentpol],
+          isForecast: item['isForecast'],
         }
-        chart_data[index] = temp
+        diagnostics_chart_data[index] = temp
       });
-      console.log(chart_data);
+      console.log(diagnostics_chart_data);
 
       res.render('dashboard', {
         user: req.session.user,
-        measures: JSON.stringify(chart_data),
-        current_aqi: chart_data[0]['aqi'], // current status
-        aqi_updated_at: chart_data[0]['date'],
+        measures: JSON.stringify(diagnostics_chart_data),
+        current_aqi: diagnostics_chart_data[0]['aqi'], // current status
+        aqi_updated_at: diagnostics_chart_data[0]['date'],
         current_aqi_message: 'Sin Riesgo',
         extended_aqi_message: 'La calidad del aire se considera correcta y la contamminación del aire plantea poco o ningún riesgo'
       })

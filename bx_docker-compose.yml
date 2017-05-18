@@ -60,7 +60,7 @@ haproxy:
 web-server:
   image:          registry.eu-gb.bluemix.net/airq_containers/web-server:latest
   container_name: web-server
-  mem_limit:      128m
+  mem_limit:      128
   links:
     - storage-server
   ports:

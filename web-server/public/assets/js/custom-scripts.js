@@ -42,7 +42,7 @@
 
       Morris.Line({
         element: 'morris-line-chart2',
-        data: client_measures2, // data printed via PUG. tests: mock_data
+        data: client_measures, // data printed via PUG. tests: mock_data
         xkey: 'date',
         ykeys: ['aqi'],
         labels: ['aqi'],

@@ -12,12 +12,13 @@ $('.form-input').blur(function() {
   $('.tooltip').fadeOut(250);
 });
 
-$('.login-button').click(function(event) {
-  event.preventDefault();
-  // or use return false;
-});
+// $('.login-button').click(function(event) {
+//   event.preventDefault();
+//   // or use return false;
+// });
 
-$(".login-button").click(function() {
+$('.login-form').on('submit', function() {
+  console.log($('#email').val());
   if ($('.login-form').css("transform") == 'none') {
     $('.login-form').css("transform", "rotateY(-180deg)");
     $('.loading').css("transform", "rotateY(0deg)");

@@ -1,12 +1,12 @@
 .col-md-12
   .panel.panel-default
     .panel-heading
-      | Últimas 24h
+      | Últimas 48h
     .panel-body
       #morris-line-chart
     script.
       var client_measures = !{measures}
-    script.
+    //-script.
       var mock_data = [{
         y: '2014',
         a: 50,
