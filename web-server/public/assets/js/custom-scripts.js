@@ -26,7 +26,7 @@
 			----------------------------------------*/
       Morris.Line({
         element: 'morris-line-chart',
-        data: client_measures, // data printed via PUG. tests: mock_data
+        data: diagnostics_chart_data, // data printed via PUG. tests: mock_data
         xkey: 'date',
         ykeys: ['aqi'],
         labels: ['aqi'],
@@ -42,7 +42,7 @@
 
       Morris.Line({
         element: 'morris-line-chart2',
-        data: client_measures, // data printed via PUG. tests: mock_data
+        data: forecasts_chart_data, // data printed via PUG. tests: mock_data
         xkey: 'date',
         ykeys: ['aqi'],
         labels: ['aqi'],

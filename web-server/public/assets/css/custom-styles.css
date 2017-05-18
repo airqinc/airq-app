@@ -706,10 +706,25 @@ ul.dropdown-menu.dropdown-messages li a div {
 /*----------------------------------------------
    AirQ Styles
 ------------------------------------------------*/
-.current-aqi{
+
+.current_status p, .current_status h3{
+  color: #333;
+  padding: 0;
+}
+h3.current-aqi{
   font-size: 60px;
   line-height: 80px;
+  color: #fff;
 }
+h3.aqi-category{
+  padding-bottom: 10px;
+}
+
+.current_status .panel-left{
+  border: none;
+}
+
+
 /*----------------------------------------------
     MEDIA QUERIES
 ------------------------------------------------*/
