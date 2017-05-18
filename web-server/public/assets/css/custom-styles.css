@@ -706,12 +706,14 @@ ul.dropdown-menu.dropdown-messages li a div {
 /*----------------------------------------------
    AirQ Styles
 ------------------------------------------------*/
-
-.top_logo{
-  width: 40%;
-  display: block;
-  margin: 0 auto;
+a.navbar-brand{
+  padding: 0;
 }
+.top_logo{
+  height: 100%;
+}
+
+
 .current_status p, .current_status h3{
   color: #333;
   padding: 0;
