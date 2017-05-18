@@ -10,7 +10,7 @@ var days_es = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 
 router.get('/', function(req, res) {
   var diagnostics_path = 'http://storage-server:3000/diagnostics/Madrid/latest'
   var request = require('request');
-  if (!req.session.user) {
+  if (req.session.user) {
     // line chart
     request.post({
       url: diagnostics_path,
