@@ -29,7 +29,6 @@ router.get('/', function(req, res) {
         temp = {
           date: item['datetime'],
           aqi: item['iaqi'][dominentpol],
-          isForecast: item['isForecast'],
         }
         if (index == 0) {
           description = item.alerts[0].category.description;
@@ -53,7 +52,6 @@ router.get('/', function(req, res) {
         temp = {
           date: item['datetime'],
           aqi: item['iaqi'][dominentpol],
-          isForecast: item['isForecast'],
         }
         forecasts_chart_data[index] = temp
       });
