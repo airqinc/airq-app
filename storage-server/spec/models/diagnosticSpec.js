@@ -28,7 +28,7 @@ describe("Diagnostic", function() {
           "windDirection": "E"
       },
       "isForecast": false,
-      "alerts": []
+      "alerts": [{"pollutant":"o3", "category":1}]
   };
 
   var forecast = {
@@ -76,8 +76,6 @@ describe("Diagnostic", function() {
   });
 
   it("should be able to add a new diagnostic with the same datetime as a forecast", function() {
-    diagnostic.alerts.push({"pollutant":"o3", "category":1})
-
     Diagnostic.add(diagnostic, function(err, data) {
         expect(err).toBeNull();
         expect(data).toBeDefined();
@@ -85,12 +83,13 @@ describe("Diagnostic", function() {
         expect(data.datetime).toEqual(diagnostic.datetime);
         expect(data.isForecast).toEqual(diagnostic.isForecast);
         expect(data.alerts.length).toEqual(1);
+        expect(data.alerts[0].category).toEqual(diagnostic.alerts[0].category);
         asyncSpecDone();
     });
     asyncSpecWait();
   });
 
-  it("should be able to get a diagnostic", function() {
+  /*it("should be able to get a diagnostic by time", function() {
     Diagnostic.getByTime(diagnostic.zone, diagnostic.datetime, diagnostic.isForecast, function(err, data) {
         expect(err).toBeNull();
         expect(data).toBeDefined();
@@ -100,7 +99,7 @@ describe("Diagnostic", function() {
         asyncSpecDone();
     });
     asyncSpecWait();
-  });
+  });*/
 
   it("should be able to get the latest diagnostic", function() {
     Diagnostic.getLatest(diagnostic.zone, diagnostic.isForecast, 1, function(err, data) {
@@ -120,11 +119,11 @@ describe("Diagnostic", function() {
         expect(data.zone).toEqual(diagnostic.zone)
         expect(data.datetime).toEqual(diagnostic.datetime);
         expect(data.isForecast).toEqual(diagnostic.isForecast);
-
-        Diagnostic.getByTime(diagnostic.zone, diagnostic.datetime, diagnostic.isForecast, function(err, data) {
+        asyncSpecDone();
+        /*Diagnostic.getByTime(diagnostic.zone, diagnostic.datetime, diagnostic.isForecast, function(err, data) {
             expect(err).toBeDefined()
             asyncSpecDone();
-        });
+        });*/
     });
     asyncSpecWait();
   });
