@@ -2,21 +2,17 @@
   .header
     h1.page-header
       | Madrid centro 
-      small resumen de la zona
+      small Resumen de la zona
     ol.breadcrumb
       li
-        a(href='#') Home
+        a(href='#') Dashboard
       li
         a(href='#') Mis zonas
       li
         a(href='#') Madrid centro
   #page-inner
     .row
-      .col-md-7
-        .panel.panel-default
-          .panel-heading
-            | Estado actual
-          .panel-body
+      include current_status.pug
       include charts/map.pug
     .row
       include charts/pollutants.pug
@@ -25,7 +21,7 @@
     .row
       include charts/lineChartForecast.pug                 
     // /. ROW
-    
+
     footer
       p
         | All right reserved. Template by: 

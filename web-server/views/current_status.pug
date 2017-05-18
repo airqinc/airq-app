@@ -1,0 +1,16 @@
+.col-md-6
+  .panel.panel-default
+    .panel-heading
+      | Estado actual
+    .panel-body
+      //- .col-md-3.col-sm-12.col-xs-12
+      .panel.panel-primary.text-center.no-boder.blue
+        .panel-left.pull-left.col-md-3
+          //- i.fa.fa-eye.fa-5x
+          h3.current-aqi #{current_aqi}
+        .panel-right.col-md-8
+          h3.current-aqi #{current_aqi_message}
+          //- strong Datos actualizados a #{aqi_updated_at}
+          //- p #{extended_aqi_message}
+        p Datos actualizados a #{aqi_updated_at}
+        p #{extended_aqi_message}

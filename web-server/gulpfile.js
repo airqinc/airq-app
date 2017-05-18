@@ -13,6 +13,6 @@ gulp.task('default', function() {
       gulp.src('app.js')
         .pipe(livereload())
       // .pipe(notify('Reloading page, please wait...'));
-    }, 500); // wait for the server
+    }, 700); // wait for the server
   })
 })
