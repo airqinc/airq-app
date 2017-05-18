@@ -64,7 +64,7 @@ $ npm run dev
 ## Run docker-compose locally
 ```sh
 $ sudo usermod -aG docker $USER (optional)
-$ docker-compose -f bx_docker-compose.yml scale mqtt=2
+$ docker-compose -f local_docker-compose.yml scale mqtt=2
 $ docker-compose -f local_docker-compose.yml up [--build]
 ```
 ## Run docker-compose in Bluemix

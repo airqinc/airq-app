@@ -10,9 +10,17 @@ router.get('/', function(req, res) {
 	})
 })
 
-//GET - Devuelve una categoria por id (good, moderate, etc)
+//GET - Devuelve una categoria por id
 router.get('/:id', function(req, res) {
 	Category.get(req.params.id, function(err, data) {
+    if(err) return res.status(500).send(err.message);
+    res.status(200).jsonp(data);
+	})
+})
+
+//GET - Devuelve una categoria por un valor AQI
+router.get('/aqi/:value', function(req, res) {
+	Category.classify(parseInt(req.params.value), function(err, data) {
     if(err) return res.status(500).send(err.message);
     res.status(200).jsonp(data);
 	})
@@ -25,7 +33,8 @@ router.post('/', function(req, res) {
 		description:  req.body.description,
 		min_value:   	req.body.min_value,
 		max_value:    req.body.max_value,
-		color:        req.body.color
+		color:        req.body.color,
+		msg:        	req.body.msg
 	};
 
 	Category.add(category, function(err, newCategory) {
@@ -40,7 +49,8 @@ router.put('/:id', function(req, res) {
 		description:  req.body.description,
 		min_value:   	req.body.min_value,
 		max_value:    req.body.max_value,
-		color:        req.body.color
+		color:        req.body.color,
+		msg:        	req.body.msg
 	};
 
 	Category.update(req.params.id, category, function(err, data) {

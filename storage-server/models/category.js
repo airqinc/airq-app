@@ -7,7 +7,8 @@ var categorySchema = new mongoose.Schema({
 	description:   { type: String, required: true},
 	min_value:     { type: Number, min: 0, max: 500, required: true},
 	max_value:     { type: Number, min: 0, max: 500, required: true},
-	color:         { type: String, required: true}
+	color:         { type: String, required: true},
+	msg:					 { type: String, required: true}
 });
 
 var Category = connections[dbs.db2.name].model("Category", categorySchema);
@@ -28,7 +29,8 @@ exports.add = function(newCategory, cb) {
 		description:  newCategory.description,
 		min_value:   	newCategory.min_value,
 		max_value:    newCategory.max_value,
-		color:        newCategory.color
+		color:        newCategory.color,
+		msg:					newCategory.msg
 	});
 
 	category.save(cb);
@@ -40,6 +42,7 @@ exports.update = function(id, newCategory, cb) {
 		category.min_value    = newCategory.min_value || category.min_value;
     category.max_value    = newCategory.max_value || category.max_value;
     category.color        = newCategory.color || category.color;
+		category.msg          = newCategory.msg || category.msg;
 
 		category.save(cb);
 	});
@@ -47,4 +50,16 @@ exports.update = function(id, newCategory, cb) {
 
 exports.remove = function(id, cb) {
 	Category.findByIdAndRemove(id, cb);
+};
+
+// OPERACIONES ADICIONALES
+
+exports.classify = function(aqi, cb) {
+	Category.find({}, function(err, categories) {
+		var temp = Math.round(aqi);
+		categories.forEach(function(value,i,array) {
+			if (temp >= value.min_value && temp <= value.max_value)
+				cb(err, value);
+		});
+	});
 };

@@ -54,7 +54,15 @@ exports.get = function(id, cb) {
 };
 
 exports.getByTime = function(zone, datetime, isForecast, cb) {
-    Diagnostic.findOne().byTime(zone, datetime, isForecast).exec(cb);
+    //Diagnostic.findOne().byTime(zone, datetime, isForecast).exec(cb);
+
+    Diagnostic.findOne().byTime(zone, datetime, isForecast)
+    .populate({
+      path: 'alerts.category',
+  		select: 'description color msg',
+      model: connections[dbs.db2.name].model('Category')
+    })
+    .exec(cb)
 };
 
 exports.add = function(newDiagnostic, cb) {
