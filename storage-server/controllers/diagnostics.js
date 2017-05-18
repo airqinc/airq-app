@@ -18,9 +18,9 @@ router.post('/:zone/datetime', function(req, res) {
 	})
 })
 
-//POST - Devuelve los ultimos n diagnosticos/pronosticos de una zona en un periodo de tiempo
+//POST - Devuelve los ultimos n diagnosticos y/o pronosticos de una zona en un periodo de tiempo
 router.post('/:zone/latest', function(req, res) {
-	Diagnostic.getLatest(req.params.zone, req.body.isForecast, req.body.number, function(err, data) {
+	Diagnostic.getLatest(req.params.zone, req.body.isForecast, req.body.number, req.body.both, function(err, data) {
 	  if(err) return res.status(500).send(err.message);
 		res.status(200).jsonp(data);
 	})
@@ -101,14 +101,6 @@ router.put('/:id', function(req, res) {
 	Diagnostic.update(req.params.id, diagnostic, function(err, data) {
 	    if(err) return res.status(500).send(err.message);
 		res.status(200).jsonp(data);
-	})
-})
-
-//DELETE - Borra una diagnóstico por ID
-router.delete('/:id', function(req, res) {
-	Diagnostic.remove(req.params.id, function(err, diagnostic) {
-		if(err) return res.status(500).send(err.message);
-  		res.status(200).send(diagnostic._id);
 	})
 })
 

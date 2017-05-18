@@ -41,6 +41,16 @@ diagnosticSchema.query.byTime = function(zone, datetime, isForecast) {
     return this.findOne({ zone: zone, datetime: datetime, isForecast: isForecast });
 };
 
+diagnosticSchema.query.latest = function(zone, isForecast, number) {
+    return this.find({zone: zone, isForecast: isForecast})
+    .limit(number) // debido al orden el primero es el más reciente, etc.
+    .populate({
+      path: 'alerts.category',
+  		select: 'description color msg',
+      model: connections[dbs.db2.name].model('Category')
+    });
+};
+
 var Diagnostic = connections[dbs.db3.name].model('Diagnostic', diagnosticSchema);
 
 //OPERACIONES
@@ -54,8 +64,6 @@ exports.get = function(id, cb) {
 };
 
 exports.getByTime = function(zone, datetime, isForecast, cb) {
-    //Diagnostic.findOne().byTime(zone, datetime, isForecast).exec(cb);
-
     Diagnostic.findOne().byTime(zone, datetime, isForecast)
     .populate({
       path: 'alerts.category',
@@ -64,6 +72,24 @@ exports.getByTime = function(zone, datetime, isForecast, cb) {
     })
     .exec(cb)
 };
+
+exports.getLatest = function(zone, isForecast, number, bothTypes, cb) {
+  Diagnostic.find().latest(zone, isForecast, number).exec(function(err, data) {
+    if (bothTypes){
+      var multiple_data = {}
+      multiple_data[isForecast] = data;
+
+      Diagnostic.find().latest(zone, !isForecast, number).exec(function(err, data2) {
+        multiple_data[!isForecast] = data2
+        cb(err, multiple_data);
+      });
+    }
+    else{
+      cb(err, data);
+    }
+  });
+};
+
 
 exports.add = function(newDiagnostic, cb) {
     var diagnostic = new Diagnostic({
@@ -164,11 +190,4 @@ exports.removeAlert = function(zone, datetime, isForecast, alert, cb) {
             });
         }
     });
-};
-
-exports.getLatest = function(zone, isForecast, number, cb) {
-  Diagnostic.find({zone: zone, isForecast: isForecast}, function(err, diagnostics) {
-    // debido al orden el primero es el más reciente, etc.
-    cb(err, diagnostics.slice(0,number));
-  })
 };
