@@ -36,8 +36,7 @@
         resize: true,
         pointFillColors: ['#ffffff'],
         pointStrokeColors: ['black'],
-        lineColors: ['gray', '#30a5ff']
-
+        lineColors: ['#0866c6', '#30a5ff']
       });
 
       Morris.Line({
@@ -52,7 +51,7 @@
         resize: true,
         pointFillColors: ['#ffffff'],
         pointStrokeColors: ['black'],
-        lineColors: ['gray', '#30a5ff']
+        lineColors: ['#0866c6', '#30a5ff']
 
       });
 

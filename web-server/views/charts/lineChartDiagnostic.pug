@@ -1,23 +1,12 @@
 .col-md-12
   .panel.panel-default
     .panel-heading
-      | Datos
+      | Últimas 48h
     .panel-body
-      
-      ul.nav.nav-tabs
-        li.active
-          a(href='#home', data-toggle='tab') Últimas 48h
-        li
-          a(href='#profile', data-toggle='tab') Próximas 24h
-      .tab-content
-        #home.tab-pane.fade.active.in
+      #morris-line-chart
           #morris-line-chart
-        #profile.tab-pane.fade
-          //- #morris-line-chart2
     script.
       var diagnostics_chart_data = !{diagnostics_chart_data}
-    script.
-      var forecasts_chart_data = !{forecasts_chart_data}
     //-script.
       var mock_data = [{
         y: '2014',
