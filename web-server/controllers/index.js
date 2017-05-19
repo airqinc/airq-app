@@ -8,9 +8,7 @@ router.use('/myZones',require('./myZones'))
 
 router.get('/', function(req, res) {
   if (req.session.user) {
-    res.render('dashboard', {
-      user: req.session.user
-    })
+    res.redirect('/dashboard');
   } else {
     res.redirect('/user/login');
   }
