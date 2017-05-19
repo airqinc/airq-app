@@ -1,0 +1,105 @@
+nav.navbar.navbar-default.top-navbar(role='navigation')
+  .navbar-header
+    button.navbar-toggle(type='button', data-toggle='collapse', data-target='.sidebar-collapse')
+      span.sr-only Toggle navigation
+      span.icon-bar
+      span.icon-bar
+      span.icon-bar
+    a.navbar-brand(href='/dashboard')
+      //- strong AirQ
+      img.top_logo(src='/img/airq_white.png')
+  ul.nav.navbar-top-links.navbar-right
+    li.dropdown
+      a.dropdown-toggle(data-toggle='dropdown', href='#', aria-expanded='false')
+        i.fa.fa-envelope.fa-fw
+        i.fa.fa-caret-down
+      ul.dropdown-menu.dropdown-messages
+        li
+          a(href='#')
+            div
+              strong AirQ discounts
+              span.pull-right.text-muted
+            div Descuentos en subscripciones a zonas cercanas a su organización.
+        li.divider
+        li
+          a(href='#')
+            div
+              strong AirQ discover
+              span.pull-right.text-muted
+            div Nos gustaría conocer qué nuevas zonas podrían interesar a tu organización.
+        li.divider
+        li
+          a(href='#')
+            div
+              strong AirQ premium services
+              span.pull-right.text-muted
+            div Has activado el mes de prueba en servicios premium, disfrutelo.
+        li.divider
+        li
+          a(href='#')
+            div
+              strong AirQ new accounts
+              span.pull-right.text-muted
+            div Gracias por confiar en nosotros.
+        li.divider
+        li
+          a.text-center(href='#')
+            strong Read All Messages
+            i.fa.fa-angle-right
+      // /.dropdown-messages
+    // /.dropdown
+    li.dropdown
+      a.dropdown-toggle(data-toggle='dropdown', href='#', aria-expanded='false')
+        i.fa.fa-bell.fa-fw
+        i.fa.fa-caret-down
+      ul.dropdown-menu.dropdown-alerts
+        li
+          a(href='#')
+            div
+              i.fa.fa-flag.fa-fw
+              |  Alerta actual en Madrid centro
+              span.pull-right.text-muted.small 4 min
+        li.divider
+        li
+          a(href='#')
+            div
+              i.fa.fa-bolt.fa-fw
+              |  Alerta pronosticada en madrid Centro
+              span.pull-right.text-muted.small 12 min
+        li.divider
+        li
+          a(href='#')
+            div
+              i.fa.fa-cogs.fa-fw
+              |  Mantenimiento previsto para las 19:00
+              span.pull-right.text-muted.small 4 min
+        li.divider
+        li
+          a.text-center(href='#')
+            strong See All Alerts
+            i.fa.fa-angle-right
+      // /.dropdown-alerts
+    // /.dropdown
+    li.dropdown
+      a.dropdown-toggle(data-toggle='dropdown', href='#', aria-expanded='false')
+        i.fa.fa-user.fa-fw
+        i.fa.fa-caret-down
+      ul.dropdown-menu.dropdown-user
+        if(user)
+          li
+            a(href='#')
+              i.fa.fa-user.fa-fw
+              |  Hi, #{user.nickname}
+          li
+            a(href='#')
+              i.fa.fa-gear.fa-fw
+              |  Settings
+          li.divider
+          li
+            a(href='/user/logout')
+              i.fa.fa-sign-out.fa-fw
+              |  Logout
+          
+        
+      // /.dropdown-user
+    // /.dropdown

@@ -1,0 +1,54 @@
+.col-md-12
+  .panel.panel-default
+    .panel-heading
+      | Próximas 24h
+    .panel-body
+      #morris-line-chart2
+    script.
+      var forecasts_chart_data = !{forecasts_chart_data}
+    //-script.
+      var mock_data = [{
+        y: '2014',
+        a: 50,
+        },
+        {
+          y: '2015',
+          a: 165,
+        },
+        {
+          y: '2016',
+          a: 150,
+        },
+        {
+          y: '2017',
+          a: 175,
+        },
+        {
+          y: '2018',
+          a: 80,
+        },
+        {
+          y: '2019',
+          a: 90,
+        },
+        {
+          y: '2020',
+          a: 100,
+        },
+        {
+          y: '2021',
+          a: 155,
+        },
+        {
+          y: '2022',
+          a: 80,
+        },
+        {
+          y: '2023',
+          a: 145,
+        },
+        {
+          y: '2024',
+          a: 160,
+        }
+              ];

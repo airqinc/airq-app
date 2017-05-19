@@ -1,0 +1,16 @@
+
+.col-md-12
+  .panel.panel-default
+    .panel-heading
+      | Contaminantes
+    .panel-body
+      - var colors = ['orange', 'blue', 'teal', 'red', 'green', 'purple']
+      - var idx = 0
+      each poll_value, pollutant in pollutants
+        .col-xs-2.col-md-2
+          .panel.panel-default
+            .panel-body.easypiechart-panel
+              h4 #{pollutant}
+              div(id='easypiechart-'+colors[idx]).easypiechart(data-percent=poll_value*100/500)
+                span.percent #{poll_value}
+        - idx = idx + 1
