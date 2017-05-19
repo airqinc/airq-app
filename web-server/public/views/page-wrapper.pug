@@ -1,0 +1,29 @@
+#page-wrapper
+  .header
+    h1.page-header
+      | Madrid centro 
+      small Resumen de la zona
+    ol.breadcrumb
+      li
+        a(href='#') Dashboard
+      li
+        a(href='#') Mis zonas
+      li
+        a(href='#') Madrid centro
+  #page-inner
+    .row
+      include current_status.pug
+      include charts/map.pug
+    .row
+      include charts/pollutants.pug
+    .row
+      include charts/lineChartDiagnostic.pug
+    .row
+      include charts/lineChartForecast.pug                 
+    // /. ROW
+
+    footer
+      p
+        | All right reserved. Template by: 
+        a(href='http://webthemez.com') WebThemez
+  // /. PAGE INNER

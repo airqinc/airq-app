@@ -1,0 +1,46 @@
+#page-wrapper
+  .header
+    h1.page-header
+      | Mis zonas
+    ol.breadcrumb
+      li
+        a(href='#') Dashboard
+      li
+        a(href='#') Mis zonas
+  #page-inner
+    .row
+      .col-md-4
+        .panel.panel-default
+          .panel-heading
+            | Madrid Centro
+          .panel-body.current_status
+            .panel
+              .row
+                .panel-left.col-md-3
+                  h3.current-aqi #{current_aqi}
+                .panel.col-md-7 
+                  p
+                  p Última actualización:
+                  p #{day_updated_at} #{hour_updated_at}
+                  p Estaciones: 6
+                  p 
+              .row
+                .col-md-12
+                  a.btn.btn-primary.btn-block(type='button',href='dashboard') ver zona
+      style.
+        .panel.col-md-7{
+          align-items: center;
+        }
+        .panel {
+          margin-bottom: 0px;          
+        }
+        .panel-left {
+          background-color: #{aqi_color};
+        }
+  
+
+    footer
+      p
+        | All right reserved. Template by: 
+        a(href='http://webthemez.com') WebThemez
+  // /. PAGE INNER

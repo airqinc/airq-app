@@ -5,20 +5,14 @@ html
     title AirQ login
     //- script(src='http://s.codepen.io/assets/libs/modernizr.js', type='text/javascript')
     //- link(rel='stylesheet prefetch', href='http://fonts.googleapis.com/css?family=Nunito:400,300,700')
-    //- link(rel='stylesheet', href='assets/css/bootstrap.css')
     link(rel='stylesheet', href='../assets/css/login.css')
-    link(href='favicon_animated.ico?', rel='shortcut icon')
-
-
-
   body
     .container
       .form-container.flip
-        //- if(message!='')
-        //-   .alert.alert-danger
-        //-     #{message}
         form.login-form(method='POST' action='')
-          h3.title Hello.#{message}
+          //- h2.alert.alert-danger#{message}
+          //- div.alert.alert-danger #{message}
+          h3.title Sign up. #{message}
           #username.form-group
             input#email.form-input(name='nickname', tooltip-class='username-tooltip', placeholder='Username', required='true', autofocus='true')
             span#username-tool.tooltip.username-tooltip ¿Cuál es tu usuario?

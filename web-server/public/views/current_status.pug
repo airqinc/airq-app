@@ -1,0 +1,27 @@
+.col-md-6
+  .panel.panel-default
+    .panel-heading
+      | Estado actual
+    .panel-body.current_status
+      //- .col-md-3.col-sm-12.col-xs-12
+      .panel
+        .row
+          .panel-left.col-md-3
+            //- i.fa.fa-eye.fa-5x
+            h3.current-aqi #{current_aqi}
+          .panel-right.col-md-8
+            h3.aqi-category #{current_aqi_message}
+            p Datos actualizados el #{day_updated_at} a las #{hour_updated_at}
+            //- strong Datos actualizados a #{aqi_updated_at}
+            //- p #{extended_aqi_message}
+        .row
+          .col-md-12
+            p #{extended_aqi_message}
+style.
+  .current_status .panel-left {
+    background-color: #{aqi_color};
+  }
+  h3.aqi-category{
+    color: #{aqi_color};
+  }
+  
