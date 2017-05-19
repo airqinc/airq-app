@@ -24,36 +24,39 @@
 
       /* MORRIS LINE CHART
 			----------------------------------------*/
-      Morris.Line({
-        element: 'morris-line-chart',
-        data: diagnostics_chart_data, // data printed via PUG. tests: mock_data
-        xkey: 'date',
-        ykeys: ['aqi'],
-        labels: ['aqi'],
-        fillOpacity: 0.6,
-        hideHover: 'auto',
-        behaveLikeLine: true,
-        resize: true,
-        pointFillColors: ['#ffffff'],
-        pointStrokeColors: ['black'],
-        lineColors: ['#0866c6', '#30a5ff']
-      });
+      if($('#morris-line-chart').length > 0){
+        Morris.Line({
+          element: 'morris-line-chart',
+          data: diagnostics_chart_data, // data printed via PUG. tests: mock_data
+          xkey: 'date',
+          ykeys: ['aqi'],
+          labels: ['aqi'],
+          fillOpacity: 0.6,
+          hideHover: 'auto',
+          behaveLikeLine: true,
+          resize: true,
+          pointFillColors: ['#ffffff'],
+          pointStrokeColors: ['black'],
+          lineColors: ['#0866c6', '#30a5ff']
+        });
+      }
 
-      Morris.Line({
-        element: 'morris-line-chart2',
-        data: forecasts_chart_data, // data printed via PUG. tests: mock_data
-        xkey: 'date',
-        ykeys: ['aqi'],
-        labels: ['aqi'],
-        fillOpacity: 0.6,
-        hideHover: 'auto',
-        behaveLikeLine: true,
-        resize: true,
-        pointFillColors: ['#ffffff'],
-        pointStrokeColors: ['black'],
-        lineColors: ['#0866c6', '#30a5ff']
-
-      });
+      if($('#morris-line-chart2').length > 0){
+        Morris.Line({
+          element: 'morris-line-chart2',
+          data: forecasts_chart_data, // data printed via PUG. tests: mock_data
+          xkey: 'date',
+          ykeys: ['aqi'],
+          labels: ['aqi'],
+          fillOpacity: 0.6,
+          hideHover: 'auto',
+          behaveLikeLine: true,
+          resize: true,
+          pointFillColors: ['#ffffff'],
+          pointStrokeColors: ['black'],
+          lineColors: ['#0866c6', '#30a5ff']
+        });
+      }
 
 
       $('.bar-chart').cssCharts({
