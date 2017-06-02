@@ -7,6 +7,10 @@
 
 ![AirQ logo](assets/logo.png)
 
+## Presentation
+
+Take a look to our [slides](https://github.com/airqinc/airq-app/blob/master/Presentaci%C3%B3n%20AirQ.pdf) for a better understanding of AirQ inc. and our system.
+
 ## Installation
 
 OS X & Linux:
